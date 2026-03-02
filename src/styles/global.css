@@ -1,6 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --font-industrial: "Space Grotesk", sans-serif;
+  --font-sans: "Inter", sans-serif;
+}
 
 /* Grid Background Pattern */
 .bg-grid-pattern {
@@ -24,4 +27,3 @@
 .animate-fade-in-up {
   animation: fade-in-up 0.6s ease-out;
 }
-
