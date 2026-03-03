@@ -58,8 +58,8 @@ const deliverables = [
 
       <!-- Grid Area -->
       <div class="md:w-2/3 grid gap-6">
-        {deliverables.map((item, index) => (
-          <div key={index} class="flex items-start gap-6 bg-[#111] p-6 border border-gray-800 hover:border-yellow-500/50 transition-all duration-300 group">
+        {deliverables.map((item) => (
+          <div class="flex items-start gap-6 bg-[#111] p-6 border border-gray-800 hover:border-yellow-500/50 transition-all duration-300 group">
             <div class="shrink-0 p-3 bg-black border border-gray-700 group-hover:border-yellow-500 transition-colors">
               <div class="w-6 h-6 text-yellow-400" set:html={item.icon} />
             </div>
