@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import { Image } from 'astro:assets';
+import tochaBio from '../assets/tocha-bio.webp';
 ---
 
 <head>
@@ -250,8 +252,8 @@ import '../styles/global.css';
     <section class="py-24 px-6 border-b border-zinc-800 bg-brand-900">
         <div class="max-w-4xl mx-auto text-center md:text-left flex flex-col md:flex-row items-center gap-12">
             <!-- Espaço para uma foto (Brutalista, P&B, Analítica). Usando um placeholder geométrico por agora -->
-            <div class="w-48 h-48 md:w-64 md:h-64 shrink-0 bg-zinc-800 border-2 border-zinc-700 flex items-center justify-center">
-                <span class="text-zinc-600 uppercase tracking-widest text-xs font-bold">[ FOTO P&B AQUI ]</span>
+            <div class="w-48 h-48 md:w-64 md:h-64 shrink-0 border-2 border-zinc-700 overflow-hidden bg-zinc-900">
+                <Image src={tochaBio} alt="Ricardo Tocha" widths={[256,512]} sizes="(max-width: 768px) 192px, 256px" class="w-full h-full object-cover" loading="lazy" />
             </div>
             
             <div>
