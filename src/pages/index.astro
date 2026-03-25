@@ -5,60 +5,156 @@ import tochaNovo from '../assets/tocha-novo.webp';
 ---
 
 <Layout title="Ricardo Tocha | Arquitetura de Operações Híbridas" description="Consultor de operações híbricas. Arquitetura de retenção e crescimento para agências de performance.">
-  <section class="relative min-h-screen flex items-center justify-center border-b border-gray-800 overflow-hidden pt-20 pb-20" style="background-color: #0a0a0a;">
-    <!-- Background pattern -->
-    <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(to right, #222 1px, transparent 1px), linear-gradient(to bottom, #222 1px, transparent 1px); background-size: 40px 40px;"></div>
-    <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/60 via-transparent to-[#0a0a0a] pointer-events-none"></div>
-
-    <div class="container mx-auto px-6 relative z-10 max-w-6xl">
-      <div class="grid lg:grid-cols-2 gap-16 items-center">
-        <!-- Text side -->
-        <div>
-          <div class="inline-flex items-center gap-2 border border-yellow-500/30 bg-yellow-500/10 px-4 py-1.5 rounded-sm mb-8">
-            <span class="text-yellow-500 text-xs font-bold tracking-widest uppercase" style="font-family: 'Space Grotesk', sans-serif;">
-              Consultor de Operações Híbridas
-            </span>
-          </div>
-
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-6 uppercase tracking-tight" style="font-family: 'Space Grotesk', sans-serif;">
-            Ricardo Tocha
-          </h1>
-
-          <p class="text-lg md:text-xl text-gray-400 mb-8 leading-relaxed" style="max-width: 48ch;">
-            Arquitetura de <strong class="text-white">operações híbridas</strong> — o sistema que conecta tráfego, venda e retenção em um funil previsível e escalável.
-          </p>
-
-          <div class="space-y-3 text-sm text-gray-500 mb-10" style="font-family: monospace;">
-            <p>↳ Arquitetura de Retenção para Agências</p>
-            <p>↳ Automação de Vendas B2B (n8n + IA)</p>
-            <p>↳ Growth Loops para Operações Híbridas</p>
-          </div>
-
-          <div class="flex flex-col sm:flex-row gap-4">
-            <a href="/reduzir-churn-agencias" class="inline-flex items-center justify-center px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-base uppercase tracking-wider transition-all" style="clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);">
-              Ver estudo de caso
-            </a>
-            <a href="https://wa.me/5511999999999" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center px-8 py-4 border border-gray-700 text-gray-300 font-bold text-base uppercase tracking-wider hover:border-gray-500 hover:text-white transition-colors">
-              Falar diretamente
-            </a>
-          </div>
+  
+    <!-- BARRA DE NAVEGAÇÃO SUPERIOR -->
+    <nav class="fixed w-full z-50 bg-brand-950/90 backdrop-blur-md border-b border-zinc-800">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="font-black text-white tracking-tighter text-xl uppercase" style="font-family: 'Space Grotesk', sans-serif;">
+                Ricardo Tocha<span class="text-yellow-500">_</span>
+            </div>
+            <div class="flex gap-3">
+                <a href="/reduzir-churn-agencias/" class="hidden md:inline-block border border-yellow-500/30 text-xs font-bold uppercase tracking-widest text-yellow-500 px-4 py-2 hover:bg-yellow-500 hover:text-black hover:border-yellow-500 transition-colors">
+                    Página Churn
+                </a>
+                <a href="#auditoria" class="hidden md:inline-block border border-zinc-700 text-xs font-bold uppercase tracking-widest text-zinc-300 px-4 py-2 hover:bg-white hover:text-black hover:border-white transition-none">
+                    Iniciar Diagnóstico
+                </a>
+            </div>
         </div>
+    </nav>
 
-        <!-- Photo side -->
-        <div class="flex justify-center lg:justify-end">
-          <div class="relative">
-            <div class="absolute -inset-4 border-2 border-yellow-500/20 rounded-sm -z-10"></div>
-            <div class="absolute -inset-2 border border-yellow-500/10 rounded-sm -z-10"></div>
-            <Image
-              src={tochaNovo}
-              alt="Ricardo Tocha - Consultor de Operações Híbridas"
-              width={480}
-              class="object-cover grayscale hover:grayscale-0 transition-all duration-500"
-              style="width: 100%; max-width: 480px; height: auto; aspect-ratio: 4/5;"
-            />
-          </div>
+    <!-- DOBRA 1: O FILTRO (HERO SECTION) -->
+    <section class="min-h-screen flex items-center pt-20 pb-12 px-6 border-b border-zinc-800">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="max-w-4xl grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <!-- PRE-HEADLINE -->
+                    <div class="inline-block border border-yellow-500/30 bg-yellow-500/10 text-yellow-500 text-xs font-bold uppercase tracking-widest px-3 py-1 mb-8">
+                        Governança Comercial e Infraestrutura de IA para Negócios B2B
+                    </div>
+                    
+                    <!-- HEADLINE -->
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-[0.9] mb-8" style="font-family: 'Space Grotesk', sans-serif;">
+                        Eu descolo o<br>
+                        <span class="text-yellow-500">crescimento</span> da<br>
+                        sua empresa da<br>
+                        necessidade de<br>
+                        contratar.
+                    </h1>
+                    
+                    <!-- SUB-HEADLINE -->
+                    <p class="text-lg md:text-xl text-zinc-400 max-w-2xl mb-12 leading-relaxed">
+                        O modelo de crescer inflando a folha de pagamento quebrou. Eu construo a infraestrutura de dados e IA que audita 100% da sua operação de vendas e dá superpoderes aos seus melhores talentos. Escale a receita. Congele o RH.
+                    </p>
+                    
+                    <!-- CALL TO ACTION -->
+                    <a href="#auditoria" class="btn-brutal inline-block bg-yellow-500 hover:bg-yellow-400 text-black font-black uppercase tracking-widest px-8 py-5 text-sm md:text-base border border-yellow-500">
+                        Aplicar para Intervenção Estratégica
+                    </a>
+                    <p class="text-zinc-600 text-xs mt-4 uppercase tracking-widest">
+                        * Apenas para operações com faturamento superior a R$ 5M/ano.
+                    </p>
+                </div>
+
+                <!-- Foto -->
+                <div class="flex justify-center lg:justify-end">
+                    <div class="relative">
+                        <div class="absolute -inset-4 border-2 border-yellow-500/20 rounded-sm -z-10"></div>
+                        <div class="absolute -inset-2 border border-yellow-500/10 rounded-sm -z-10"></div>
+                        <Image
+                            src={tochaNovo}
+                            alt="Ricardo Tocha - Consultor de Operações Híbridas"
+                            width={480}
+                            class="object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                            style="width: 100%; max-width: 480px; height: auto; aspect-ratio: 4/5;"
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- DOBRA 2: O MANIFESTO DE GOVERNANÇA -->
+    <section class="py-24 px-6 border-b border-zinc-800 bg-brand-900">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter max-w-3xl mb-16" style="font-family: 'Space Grotesk', sans-serif;">
+                A sua operação de vendas é uma caixa preta. E você paga a conta dessa cegueira.
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="border border-yellow-500/20 p-8 bg-brand-950 hover:border-yellow-500/50 transition-colors">
+                    <h3 class="text-yellow-500 font-bold text-lg mb-4 uppercase tracking-widest border-b border-yellow-500/20 pb-4">01. A Ilusão do Dado</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">
+                        O CRM da sua empresa aceita qualquer mentira. A realidade das negociações acontece no WhatsApp, totalmente fora do alcance visual da diretoria. Leads caríssimos gerados pelo marketing morrem diariamente no silêncio operacional da equipe comercial.
+                    </p>
+                </div>
+                <div class="border border-yellow-500/20 p-8 bg-brand-950 hover:border-yellow-500/50 transition-colors">
+                    <h3 class="text-yellow-500 font-bold text-lg mb-4 uppercase tracking-widest border-b border-yellow-500/20 pb-4">02. O Surgery Automatizado</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">
+                        A maioria das empresas não tem um problema de talento. Tem um problema de infraestrutura. Quando você automatiza os processos de primeira linha — qualificação, agendamento, follow-up — os seus melhores vendedores param de perder tempo.
+                    </p>
+                </div>
+                <div class="border border-yellow-500/20 p-8 bg-brand-950 hover:border-yellow-500/50 transition-colors">
+                    <h3 class="text-yellow-500 font-bold text-lg mb-4 uppercase tracking-widest border-b border-yellow-500/20 pb-4">03. O Loop de Crescimento</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">
+                        O growth loop que vou desenhar para sua empresa é um sistema que aprende com cada interação e progressivamente otimiza o funil sem você precisar inflar a equipe. Dados + automação + inteligência = escala.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DOBRA 3: A AUDITORIA (FORM) -->
+    <section id="auditoria" class="py-24 px-6 border-b border-zinc-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16">
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter mb-8" style="font-family: 'Space Grotesk', sans-serif;">
+                        Você não sabe o que não está vendo.
+                    </h2>
+                    <p class="text-zinc-400 text-lg leading-relaxed mb-8">
+                        A maioria dos gestores comerciais assume que sabe o que acontece no funil. A maioria está errada. Sequer 15% das conversas entre vendedores e leads são auditadas. E é exatamente aí que o dinheiro está vazando.
+                    </p>
+                    <p class="text-yellow-500 font-bold text-lg">
+                        Agende uma Auditoria Estratégica de 30 minutos. Sem pitch. Sem compromisso.
+                    </p>
+                </div>
+                <div>
+                    <form id="application-form" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2">Nome</label>
+                            <input type="text" required class="w-full bg-brand-950 border border-zinc-800 text-white px-4 py-3 focus:border-yellow-500 focus:outline-none transition-colors" placeholder="Seu nome completo">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2">Email</label>
+                            <input type="email" required class="w-full bg-brand-950 border border-zinc-800 text-white px-4 py-3 focus:border-yellow-500 focus:outline-none transition-colors" placeholder="seu@email.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2">Empresa</label>
+                            <input type="text" required class="w-full bg-brand-950 border border-zinc-800 text-white px-4 py-3 focus:border-yellow-500 focus:outline-none transition-colors" placeholder="Nome da empresa">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2">Faturamento Mensal</label>
+                            <select required class="w-full bg-brand-950 border border-zinc-800 text-white px-4 py-3 focus:border-yellow-500 focus:outline-none transition-colors">
+                                <option value="">Selecione</option>
+                                <option>Até R$ 500k</option>
+                                <option>R$ 500k - R$ 2M</option>
+                                <option>R$ 2M - R$ 5M</option>
+                                <option>R$ 5M - R$ 20M</option>
+                                <option>Mais de R$ 20M</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2">Qual sua maior dor hoje?</label>
+                            <textarea required rows="3" class="w-full bg-brand-950 border border-zinc-800 text-white px-4 py-3 focus:border-yellow-500 focus:outline-none transition-colors resize-none" placeholder="Descreva brevemente"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-black uppercase tracking-widest px-8 py-5 text-sm border border-yellow-500 hover:border-yellow-400 transition-colors">
+                            Solicitar Auditoria
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </Layout>
