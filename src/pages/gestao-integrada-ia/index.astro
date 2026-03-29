@@ -1,0 +1,216 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import logoAmarelo from '../../assets/logo-web-amarelo.webp';
+import ServiceEcosystem from '../../components/service/ServiceEcosystem.astro';
+import ServiceCTA from '../../components/service/ServiceCTA.astro';
+---
+
+<Layout
+  title="Gestão Integrada por IA — Ricardo Tocha"
+  description="Sistema que conecta comercial, operacional e financeiro num fluxo único. Elimine retrabalho, planilhas paralelas e faturamento perdido."
+>
+
+  <!-- NAV -->
+  <nav class="fixed w-full z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-gray-800">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/">
+        <Image src={logoAmarelo} alt="Ricardo Tocha" width={160} height={40} class="h-8 w-auto" />
+      </a>
+      <div class="hidden md:flex items-center gap-4">
+        <a href="/#auditoria" class="bg-yellow-500 text-black text-xs font-bold uppercase tracking-widest px-4 py-2 hover:bg-yellow-400 transition-colors">
+          Iniciar Diagnóstico
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-6 pt-20 pb-4">
+    <a href="/" class="inline-block border border-gray-700 text-xs font-bold uppercase tracking-widest text-gray-300 px-4 py-2 hover:bg-white hover:text-black transition-colors">← Voltar para Home</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="relative min-h-[80vh] flex items-center pt-8 pb-20 px-6 border-b border-gray-800 bg-grid-pattern overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/50 via-transparent to-[#0a0a0a]"></div>
+    <div class="max-w-5xl mx-auto w-full relative z-10 text-center">
+
+      <div class="inline-flex items-center gap-2 border border-yellow-500/30 bg-yellow-500/10 text-yellow-500 text-xs font-bold uppercase tracking-widest font-mono px-4 py-1.5 mb-8">
+        MERCÚRIO • mercurio.ia.br
+      </div>
+
+      <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold font-industrial text-white uppercase tracking-tight leading-[1.1] mb-8">
+        Do comercial ao financeiro, num fluxo só. Sem planilha, sem retrabalho.
+      </h1>
+
+      <div class="max-w-2xl mx-auto mb-12">
+        <p class="text-lg md:text-xl text-gray-400 font-light leading-relaxed">
+          O Mercúrio conecta proposta, execução e faturamento num sistema único. A informação percorre todo o ciclo sem perdas — e sem precisar ser digitada 3 vezes.
+        </p>
+      </div>
+
+      <a href="/#auditoria" class="inline-flex items-center gap-2 bg-yellow-500 text-black font-bold uppercase tracking-widest px-8 py-4 text-sm hover:bg-yellow-400 transition-colors">
+        Aplicar para Intervenção Estratégica
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+      <p class="text-gray-600 text-xs mt-4 uppercase tracking-widest font-mono">
+        Também disponível como SaaS standalone em <a href="https://mercurio.ia.br/" target="_blank" rel="noopener noreferrer" class="text-yellow-600 hover:text-yellow-500 transition-colors">mercurio.ia.br</a>
+      </p>
+
+    </div>
+  </section>
+
+  <!-- O PROBLEMA -->
+  <section class="py-24 px-6 border-b border-gray-800 bg-[#0f0f0f]">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-16">
+        <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-4">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          O Problema
+        </span>
+        <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight max-w-3xl leading-none">
+          Por que sua empresa opera em silos que sangram dinheiro.
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <!-- Card 1: Informação Fragmentada -->
+        <div class="border border-gray-800 p-8 hover:border-yellow-500/50 transition-colors bg-[#0a0a0a]">
+          <div class="shrink-0 p-3 bg-black border border-gray-700 inline-block mb-4">
+            <!-- Database icon -->
+            <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 5.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold font-industrial text-white uppercase tracking-tight mb-3">Informação Fragmentada</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">Comercial no CRM. Operacional na planilha. Financeiro no ERP. Três sistemas que não conversam. A mesma informação é digitada 3, 4, 5 vezes — e cada digitação é uma chance de erro.</p>
+        </div>
+
+        <!-- Card 2: Retrabalho Crônico -->
+        <div class="border border-gray-800 p-8 hover:border-yellow-500/50 transition-colors bg-[#0a0a0a]">
+          <div class="shrink-0 p-3 bg-black border border-gray-700 inline-block mb-4">
+            <!-- Arrows-right-left icon -->
+            <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold font-industrial text-white uppercase tracking-tight mb-3">Retrabalho Crônico</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">Proposta fecha no comercial mas os dados não chegam na operação. Projeto entrega mas o financeiro não sabe faturar. Cada handoff entre departamentos é um buraco onde informação se perde e dinheiro escorre.</p>
+        </div>
+
+        <!-- Card 3: Gestão no Escuro -->
+        <div class="border border-gray-800 p-8 hover:border-yellow-500/50 transition-colors bg-[#0a0a0a]">
+          <div class="shrink-0 p-3 bg-black border border-gray-700 inline-block mb-4">
+            <!-- Eye-off icon -->
+            <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold font-industrial text-white uppercase tracking-tight mb-3">Gestão no Escuro</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">O dono da empresa não tem visão real do pipeline. Não sabe quanto tem a receber, quanto está atrasado, nem qual projeto está dando prejuízo. Descobre quando já é tarde.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- A INTERVENÇÃO -->
+  <section class="py-24 px-6 border-b border-gray-800 bg-[#0a0a0a]">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-16">
+        <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-4">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+          </svg>
+          A Intervenção
+        </span>
+        <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight max-w-3xl leading-none">
+          Como o Mercúrio unifica sua operação.
+        </h2>
+      </div>
+
+      <div class="max-w-3xl space-y-10">
+
+        <div class="flex gap-6 items-start">
+          <div class="shrink-0 w-10 h-10 bg-yellow-500 text-black flex items-center justify-center font-bold font-industrial text-lg">1</div>
+          <div>
+            <h3 class="text-lg font-bold font-industrial text-white uppercase tracking-tight mb-2">Diagnóstico de Fluxo</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">Mapeamento completo do ciclo: como a informação nasce no comercial, percorre a operação e chega no financeiro. Identificação de gaps e digitações duplicadas.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-6 items-start">
+          <div class="shrink-0 w-10 h-10 bg-yellow-500 text-black flex items-center justify-center font-bold font-industrial text-lg">2</div>
+          <div>
+            <h3 class="text-lg font-bold font-industrial text-white uppercase tracking-tight mb-2">Arquitetura do Sistema</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">Design do fluxo unificado no Mercúrio. Proposta → Contrato → Ordem de Serviço → Execução → Medição → Faturamento. Uma entrada, zero retrabalho.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-6 items-start">
+          <div class="shrink-0 w-10 h-10 bg-yellow-500 text-black flex items-center justify-center font-bold font-industrial text-lg">3</div>
+          <div>
+            <h3 class="text-lg font-bold font-industrial text-white uppercase tracking-tight mb-2">Migração e Implantação</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">Importação de dados, configuração de workflows e treinamento da equipe. Implantação por departamento para minimizar atrito.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-6 items-start">
+          <div class="shrink-0 w-10 h-10 bg-yellow-500 text-black flex items-center justify-center font-bold font-industrial text-lg">4</div>
+          <div>
+            <h3 class="text-lg font-bold font-industrial text-white uppercase tracking-tight mb-2">Dashboards de Gestão</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">Visão em tempo real para a diretoria: pipeline de vendas, backlog de execução, previsão de faturamento, e margem por projeto.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROVA: CASE PLANA AMBIENTAL -->
+  <section class="py-24 px-6 border-b border-gray-800 bg-[#0f0f0f]">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-16">
+        <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-4">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Caso Real
+        </span>
+        <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight leading-none">
+          PLANA AMBIENTAL — Orquestração Agêntica
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-gray-800">
+
+        <div class="p-8 md:p-10 border-b md:border-b-0 md:border-r border-gray-800">
+          <p class="text-yellow-500 font-mono text-xs uppercase tracking-widest mb-4">O Sangramento</p>
+          <p class="text-gray-300 text-sm leading-relaxed">Um ecossistema fragmentado de planilhas e softwares genéricos inviabilizava a expansão da empresa. O passivo operacional e a perda crônica de prazos estrangulavam a margem líquida.</p>
+        </div>
+
+        <div class="p-8 md:p-10 border-b md:border-b-0 md:border-r border-gray-800">
+          <p class="text-yellow-500 font-mono text-xs uppercase tracking-widest mb-4">A Intervenção</p>
+          <p class="text-gray-300 text-sm leading-relaxed">Orquestramos a fusão dos departamentos comercial, financeiro e produtivo via inteligência artificial. Workflows agênticos assumiram a execução de processos de ponta a ponta sem intervenção humana.</p>
+        </div>
+
+        <div class="p-8 md:p-10">
+          <p class="text-yellow-500 font-mono text-xs uppercase tracking-widest mb-4">O Lucro Protegido</p>
+          <p class="text-gray-300 text-sm leading-relaxed">A capacidade produtiva de um departamento inteiro foi transferida para um único operador estratégico. A folha de pagamento estacionou enquanto o volume de entregas foi multiplicado.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ECOSSISTEMA DE SERVIÇOS -->
+  <ServiceEcosystem currentTool="mercurio" />
+
+  <!-- CTA FINAL -->
+  <ServiceCTA />
+
+</Layout>
