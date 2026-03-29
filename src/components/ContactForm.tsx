@@ -17,8 +17,7 @@ const HIDDEN_FIELDS = [
   "session_id", "session_attributes_encoded", "originPage", "ref"
 ] as const;
 
-const WEBHOOK_URL = "https://app.apolo.api.br/api/webhooks/lead-capture";
-const API_KEY = "apolo_wh_FVAnpqSyFFqB11kkvj0FHrtylcceipOG";
+const WEBHOOK_URL = "https://apolo-lead-proxy.rapricardo.workers.dev";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -86,10 +85,7 @@ const ContactForm = () => {
     try {
       await fetch(WEBHOOK_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Api-Key": API_KEY
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...payload, source: "shield_churn" })
       });
       setStatus('success');

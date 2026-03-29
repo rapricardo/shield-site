@@ -534,12 +534,9 @@ import logoAmarelo from '../assets/logo-web-amarelo.webp';
 
     payload.source = "shield_home";
 
-    fetch("https://app.apolo.api.br/api/webhooks/lead-capture", {
+    fetch("https://apolo-lead-proxy.rapricardo.workers.dev", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Api-Key": "apolo_wh_FVAnpqSyFFqB11kkvj0FHrtylcceipOG"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     }).then(function() {
       var successDiv = document.getElementById('form-home-success');
