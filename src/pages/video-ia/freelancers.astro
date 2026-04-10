@@ -1,0 +1,41 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PersonaHero from '../../components/funil/PersonaHero.astro';
+---
+
+<Layout title="Negócio de Vídeo com IA — Sem Aluguel, Sem Equipe" description="Monte um negócio de produção de vídeo sem aluguel, sem equipe fixa, sem estoque.">
+  <PersonaHero
+    badge="Para Empreendedores"
+    titulo="Um negócio sem aluguel."
+    destaque="Sem equipe fixa. Sem estoque."
+    descricao="Produza vídeos profissionais com IA e venda como serviço. Investimento inicial próximo de zero, margem de 67-75% por projeto, operação 100% remota."
+  />
+
+  <section class="py-20 px-6 border-b border-gray-800">
+    <div class="max-w-3xl mx-auto space-y-8">
+      <h2 class="text-2xl font-bold font-industrial text-white uppercase">O problema que você conhece</h2>
+      <div class="space-y-6 text-gray-400 leading-relaxed">
+        <p>Você quer empreender mas todo negócio parece exigir investimento alto, equipe e estrutura fixa.</p>
+        <p>Freelancing tradicional troca tempo por dinheiro — você é o gargalo e não escala.</p>
+        <p>Modelos de negócio online prometem liberdade mas exigem audiência ou capital para começar.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 px-6 border-b border-gray-800">
+    <div class="max-w-3xl mx-auto space-y-8">
+      <h2 class="text-2xl font-bold font-industrial text-white uppercase">A solução</h2>
+      <div class="space-y-6 text-gray-400 leading-relaxed">
+        <p>Produção de vídeo com IA é um negócio de alta margem sem infraestrutura física. Seu "escritório" é um laptop e uma assinatura de IA.</p>
+        <p>Custo por projeto: ~R$100/minuto. Preço de venda: R$300-400/minuto. Margem de 67-75% no primeiro dia.</p>
+        <p>Investimentos tradicionais rendem ~12% ao ano. Um projeto de vídeo com IA pode render 300% em um dia.</p>
+      </div>
+      <div class="mt-8 text-center">
+        <a href="/video-ia/cadastro/" class="inline-block bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-widest px-8 py-4 text-sm transition-all" style="clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);">
+          Veja como funciona
+          <svg class="inline-block w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

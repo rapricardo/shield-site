@@ -1,0 +1,41 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PersonaHero from '../../components/funil/PersonaHero.astro';
+---
+
+<Layout title="Produção de Vídeo com IA para Agências" description="Pare de terceirizar vídeo e perder margem. Produza internamente com IA.">
+  <PersonaHero
+    badge="Para Agências de Marketing"
+    titulo="Sua agência terceiriza vídeo."
+    destaque="E perde margem em cada projeto."
+    descricao="Com um pipeline de IA, sua agência produz vídeos profissionais internamente. Custo de R$100/minuto, venda a R$300-400/minuto. Margem de 67-75% sem contratar equipe."
+  />
+
+  <section class="py-20 px-6 border-b border-gray-800">
+    <div class="max-w-3xl mx-auto space-y-8">
+      <h2 class="text-2xl font-bold font-industrial text-white uppercase">O problema que você conhece</h2>
+      <div class="space-y-6 text-gray-400 leading-relaxed">
+        <p>Seus clientes pedem vídeo. Você terceiriza porque não tem equipe de produção.</p>
+        <p>O freelancer cobra caro, atrasa e o resultado nem sempre agrada o cliente. A margem que sobra não justifica o trabalho de gerenciar.</p>
+        <p>Você perde receita recorrente porque não consegue oferecer vídeo como serviço escalável.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 px-6 border-b border-gray-800">
+    <div class="max-w-3xl mx-auto space-y-8">
+      <h2 class="text-2xl font-bold font-industrial text-white uppercase">A solução</h2>
+      <div class="space-y-6 text-gray-400 leading-relaxed">
+        <p>Internalize a produção de vídeo com IA. Um operador da sua equipe roda o pipeline e entrega vídeo profissional em uma tarde.</p>
+        <p>Custo real: ~R$100/minuto. Para clientes institucionais, o mesmo vídeo pode gerar R$10-20k de receita.</p>
+        <p>Sem equipe nova. Sem equipamento. Sem estúdio.</p>
+      </div>
+      <div class="mt-8 text-center">
+        <a href="/video-ia/cadastro/" class="inline-block bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-widest px-8 py-4 text-sm transition-all" style="clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);">
+          Veja como funciona
+          <svg class="inline-block w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

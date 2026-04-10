@@ -1,0 +1,41 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PersonaHero from '../../components/funil/PersonaHero.astro';
+---
+
+<Layout title="Vídeos com IA para Criadores de Conteúdo" description="Pare de perder horas editando. Produza vídeos profissionais com IA em uma tarde.">
+  <PersonaHero
+    badge="Para Criadores de Conteúdo"
+    titulo="Você cria o conteúdo."
+    destaque="A IA produz o vídeo."
+    descricao="Pare de perder horas editando. Um pipeline de IA produz vídeos profissionais do roteiro à timeline pronta — em uma tarde. Você foca na mensagem, a máquina faz o resto."
+  />
+
+  <section class="py-20 px-6 border-b border-gray-800">
+    <div class="max-w-3xl mx-auto space-y-8">
+      <h2 class="text-2xl font-bold font-industrial text-white uppercase">O problema que você conhece</h2>
+      <div class="space-y-6 text-gray-400 leading-relaxed">
+        <p>Você tem ideias de conteúdo sobrando. O que falta é tempo para transformar cada uma em vídeo.</p>
+        <p>Editar leva horas. Contratar editor é caro e lento. Ferramentas "fáceis" entregam resultado genérico.</p>
+        <p>Resultado: você publica menos do que deveria, perde alcance e fica preso no ciclo de criar-editar-publicar.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 px-6 border-b border-gray-800">
+    <div class="max-w-3xl mx-auto space-y-8">
+      <h2 class="text-2xl font-bold font-industrial text-white uppercase">A solução</h2>
+      <div class="space-y-6 text-gray-400 leading-relaxed">
+        <p>Um pipeline completo de IA que pega sua ideia e entrega uma timeline montada: roteiro, narração, imagens, clips, efeitos sonoros e composição.</p>
+        <p>Você abre o editor com tudo pronto. Só ajusta e publica.</p>
+        <p>Custo de produção: ~R$100 por minuto de vídeo. Tempo: uma tarde.</p>
+      </div>
+      <div class="mt-8 text-center">
+        <a href="/video-ia/cadastro/" class="inline-block bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-widest px-8 py-4 text-sm transition-all" style="clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);">
+          Veja como funciona
+          <svg class="inline-block w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

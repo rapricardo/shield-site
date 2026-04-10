@@ -1,0 +1,41 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PersonaHero from '../../components/funil/PersonaHero.astro';
+---
+
+<Layout title="Vídeos com IA para Social Media" description="Demanda de reels explodiu e você não escala? Produza com IA.">
+  <PersonaHero
+    badge="Para Social Media Managers"
+    titulo="A demanda de reels explodiu."
+    destaque="Você não escala."
+    descricao="Seus clientes querem mais vídeos, mais rápido, mais barato. Com IA, você produz vídeos profissionais em uma tarde — sem equipe de edição, sem freelancer, sem atraso."
+  />
+
+  <section class="py-20 px-6 border-b border-gray-800">
+    <div class="max-w-3xl mx-auto space-y-8">
+      <h2 class="text-2xl font-bold font-industrial text-white uppercase">O problema que você conhece</h2>
+      <div class="space-y-6 text-gray-400 leading-relaxed">
+        <p>Cada cliente quer 4-8 reels por semana. Você gerencia 5-10 clientes. A conta não fecha.</p>
+        <p>Editar consome seu tempo. Delegar para freelancer come sua margem. Ferramentas automáticas entregam resultado genérico.</p>
+        <p>Você está preso entre qualidade e volume — e seus clientes querem os dois.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 px-6 border-b border-gray-800">
+    <div class="max-w-3xl mx-auto space-y-8">
+      <h2 class="text-2xl font-bold font-industrial text-white uppercase">A solução</h2>
+      <div class="space-y-6 text-gray-400 leading-relaxed">
+        <p>Um pipeline de IA que produz o vídeo inteiro: roteiro, imagens, clips, efeitos e timeline montada. Você só revisa e publica.</p>
+        <p>Em vez de 4 horas por vídeo, você produz em 1 hora. 4x mais output com o mesmo tempo.</p>
+        <p>Margem que sobra pode virar um novo serviço premium para seus clientes.</p>
+      </div>
+      <div class="mt-8 text-center">
+        <a href="/video-ia/cadastro/" class="inline-block bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-widest px-8 py-4 text-sm transition-all" style="clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);">
+          Veja como funciona
+          <svg class="inline-block w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
