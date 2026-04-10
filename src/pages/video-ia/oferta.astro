@@ -1,0 +1,114 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Maquina de Producao de Videos com IA — Oferta" description="Acesse a infraestrutura completa para produzir videos profissionais com IA">
+  <section class="min-h-screen py-20 px-6 bg-grid-pattern relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/50 via-transparent to-[#0a0a0a]"></div>
+    <div class="max-w-4xl mx-auto relative z-10">
+
+      <!-- Header -->
+      <div class="text-center mb-16 animate-fade-in-up">
+        <div class="inline-flex items-center gap-2 border border-yellow-500/30 bg-yellow-500/10 text-yellow-500 text-xs font-bold uppercase tracking-widest px-4 py-1.5 mb-8">
+          Oferta Especial
+        </div>
+        <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold font-industrial text-white uppercase tracking-tight leading-[1.1] mb-6">
+          A Maquina de Producao de <span class="text-yellow-500">Videos com IA</span>
+        </h1>
+        <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+          Tudo que voce precisa para produzir videos profissionais com inteligencia artificial, do zero a escala.
+        </p>
+      </div>
+
+      <!-- O que esta incluso -->
+      <div class="bg-[#111] border border-gray-800 p-8 md:p-12 mb-12 animate-fade-in-up">
+        <h2 class="text-2xl font-bold font-industrial text-white uppercase mb-8">O que esta incluso</h2>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            <span class="text-gray-300"><strong class="text-white">3 pipelines de producao</strong> — video curto, video longo e video de vendas</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            <span class="text-gray-300"><strong class="text-white">8 skills de IA</strong> — roteiro, narracao, edicao, legendas, thumbnails e mais</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            <span class="text-gray-300"><strong class="text-white">Kit de branding</strong> — identidade visual aplicada automaticamente aos videos</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            <span class="text-gray-300"><strong class="text-white">Setup automatico</strong> — configuracao guiada em menos de 1 hora</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            <span class="text-gray-300"><strong class="text-white">Estrutura de pastas</strong> — organizacao profissional para sua operacao</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            <span class="text-gray-300"><strong class="text-white">Compatibilidade com editores</strong> — funciona com Premiere, DaVinci, CapCut e outros</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            <span class="text-gray-300"><strong class="text-white">Acesso a area de membros</strong> — tutoriais, atualizacoes e suporte</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Preco -->
+      <div class="bg-[#111] border border-yellow-500/30 p-8 md:p-12 text-center mb-12 animate-fade-in-up">
+        <p class="text-gray-500 text-sm uppercase tracking-widest mb-2">Investimento</p>
+        <div class="mb-2">
+          <span class="text-5xl md:text-6xl font-bold font-industrial text-white">12x </span>
+          <span class="text-5xl md:text-6xl font-bold font-industrial text-yellow-500">R$ 92,98</span>
+        </div>
+        <p class="text-gray-500 text-sm mb-8">ou R$ 927,80 a vista</p>
+
+        <!-- CTA principal -->
+        <form action="/api/checkout" method="POST" id="checkout-form">
+          <button
+            type="submit"
+            class="w-full max-w-md mx-auto bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-5 uppercase tracking-widest transition-all text-lg flex items-center justify-center gap-2 group"
+            style="clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);"
+          >
+            Quero Comecar Agora
+            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </button>
+        </form>
+
+        <!-- CTA secundario -->
+        <a
+          href="/membros/cadastro/"
+          class="inline-block mt-6 text-gray-500 hover:text-yellow-500 text-sm underline underline-offset-4 transition-colors"
+        >
+          Prefiro ver mais conteudo gratuito primeiro
+        </a>
+      </div>
+
+      <!-- Garantia -->
+      <div class="bg-[#111] border border-gray-800 p-8 text-center animate-fade-in-up">
+        <div class="inline-flex items-center justify-center w-14 h-14 border border-yellow-500/30 bg-yellow-500/10 mb-4">
+          <svg class="w-7 h-7 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+        </div>
+        <h3 class="text-lg font-bold font-industrial text-white uppercase mb-2">Garantia de 7 dias</h3>
+        <p class="text-gray-500 text-sm max-w-md mx-auto">
+          Se em 7 dias voce sentir que nao e para voce, devolvemos 100% do valor investido. Sem perguntas.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- GTM begin_checkout event -->
+  <script is:inline>
+    (function() {
+      var form = document.getElementById('checkout-form');
+      if (form) {
+        form.addEventListener('submit', function() {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'begin_checkout' });
+        });
+      }
+    })();
+  </script>
+</Layout>

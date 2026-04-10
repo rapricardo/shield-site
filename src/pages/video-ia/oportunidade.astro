@@ -1,0 +1,74 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Modulo 1 — A Oportunidade dos Videos com IA" description="Descubra como a producao de video com IA esta transformando o mercado">
+  <section class="min-h-screen py-20 px-6 bg-grid-pattern relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/50 via-transparent to-[#0a0a0a]"></div>
+    <div class="max-w-4xl mx-auto relative z-10">
+
+      <!-- Badge -->
+      <div class="text-center mb-8">
+        <span class="inline-flex items-center gap-2 border border-yellow-500/30 bg-yellow-500/10 text-yellow-500 text-xs font-bold uppercase tracking-widest px-4 py-1.5 animate-fade-in-up">
+          Modulo 1 de 3
+        </span>
+      </div>
+
+      <!-- Titulo -->
+      <h1 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight text-center mb-12 animate-fade-in-up">
+        A Oportunidade dos <span class="text-yellow-500">Videos com IA</span>
+      </h1>
+
+      <!-- Video embed -->
+      <div class="aspect-video bg-[#111] border border-gray-800 mb-12 animate-fade-in-up">
+        <iframe
+          class="w-full h-full"
+          src="https://www.youtube.com/embed/VIDEO_ID_AQUI"
+          title="Modulo 1 — A Oportunidade dos Videos com IA"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+      <!-- Resumo -->
+      <div class="bg-[#111] border border-gray-800 p-8 mb-12">
+        <h2 class="text-xl font-bold font-industrial text-white uppercase mb-4">O que voce vai aprender</h2>
+        <ul class="space-y-3 text-gray-400">
+          <li class="flex items-start gap-3">
+            <span class="text-yellow-500 mt-1">&#9656;</span>
+            <span>Por que a producao de video com IA e a maior oportunidade do momento</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-yellow-500 mt-1">&#9656;</span>
+            <span>Como empresas estao usando IA para reduzir custos de producao em ate 90%</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-yellow-500 mt-1">&#9656;</span>
+            <span>O modelo de negocio por tras da maquina de videos</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Navegacao -->
+      <div class="flex items-center justify-between">
+        <span class="text-gray-600 text-sm font-mono">1 / 3</span>
+        <a
+          href="/video-ia/demonstracao/"
+          class="group inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-widest px-6 py-3 text-sm transition-all"
+          style="clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);"
+        >
+          Proximo modulo
+          <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- GTM video_view event -->
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'video_view', video_module: 'oportunidade' });
+  </script>
+</Layout>

@@ -1,0 +1,48 @@
+---
+interface Props {
+  badge: string;
+  titulo: string;
+  destaque: string;
+  descricao: string;
+  ctaTexto?: string;
+  ctaHref?: string;
+}
+
+const {
+  badge,
+  titulo,
+  destaque,
+  descricao,
+  ctaTexto = 'Veja como funciona',
+  ctaHref = '/video-ia/cadastro/',
+} = Astro.props;
+---
+
+<section class="relative min-h-[80vh] flex items-center pt-20 pb-20 px-6 border-b border-gray-800 bg-grid-pattern overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/50 via-transparent to-[#0a0a0a]"></div>
+  <div class="max-w-5xl mx-auto w-full relative z-10 text-center">
+    <div class="inline-flex items-center gap-2 border border-yellow-500/30 bg-yellow-500/10 text-yellow-500 text-xs font-bold uppercase tracking-widest px-4 py-1.5 mb-8 animate-fade-in-up">
+      {badge}
+    </div>
+
+    <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold font-industrial text-white uppercase tracking-tight leading-[1.1] mb-8 animate-fade-in-up">
+      {titulo}<br>
+      <span class="text-yellow-500">{destaque}</span>
+    </h1>
+
+    <div class="max-w-2xl mx-auto mb-12 animate-fade-in-up">
+      <p class="text-lg md:text-xl text-gray-400 font-light leading-relaxed">
+        {descricao}
+      </p>
+    </div>
+
+    <a
+      href={ctaHref}
+      class="group relative inline-block bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-widest px-8 py-4 text-sm md:text-base transition-all animate-fade-in-up"
+      style="clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);"
+    >
+      {ctaTexto}
+      <svg class="inline-block w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+    </a>
+  </div>
+</section>

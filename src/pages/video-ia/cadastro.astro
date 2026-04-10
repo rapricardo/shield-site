@@ -1,0 +1,13 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CapturaForm from '../../components/funil/CapturaForm';
+---
+
+<Layout title="Videos Profissionais com IA — Conteudo Gratuito" description="Cadastre-se para assistir 3 videos sobre producao de video profissional com IA">
+  <section class="min-h-screen flex items-center justify-center py-20 px-6 bg-grid-pattern relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/50 via-transparent to-[#0a0a0a]"></div>
+    <div class="relative z-10">
+      <CapturaForm client:load />
+    </div>
+  </section>
+</Layout>
