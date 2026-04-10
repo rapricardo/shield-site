@@ -1,0 +1,39 @@
+---
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro';
+import Dashboard from '../../components/membros/Dashboard';
+import { getUserProfile, getLessonProgress } from '../../lib/auth';
+
+const session = Astro.locals.session!;
+const profile = Astro.locals.profile || await getUserProfile(session.user.id);
+const progress = await getLessonProgress(session.user.id);
+const completedSlugs = progress.map((p) => p.lesson_slug);
+
+const acesso = Astro.url.searchParams.get('acesso');
+const compra = Astro.url.searchParams.get('compra');
+const mensagem = acesso === 'bloqueado' ? 'bloqueado' : compra === 'sucesso' ? 'sucesso' : null;
+---
+
+<Layout title="Área de Membros — Máquina de Vídeos com IA" description="Seu painel de aprendizado">
+  <section class="py-20 px-6 min-h-screen">
+    <Dashboard
+      name={profile?.name || ''}
+      paid={profile?.paid || false}
+      completedSlugs={completedSlugs}
+      mensagem={mensagem}
+      client:load
+    />
+
+    <div class="max-w-2xl mx-auto mt-12 text-center">
+      <form method="POST" action="/api/auth/logout">
+        <button
+          type="submit"
+          class="text-xs font-mono text-gray-600 hover:text-red-500 uppercase tracking-wider transition-colors"
+        >
+          Sair da conta
+        </button>
+      </form>
+    </div>
+  </section>
+</Layout>
