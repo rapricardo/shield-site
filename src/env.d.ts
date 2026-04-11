@@ -3,9 +3,6 @@
 interface ImportMetaEnv {
   readonly SUPABASE_URL: string;
   readonly SUPABASE_ANON_KEY: string;
-  readonly STRIPE_SECRET_KEY: string;
-  readonly STRIPE_PUBLISHABLE_KEY: string;
-  readonly STRIPE_PRICE_ID: string;
   readonly ASAAS_API_KEY: string;
 }
 
@@ -24,5 +21,6 @@ declare namespace App {
       paid: boolean;
       created_at: string;
     };
+    accessSlugs?: string[];
   }
 }

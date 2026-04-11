@@ -1,5 +1,5 @@
 import { defineMiddleware } from 'astro:middleware';
-import { getSession, getUserProfile } from './lib/auth';
+import { getSession, getUserProfile, getUserAccess, hasAccess } from './lib/auth';
 
 const PUBLIC_MEMBER_ROUTES = [
   '/membros/login',
@@ -7,7 +7,9 @@ const PUBLIC_MEMBER_ROUTES = [
   '/membros/recuperar-senha',
 ];
 
-const PAID_ROUTES_PREFIX = '/membros/maquina';
+const ROUTE_PRODUCT_MAP: Record<string, string> = {
+  '/membros/maquina': 'maquina-videos',
+};
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
@@ -30,12 +32,20 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   context.locals.session = session;
 
-  if (pathname.startsWith(PAID_ROUTES_PREFIX)) {
-    const profile = await getUserProfile(session.user.id);
-    if (!profile?.paid) {
+  // Verificar se a rota requer acesso a um produto
+  const requiredProduct = Object.entries(ROUTE_PRODUCT_MAP).find(
+    ([prefix]) => pathname.startsWith(prefix)
+  );
+
+  if (requiredProduct) {
+    const [, productSlug] = requiredProduct;
+    const accessList = await getUserAccess(session.user.id);
+
+    if (!hasAccess(accessList, productSlug)) {
       return context.redirect('/membros/?acesso=bloqueado');
     }
-    context.locals.profile = profile;
+
+    context.locals.accessSlugs = accessList;
   }
 
   return next();
