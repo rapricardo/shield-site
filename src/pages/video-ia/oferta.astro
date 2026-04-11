@@ -66,6 +66,7 @@ import Layout from '../../layouts/Layout.astro';
 
         <!-- CTA principal -->
         <form action="/api/checkout" method="POST" id="checkout-form">
+          <input type="hidden" name="productSlug" value="maquina-videos" />
           <button
             type="submit"
             class="w-full max-w-md mx-auto bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-5 uppercase tracking-widest transition-all text-lg flex items-center justify-center gap-2 group"

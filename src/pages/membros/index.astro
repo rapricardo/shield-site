@@ -3,12 +3,13 @@ export const prerender = false;
 
 import Layout from '../../layouts/Layout.astro';
 import Dashboard from '../../components/membros/Dashboard';
-import { getUserProfile, getLessonProgress } from '../../lib/auth';
+import { getUserProfile, getLessonProgress, getUserAccess } from '../../lib/auth';
 
 const session = Astro.locals.session!;
 const profile = Astro.locals.profile || await getUserProfile(session.user.id);
 const progress = await getLessonProgress(session.user.id);
 const completedSlugs = progress.map((p) => p.lesson_slug);
+const accessSlugs = await getUserAccess(session.user.id);
 
 const acesso = Astro.url.searchParams.get('acesso');
 const compra = Astro.url.searchParams.get('compra');
@@ -19,7 +20,7 @@ const mensagem = acesso === 'bloqueado' ? 'bloqueado' : compra === 'sucesso' ? '
   <section class="py-20 px-6 min-h-screen">
     <Dashboard
       name={profile?.name || ''}
-      paid={profile?.paid || false}
+      accessSlugs={accessSlugs}
       completedSlugs={completedSlugs}
       mensagem={mensagem}
       client:load

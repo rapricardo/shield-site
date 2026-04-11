@@ -4,7 +4,7 @@ import type { LessonInfo } from './LessonCard';
 
 interface DashboardProps {
   name: string;
-  paid: boolean;
+  accessSlugs: string[];
   completedSlugs: string[];
   mensagem?: string | null;
 }
@@ -108,9 +108,10 @@ const MSG_CONFIG: Record<string, { icon: typeof AlertTriangle; color: string; bg
   },
 };
 
-const Dashboard = ({ name, paid, completedSlugs, mensagem }: DashboardProps) => {
+const Dashboard = ({ name, accessSlugs, completedSlugs, mensagem }: DashboardProps) => {
+  const hasMaquinaAccess = accessSlugs.includes('maquina-videos');
   const freeLessons = buildLessons(FREE_LESSONS, completedSlugs, false);
-  const paidLessons = buildLessons(PAID_LESSONS, completedSlugs, !paid);
+  const paidLessons = buildLessons(PAID_LESSONS, completedSlugs, !hasMaquinaAccess);
 
   const msgConfig = mensagem ? MSG_CONFIG[mensagem] : null;
 
@@ -122,7 +123,7 @@ const Dashboard = ({ name, paid, completedSlugs, mensagem }: DashboardProps) => 
           Bem-vindo, {name}
         </h1>
         <p className="text-gray-500 text-sm font-mono">
-          {paid ? 'ACESSO COMPLETO' : 'ACESSO GRATUITO'}
+          {hasMaquinaAccess ? 'ACESSO COMPLETO' : 'ACESSO GRATUITO'}
         </p>
       </div>
 
@@ -147,7 +148,7 @@ const Dashboard = ({ name, paid, completedSlugs, mensagem }: DashboardProps) => 
       </div>
 
       {/* CTA para checkout */}
-      {!paid && (
+      {!hasMaquinaAccess && (
         <div className="bg-[#111] border border-yellow-500/30 p-8 mb-10 text-center">
           <h3 className="font-industrial text-white uppercase text-xl mb-2">
             Desbloqueie o conteudo completo
@@ -156,6 +157,7 @@ const Dashboard = ({ name, paid, completedSlugs, mensagem }: DashboardProps) => 
             Acesse todas as aulas, templates e recursos exclusivos.
           </p>
           <form method="POST" action="/api/checkout">
+            <input type="hidden" name="productSlug" value="maquina-videos" />
             <button
               type="submit"
               className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-4 px-8 uppercase tracking-widest transition-all inline-flex items-center gap-2 group"
@@ -164,7 +166,7 @@ const Dashboard = ({ name, paid, completedSlugs, mensagem }: DashboardProps) => 
               }}
             >
               <ShoppingCart className="w-4 h-4" />
-              [ Adquirir Acesso Completo ]
+              [ Adquirir Acesso Completo — 12x R$ 92,98 ]
             </button>
           </form>
         </div>
