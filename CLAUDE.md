@@ -122,8 +122,8 @@ See `docs/sitemap.md` for the complete page list and hierarchy.
 
 - **Auth:** Supabase Auth (email + senha)
 - **Banco:** Supabase PostgreSQL (profiles, lesson_progress, payments)
-- **Pagamento:** Stripe Checkout hosted
-- **Webhook:** Cloudflare Worker em `workers/stripe-webhook/`
+- **Pagamento:** Asaas (link de pagamento)
+- **Webhook:** Cloudflare Worker em `workers/payment-webhook/`
 - **Middleware:** `src/middleware.ts` protege rotas `/membros/*`
 - **SSR:** Rotas `/membros/*` e `/api/*` usam SSR (`export const prerender = false`)
 - **Funil:** 4 landing pages por persona + 3 vídeos públicos + página de oferta em `/video-ia/`
@@ -133,15 +133,13 @@ See `docs/sitemap.md` for the complete page list and hierarchy.
 ```
 SUPABASE_URL
 SUPABASE_ANON_KEY
-STRIPE_SECRET_KEY
-STRIPE_PUBLISHABLE_KEY
-STRIPE_PRICE_ID
+ASAAS_API_KEY
 ```
 
-### Variáveis de ambiente (Worker stripe-webhook)
+### Variáveis de ambiente (Worker payment-webhook)
 
 ```
 SUPABASE_URL (var)
 SUPABASE_SERVICE_ROLE_KEY (secret)
-STRIPE_WEBHOOK_SECRET (secret)
+ASAAS_WEBHOOK_TOKEN (secret)
 ```
