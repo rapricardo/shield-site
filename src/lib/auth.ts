@@ -46,7 +46,17 @@ export function clearSessionCookies(cookies: AstroCookies) {
   cookies.delete(REFRESH_COOKIE, { path: '/' });
 }
 
-export async function getUserProfile(userId: string) {
+interface UserProfile {
+  id: string;
+  email: string;
+  name: string;
+  whatsapp: string | null;
+  paid: boolean;
+  asaas_customer_id: string | null;
+  created_at: string;
+}
+
+export async function getUserProfile(userId: string): Promise<UserProfile | null> {
   const { data, error } = await supabase
     .from('profiles')
     .select('id, email, name, whatsapp, paid, asaas_customer_id, created_at')
@@ -54,7 +64,7 @@ export async function getUserProfile(userId: string) {
     .single();
 
   if (error) return null;
-  return data;
+  return data as unknown as UserProfile;
 }
 
 export async function getLessonProgress(userId: string) {
