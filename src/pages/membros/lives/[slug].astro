@@ -1,0 +1,105 @@
+---
+export const prerender = false;
+
+import Layout from '../../../layouts/Layout.astro';
+import { getEventBySlug } from '../../../lib/events';
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return new Response('Live não encontrada', { status: 404 });
+}
+
+const event = await getEventBySlug(slug);
+
+if (!event) {
+  return new Response('Live não encontrada', { status: 404 });
+}
+
+const formatDateTime = (iso: string) =>
+  new Date(iso).toLocaleString('pt-BR', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+const startsAtMs = new Date(event.starts_at).getTime();
+const isFuture = startsAtMs > Date.now();
+
+const paragraphs = (event.description ?? '')
+  .split(/\n\n+/)
+  .map((p) => p.trim())
+  .filter((p) => p.length > 0);
+---
+
+<Layout title={event.title} description={event.description ?? undefined}>
+  <section class="py-20 px-6 min-h-screen">
+    <div class="max-w-3xl mx-auto">
+      <a
+        href="/membros/lives/"
+        class="text-xs font-mono text-gray-600 hover:text-yellow-500 uppercase tracking-wider transition-colors mb-8 inline-block"
+      >
+        &larr; Voltar às lives
+      </a>
+
+      <div class="flex items-start justify-between gap-4 mb-3">
+        <h1 class="text-3xl font-bold font-industrial text-white uppercase">
+          {event.title}
+        </h1>
+        <span class="shrink-0 text-xs font-mono text-yellow-500 border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 uppercase tracking-wider">
+          {event.category.toUpperCase()}
+        </span>
+      </div>
+
+      <p class="text-gray-500 text-sm font-mono uppercase tracking-wider mb-8">
+        {formatDateTime(event.starts_at)}
+        {event.duration_minutes ? ` · ${event.duration_minutes} min` : ''}
+      </p>
+
+      {isFuture && event.meet_url && (
+        <div class="mb-10">
+          <a
+            href={event.meet_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-widest px-8 py-4 text-sm transition-all"
+          >
+            Entrar na Live &rarr;
+          </a>
+        </div>
+      )}
+
+      {event.recording_youtube_id && (
+        <div class="mb-10">
+          <div class="relative w-full" style="padding-top: 56.25%;">
+            <iframe
+              class="absolute inset-0 w-full h-full border border-gray-800"
+              src={`https://www.youtube.com/embed/${event.recording_youtube_id}`}
+              title={event.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+      )}
+
+      {!isFuture && !event.recording_youtube_id && (
+        <div class="mb-10 bg-[#111] border border-gray-800 p-6">
+          <p class="text-gray-400 text-sm font-mono uppercase tracking-wider">
+            Gravação estará disponível em breve
+          </p>
+        </div>
+      )}
+
+      {paragraphs.length > 0 && (
+        <div class="mt-8 space-y-6 text-gray-400 leading-relaxed">
+          {paragraphs.map((p) => (
+            <p>{p}</p>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>

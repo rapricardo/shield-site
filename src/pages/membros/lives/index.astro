@@ -1,0 +1,113 @@
+---
+export const prerender = false;
+
+import Layout from '../../../layouts/Layout.astro';
+import { getUpcomingEvents, getPastEvents } from '../../../lib/events';
+
+const upcoming = await getUpcomingEvents();
+const past = await getPastEvents();
+const recordings = past.filter((e) => e.recording_youtube_id);
+
+const formatDateTime = (iso: string) =>
+  new Date(iso).toLocaleString('pt-BR', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+const categoryLabel = (c: string) => c.toUpperCase();
+---
+
+<Layout title="Lives — Área de Membros" description="Lives ao vivo e gravações">
+  <section class="py-20 px-6 min-h-screen">
+    <div class="max-w-5xl mx-auto">
+      <a
+        href="/membros/"
+        class="text-xs font-mono text-gray-600 hover:text-yellow-500 uppercase tracking-wider transition-colors mb-8 inline-block"
+      >
+        &larr; Voltar ao painel
+      </a>
+
+      <h1 class="text-3xl font-bold font-industrial text-white uppercase mb-2">
+        Lives
+      </h1>
+      <p class="text-gray-500 text-sm font-mono uppercase tracking-wider mb-12">
+        Encontros ao vivo e gravações
+      </p>
+
+      <!-- Próximas Lives -->
+      <div class="mb-16">
+        <h2 class="font-industrial uppercase text-white text-xl tracking-wider mb-6 flex items-center gap-3">
+          <div class="w-1 h-5 bg-yellow-500"></div>
+          Próximas Lives
+        </h2>
+
+        {upcoming.length === 0 ? (
+          <p class="text-gray-500 text-sm font-mono uppercase tracking-wider py-8">
+            Nenhuma live agendada ainda.
+          </p>
+        ) : (
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {upcoming.map((e) => (
+              <a
+                href={`/membros/lives/${e.slug}/`}
+                class="bg-[#111] border border-gray-800 p-6 hover:border-yellow-500/50 transition-colors block"
+              >
+                <div class="flex items-start justify-between gap-3 mb-3">
+                  <h3 class="font-industrial uppercase text-white text-lg tracking-wider">
+                    {e.title}
+                  </h3>
+                  <span class="shrink-0 text-[10px] font-mono text-yellow-500 border border-yellow-500/30 bg-yellow-500/10 px-2 py-1 uppercase tracking-wider">
+                    {categoryLabel(e.category)}
+                  </span>
+                </div>
+                <p class="text-xs font-mono text-gray-500 uppercase tracking-wider">
+                  {formatDateTime(e.starts_at)}
+                  {e.duration_minutes ? ` · ${e.duration_minutes} min` : ''}
+                </p>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <!-- Gravações -->
+      <div>
+        <h2 class="font-industrial uppercase text-white text-xl tracking-wider mb-6 flex items-center gap-3">
+          <div class="w-1 h-5 bg-yellow-500"></div>
+          Gravações
+        </h2>
+
+        {recordings.length === 0 ? (
+          <p class="text-gray-500 text-sm font-mono uppercase tracking-wider py-8">
+            Nenhuma gravação disponível ainda.
+          </p>
+        ) : (
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {recordings.map((e) => (
+              <a
+                href={`/membros/lives/${e.slug}/`}
+                class="bg-[#111] border border-gray-800 p-6 hover:border-yellow-500/50 transition-colors block"
+              >
+                <div class="flex items-start justify-between gap-3 mb-3">
+                  <h3 class="font-industrial uppercase text-white text-lg tracking-wider">
+                    {e.title}
+                  </h3>
+                  <span class="shrink-0 text-[10px] font-mono text-gray-400 border border-gray-700 bg-white/5 px-2 py-1 uppercase tracking-wider">
+                    {categoryLabel(e.category)}
+                  </span>
+                </div>
+                <p class="text-xs font-mono text-gray-500 uppercase tracking-wider">
+                  {formatDateTime(e.starts_at)}
+                  {e.duration_minutes ? ` · ${e.duration_minutes} min` : ''}
+                </p>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+</Layout>
