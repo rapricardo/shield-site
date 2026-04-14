@@ -1,0 +1,188 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { createAdminClient } from '../../lib/supabase-admin';
+
+const admin = createAdminClient();
+
+// Contagens básicas
+const { count: usuariosCount } = await admin
+  .from('profiles')
+  .select('*', { count: 'exact', head: true });
+
+const { count: produtosCount } = await admin
+  .from('products')
+  .select('*', { count: 'exact', head: true })
+  .eq('active', true);
+
+const { count: acessosCount } = await admin
+  .from('user_access')
+  .select('*', { count: 'exact', head: true });
+
+// Receita últimos 30 dias
+const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+const { data: paymentsRecent } = await admin
+  .from('payments')
+  .select('amount, created_at')
+  .eq('status', 'completed')
+  .gte('created_at', thirtyDaysAgo);
+
+const receita30dCents = (paymentsRecent || []).reduce(
+  (sum: number, p: { amount: number | null }) => sum + (p.amount || 0),
+  0
+);
+
+// Últimos 10 pagamentos
+const { data: ultimosPagamentos } = await admin
+  .from('payments')
+  .select('id, amount, status, created_at, product_slug, profiles(email, name)')
+  .order('created_at', { ascending: false })
+  .limit(10);
+
+const currencyFmt = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+});
+
+const formatCurrency = (cents: number) => currencyFmt.format(cents / 100);
+const formatDate = (iso: string) => new Date(iso).toLocaleDateString('pt-BR');
+
+type PagamentoRow = {
+  id: string;
+  amount: number | null;
+  status: string | null;
+  created_at: string;
+  product_slug: string | null;
+  profiles: { email?: string | null; name?: string | null } | { email?: string | null; name?: string | null }[] | null;
+};
+
+function getProfileFromRow(row: PagamentoRow): { email?: string | null; name?: string | null } | null {
+  if (!row.profiles) return null;
+  if (Array.isArray(row.profiles)) return row.profiles[0] ?? null;
+  return row.profiles;
+}
+
+const pagamentos = (ultimosPagamentos || []) as PagamentoRow[];
+---
+
+<AdminLayout title="Admin — Dashboard" activeSection="dashboard">
+  <div class="mb-8">
+    <h1 class="font-industrial uppercase text-white text-2xl tracking-wider mb-1">
+      Dashboard
+    </h1>
+    <p class="text-gray-500 text-xs font-mono uppercase tracking-wider">
+      Visão geral do sistema
+    </p>
+  </div>
+
+  <!-- Stat cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+    <div class="bg-[#111] border border-gray-800 p-6 relative">
+      <div class="absolute top-0 left-0 w-full h-1 bg-yellow-500"></div>
+      <p class="text-xs font-mono uppercase tracking-wider text-gray-500 mb-2">
+        Usuários
+      </p>
+      <p class="font-industrial text-white text-4xl">
+        {usuariosCount ?? 0}
+      </p>
+    </div>
+
+    <div class="bg-[#111] border border-gray-800 p-6 relative">
+      <div class="absolute top-0 left-0 w-full h-1 bg-yellow-500"></div>
+      <p class="text-xs font-mono uppercase tracking-wider text-gray-500 mb-2">
+        Produtos ativos
+      </p>
+      <p class="font-industrial text-white text-4xl">
+        {produtosCount ?? 0}
+      </p>
+    </div>
+
+    <div class="bg-[#111] border border-gray-800 p-6 relative">
+      <div class="absolute top-0 left-0 w-full h-1 bg-yellow-500"></div>
+      <p class="text-xs font-mono uppercase tracking-wider text-gray-500 mb-2">
+        Acessos concedidos
+      </p>
+      <p class="font-industrial text-white text-4xl">
+        {acessosCount ?? 0}
+      </p>
+    </div>
+
+    <div class="bg-[#111] border border-gray-800 p-6 relative">
+      <div class="absolute top-0 left-0 w-full h-1 bg-yellow-500"></div>
+      <p class="text-xs font-mono uppercase tracking-wider text-gray-500 mb-2">
+        Receita 30 dias
+      </p>
+      <p class="font-industrial text-white text-3xl">
+        {formatCurrency(receita30dCents)}
+      </p>
+    </div>
+  </div>
+
+  <!-- Últimos pagamentos -->
+  <div class="bg-[#111] border border-gray-800">
+    <div class="px-6 py-4 border-b border-gray-800 flex items-center justify-between">
+      <h2 class="font-industrial uppercase text-white text-sm tracking-wider">
+        Últimos pagamentos
+      </h2>
+      <a
+        href="/admin/pagamentos/"
+        class="text-xs font-mono uppercase tracking-wider text-gray-500 hover:text-yellow-500 transition-colors"
+      >
+        Ver todos
+      </a>
+    </div>
+
+    {pagamentos.length === 0 ? (
+      <p class="px-6 py-12 text-center text-gray-500 text-sm font-mono uppercase tracking-wider">
+        Nenhum pagamento registrado
+      </p>
+    ) : (
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+          <thead>
+            <tr class="border-b border-gray-800">
+              <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Data</th>
+              <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Aluno</th>
+              <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Produto</th>
+              <th class="text-right px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Valor</th>
+              <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pagamentos.map((p) => {
+              const profile = getProfileFromRow(p);
+              return (
+                <tr class="border-b border-gray-800/50 hover:bg-white/5">
+                  <td class="px-6 py-3 text-sm font-mono text-gray-300">
+                    {formatDate(p.created_at)}
+                  </td>
+                  <td class="px-6 py-3 text-sm text-gray-300">
+                    {profile?.email ?? <span class="text-gray-600 italic">desconhecido</span>}
+                  </td>
+                  <td class="px-6 py-3 text-sm font-mono text-gray-400">
+                    {p.product_slug ?? '—'}
+                  </td>
+                  <td class="px-6 py-3 text-sm font-mono text-white text-right">
+                    {formatCurrency(p.amount ?? 0)}
+                  </td>
+                  <td class="px-6 py-3 text-xs font-mono uppercase tracking-wider">
+                    <span class={
+                      p.status === 'completed'
+                        ? 'text-green-500'
+                        : p.status === 'pending'
+                          ? 'text-yellow-500'
+                          : 'text-gray-500'
+                    }>
+                      {p.status ?? '—'}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    )}
+  </div>
+</AdminLayout>
