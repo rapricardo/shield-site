@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { supabase } from '../../../lib/supabase';
 import { setSessionCookies } from '../../../lib/auth';
+import { sendEmail } from '../../../lib/resend';
+import { welcomeEmailHtml } from '../../../lib/email-templates';
 
 export const prerender = false;
 
@@ -32,6 +34,20 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
 
   if (data.session) {
     setSessionCookies(cookies, data.session.access_token, data.session.refresh_token);
+
+    // Envia email de boas-vindas (não bloqueia cadastro se falhar)
+    try {
+      const origin = new URL(request.url).origin;
+      const html = welcomeEmailHtml({ name, loginUrl: `${origin}/membros/` });
+      await sendEmail({
+        to: email,
+        subject: 'Bem-vindo à área de membros',
+        html,
+      });
+    } catch (err) {
+      console.error('Erro ao enviar email de boas-vindas:', err);
+    }
+
     return redirect('/membros/');
   }
 

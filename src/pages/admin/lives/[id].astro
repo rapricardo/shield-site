@@ -55,6 +55,11 @@ const startsAtLocal = toDatetimeLocal(live.starts_at);
       Alterações salvas.
     </div>
   )}
+  {msg === 'emails-enviados' && (
+    <div class="bg-green-500/10 border border-green-500/30 text-green-400 text-sm p-3 mb-6 font-mono max-w-3xl">
+      Notificação de gravação enviada aos membros.
+    </div>
+  )}
   {erro && (
     <div class="bg-red-500/10 border border-red-500/30 text-red-400 text-sm p-3 mb-6 font-mono max-w-3xl">
       Erro: {erro}
@@ -141,6 +146,25 @@ const startsAtLocal = toDatetimeLocal(live.starts_at);
       </a>
     </div>
   </form>
+
+  {live.recording_youtube_id && (
+    <form method="POST" action="/api/emails/nova-gravacao" class="max-w-3xl mt-10"
+      onsubmit="return confirm('Enviar notificação de nova gravação para todos os membros?')">
+      <input type="hidden" name="eventId" value={live.id} />
+      <div class="bg-[#111] border border-gray-800 p-6">
+        <h3 class="font-industrial uppercase text-white text-sm tracking-wider mb-2">
+          Notificação de gravação
+        </h3>
+        <p class="text-gray-500 text-xs font-mono mb-4">
+          Envia email para todos os membros cadastrados avisando que a gravação está disponível.
+        </p>
+        <button type="submit"
+          class="border border-yellow-500/40 text-yellow-400 hover:bg-yellow-500/10 font-bold py-2 px-4 uppercase tracking-widest text-xs transition-colors">
+          Enviar notificação de gravação
+        </button>
+      </div>
+    </form>
+  )}
 
   <form method="POST" action={`/api/admin/lives/${live.id}/deletar`} class="max-w-3xl mt-10">
     <div class="bg-red-500/5 border border-red-500/20 p-6">
