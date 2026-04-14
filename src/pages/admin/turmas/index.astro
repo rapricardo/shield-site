@@ -1,0 +1,110 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { createAdminClient } from '../../../lib/supabase-admin';
+
+const admin = createAdminClient();
+
+const { data: turmas, error } = await admin
+  .from('cohorts')
+  .select('id, product_slug, name, starts_at, ends_at, max_students, active')
+  .order('starts_at', { ascending: false });
+
+const msg = Astro.url.searchParams.get('msg');
+const erro = Astro.url.searchParams.get('erro');
+
+const formatDate = (iso: string) => new Date(iso).toLocaleDateString('pt-BR');
+
+type Turma = {
+  id: string;
+  product_slug: string;
+  name: string;
+  starts_at: string;
+  ends_at: string;
+  max_students: number | null;
+  active: boolean | null;
+};
+
+const lista = (turmas || []) as Turma[];
+---
+
+<AdminLayout title="Admin — Turmas" activeSection="turmas">
+  <div class="flex items-start justify-between mb-8 gap-4">
+    <div>
+      <h1 class="font-industrial uppercase text-white text-2xl tracking-wider mb-1">
+        Turmas
+      </h1>
+      <p class="text-gray-500 text-xs font-mono uppercase tracking-wider">
+        Cohorts de mentoria
+      </p>
+    </div>
+    <a href="/admin/turmas/nova/"
+      class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 px-5 uppercase tracking-widest text-xs transition-colors">
+      + Nova turma
+    </a>
+  </div>
+
+  {msg === 'criada' && (
+    <div class="bg-green-500/10 border border-green-500/30 text-green-400 text-sm p-3 mb-6 font-mono">Turma criada.</div>
+  )}
+  {msg === 'atualizada' && (
+    <div class="bg-green-500/10 border border-green-500/30 text-green-400 text-sm p-3 mb-6 font-mono">Turma atualizada.</div>
+  )}
+  {msg === 'deletada' && (
+    <div class="bg-green-500/10 border border-green-500/30 text-green-400 text-sm p-3 mb-6 font-mono">Turma desativada.</div>
+  )}
+  {erro && (
+    <div class="bg-red-500/10 border border-red-500/30 text-red-400 text-sm p-3 mb-6 font-mono">Erro: {erro}</div>
+  )}
+  {error && (
+    <div class="bg-red-500/10 border border-red-500/30 text-red-400 text-sm p-3 mb-6 font-mono">
+      Erro ao carregar: {error.message}
+    </div>
+  )}
+
+  <div class="bg-[#111] border border-gray-800 overflow-x-auto">
+    {lista.length === 0 ? (
+      <p class="px-6 py-12 text-center text-gray-500 text-sm font-mono uppercase tracking-wider">
+        Nenhuma turma cadastrada
+      </p>
+    ) : (
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="border-b border-gray-800">
+            <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Produto</th>
+            <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Nome</th>
+            <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Início</th>
+            <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Fim</th>
+            <th class="text-center px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Vagas</th>
+            <th class="text-center px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Ativa</th>
+            <th class="text-right px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {lista.map((t) => (
+            <tr class="border-b border-gray-800/50 hover:bg-white/5">
+              <td class="px-6 py-3 text-sm font-mono text-gray-400">{t.product_slug}</td>
+              <td class="px-6 py-3 text-sm text-white">{t.name}</td>
+              <td class="px-6 py-3 text-sm font-mono text-gray-400">{formatDate(t.starts_at)}</td>
+              <td class="px-6 py-3 text-sm font-mono text-gray-400">{formatDate(t.ends_at)}</td>
+              <td class="px-6 py-3 text-sm font-mono text-gray-300 text-center">{t.max_students ?? '—'}</td>
+              <td class="px-6 py-3 text-center">
+                {t.active
+                  ? <span class="text-green-500 text-xs font-mono uppercase">sim</span>
+                  : <span class="text-gray-600 text-xs font-mono uppercase">não</span>
+                }
+              </td>
+              <td class="px-6 py-3 text-right">
+                <a href={`/admin/turmas/${t.id}/`}
+                  class="text-xs font-mono uppercase tracking-wider text-yellow-500 hover:text-yellow-400">
+                  Abrir
+                </a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+</AdminLayout>

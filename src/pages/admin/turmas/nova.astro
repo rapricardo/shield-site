@@ -1,0 +1,111 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { createAdminClient } from '../../../lib/supabase-admin';
+
+const admin = createAdminClient();
+const { data: produtos } = await admin
+  .from('products')
+  .select('slug, name')
+  .eq('active', true)
+  .eq('type', 'mentoring')
+  .order('name');
+
+const erro = Astro.url.searchParams.get('erro');
+---
+
+<AdminLayout title="Admin — Nova turma" activeSection="turmas">
+  <div class="mb-8 flex items-center gap-4">
+    <a href="/admin/turmas/" class="text-xs font-mono uppercase tracking-wider text-gray-500 hover:text-yellow-500">
+      ← Voltar
+    </a>
+  </div>
+
+  <h1 class="font-industrial uppercase text-white text-2xl tracking-wider mb-1">
+    Nova turma
+  </h1>
+  <p class="text-gray-500 text-xs font-mono uppercase tracking-wider mb-8">
+    Cohort para produto de mentoria
+  </p>
+
+  {erro && (
+    <div class="bg-red-500/10 border border-red-500/30 text-red-400 text-sm p-3 mb-6 font-mono max-w-3xl">
+      Erro: {erro}
+    </div>
+  )}
+
+  {(!produtos || produtos.length === 0) && (
+    <div class="bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 text-sm p-3 mb-6 font-mono max-w-3xl">
+      Nenhum produto ativo do tipo "mentoring" existe. Cadastre um produto do tipo mentoria primeiro.
+    </div>
+  )}
+
+  <form method="POST" action="/api/admin/turmas/criar" class="max-w-3xl">
+    <div class="bg-[#111] border border-gray-800 p-6 space-y-6">
+      <div>
+        <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">Produto (mentoring) *</label>
+        <select name="product_slug" required
+          class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 focus:border-yellow-500 focus:outline-none font-mono text-sm">
+          <option value="">— selecione —</option>
+          {(produtos || []).map((p) => (
+            <option value={p.slug}>{p.slug} — {p.name}</option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">Nome *</label>
+        <input type="text" name="name" required placeholder="ex: Mentoria Turma 01"
+          class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 focus:border-yellow-500 focus:outline-none text-sm" />
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">Início *</label>
+          <input type="date" name="starts_at" required
+            class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 focus:border-yellow-500 focus:outline-none font-mono text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">Fim *</label>
+          <input type="date" name="ends_at" required
+            class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 focus:border-yellow-500 focus:outline-none font-mono text-sm" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">Máx. alunos</label>
+          <input type="number" name="max_students" min="1" step="1" value="20"
+            class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 focus:border-yellow-500 focus:outline-none font-mono text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">URL do Meet</label>
+          <input type="text" name="meet_url"
+            class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 focus:border-yellow-500 focus:outline-none font-mono text-sm" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">Notas</label>
+        <textarea name="notes" rows="4"
+          class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 focus:border-yellow-500 focus:outline-none text-sm"></textarea>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <input type="checkbox" name="active" id="active" value="on" checked class="w-4 h-4 accent-yellow-500" />
+        <label for="active" class="text-xs font-mono text-gray-400 uppercase tracking-wider">Ativa</label>
+      </div>
+    </div>
+
+    <div class="mt-6 flex items-center gap-4">
+      <button type="submit"
+        class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 px-6 uppercase tracking-widest text-xs transition-colors">
+        Criar turma
+      </button>
+      <a href="/admin/turmas/" class="text-xs font-mono uppercase tracking-wider text-gray-500 hover:text-white">
+        Cancelar
+      </a>
+    </div>
+  </form>
+</AdminLayout>

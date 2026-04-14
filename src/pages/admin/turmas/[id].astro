@@ -1,0 +1,213 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { createAdminClient } from '../../../lib/supabase-admin';
+
+const { id } = Astro.params;
+if (!id) return Astro.redirect('/admin/turmas/');
+
+const admin = createAdminClient();
+const { data: turma, error } = await admin
+  .from('cohorts')
+  .select('*')
+  .eq('id', id)
+  .single();
+
+if (error || !turma) {
+  return Astro.redirect('/admin/turmas/?erro=turma-nao-encontrada');
+}
+
+const { data: produtos } = await admin
+  .from('products')
+  .select('slug, name')
+  .eq('active', true)
+  .eq('type', 'mentoring')
+  .order('name');
+
+// Alunos matriculados
+const { data: matriculas } = await admin
+  .from('user_access')
+  .select('id, user_id, product_slug, granted_at, profiles(email, name)')
+  .eq('cohort_id', id);
+
+type Matricula = {
+  id: string;
+  user_id: string;
+  product_slug: string;
+  granted_at: string;
+  profiles: { email?: string | null; name?: string | null } | { email?: string | null; name?: string | null }[] | null;
+};
+
+const alunos = (matriculas || []) as Matricula[];
+
+function getProfileFromRow(row: Matricula): { email?: string | null; name?: string | null } | null {
+  if (!row.profiles) return null;
+  if (Array.isArray(row.profiles)) return row.profiles[0] ?? null;
+  return row.profiles;
+}
+
+const erro = Astro.url.searchParams.get('erro');
+const msg = Astro.url.searchParams.get('msg');
+
+const formatDate = (iso: string) => new Date(iso).toLocaleDateString('pt-BR');
+
+// Normalizar datas (vindo como YYYY-MM-DD do DB)
+const startsAtInput = turma.starts_at ? turma.starts_at.toString().slice(0, 10) : '';
+const endsAtInput = turma.ends_at ? turma.ends_at.toString().slice(0, 10) : '';
+---
+
+<AdminLayout title={`Admin — Turma ${turma.name}`} activeSection="turmas">
+  <div class="mb-8 flex items-center gap-4">
+    <a href="/admin/turmas/" class="text-xs font-mono uppercase tracking-wider text-gray-500 hover:text-yellow-500">
+      ← Voltar
+    </a>
+  </div>
+
+  <h1 class="font-industrial uppercase text-white text-2xl tracking-wider mb-1">
+    {turma.name}
+  </h1>
+  <p class="text-gray-500 text-xs font-mono uppercase tracking-wider mb-8">
+    ID: {turma.id}
+  </p>
+
+  {msg === 'salvo' && (
+    <div class="bg-green-500/10 border border-green-500/30 text-green-400 text-sm p-3 mb-6 font-mono max-w-3xl">
+      Alterações salvas.
+    </div>
+  )}
+  {erro && (
+    <div class="bg-red-500/10 border border-red-500/30 text-red-400 text-sm p-3 mb-6 font-mono max-w-3xl">
+      Erro: {erro}
+    </div>
+  )}
+
+  <form method="POST" action={`/api/admin/turmas/${turma.id}/atualizar`} class="max-w-3xl">
+    <div class="bg-[#111] border border-gray-800 p-6 space-y-6">
+      <div>
+        <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">Produto *</label>
+        <select name="product_slug" required
+          class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 focus:border-yellow-500 focus:outline-none font-mono text-sm">
+          {(produtos || []).map((p) => (
+            <option value={p.slug} selected={p.slug === turma.product_slug}>{p.slug} — {p.name}</option>
+          ))}
+          {/* Se o produto atual não está na lista (p.ex. foi desativado ou não é mentoring), mantém opção */}
+          {!(produtos || []).some((p) => p.slug === turma.product_slug) && (
+            <option value={turma.product_slug} selected>{turma.product_slug}</option>
+          )}
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">Nome *</label>
+        <input type="text" name="name" required value={turma.name}
+          class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 focus:border-yellow-500 focus:outline-none text-sm" />
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">Início *</label>
+          <input type="date" name="starts_at" required value={startsAtInput}
+            class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 focus:border-yellow-500 focus:outline-none font-mono text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">Fim *</label>
+          <input type="date" name="ends_at" required value={endsAtInput}
+            class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 focus:border-yellow-500 focus:outline-none font-mono text-sm" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">Máx. alunos</label>
+          <input type="number" name="max_students" min="1" step="1" value={turma.max_students ?? 20}
+            class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 focus:border-yellow-500 focus:outline-none font-mono text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">URL do Meet</label>
+          <input type="text" name="meet_url" value={turma.meet_url ?? ''}
+            class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 focus:border-yellow-500 focus:outline-none font-mono text-sm" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">Notas</label>
+        <textarea name="notes" rows="4"
+          class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3 focus:border-yellow-500 focus:outline-none text-sm">{turma.notes ?? ''}</textarea>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <input type="checkbox" name="active" id="active" value="on" checked={turma.active} class="w-4 h-4 accent-yellow-500" />
+        <label for="active" class="text-xs font-mono text-gray-400 uppercase tracking-wider">Ativa</label>
+      </div>
+    </div>
+
+    <div class="mt-6 flex items-center gap-4">
+      <button type="submit"
+        class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 px-6 uppercase tracking-widest text-xs transition-colors">
+        Salvar alterações
+      </button>
+      <a href="/admin/turmas/" class="text-xs font-mono uppercase tracking-wider text-gray-500 hover:text-white">
+        Cancelar
+      </a>
+    </div>
+  </form>
+
+  <!-- Alunos matriculados -->
+  <div class="max-w-3xl mt-10">
+    <h2 class="font-industrial uppercase text-white text-lg tracking-wider mb-4">
+      Alunos matriculados ({alunos.length})
+    </h2>
+    <div class="bg-[#111] border border-gray-800 overflow-x-auto">
+      {alunos.length === 0 ? (
+        <p class="px-6 py-8 text-center text-gray-500 text-sm font-mono uppercase tracking-wider">
+          Nenhum aluno matriculado nesta turma
+        </p>
+      ) : (
+        <table class="w-full border-collapse">
+          <thead>
+            <tr class="border-b border-gray-800">
+              <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Aluno</th>
+              <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">E-mail</th>
+              <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Matrícula</th>
+              <th class="text-right px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Ver</th>
+            </tr>
+          </thead>
+          <tbody>
+            {alunos.map((a) => {
+              const profile = getProfileFromRow(a);
+              return (
+                <tr class="border-b border-gray-800/50 hover:bg-white/5">
+                  <td class="px-6 py-3 text-sm text-white">{profile?.name ?? '—'}</td>
+                  <td class="px-6 py-3 text-sm font-mono text-gray-300">{profile?.email ?? '—'}</td>
+                  <td class="px-6 py-3 text-sm font-mono text-gray-500">{formatDate(a.granted_at)}</td>
+                  <td class="px-6 py-3 text-right">
+                    <a href={`/admin/usuarios/${a.user_id}/`}
+                      class="text-xs font-mono uppercase tracking-wider text-yellow-500 hover:text-yellow-400">
+                      Perfil
+                    </a>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+    </div>
+  </div>
+
+  <form method="POST" action={`/api/admin/turmas/${turma.id}/deletar`} class="max-w-3xl mt-10">
+    <div class="bg-red-500/5 border border-red-500/20 p-6">
+      <h3 class="font-industrial uppercase text-red-500 text-sm tracking-wider mb-2">
+        Desativar turma
+      </h3>
+      <p class="text-gray-500 text-xs font-mono mb-4">
+        Marca a turma como inativa. Matrículas existentes permanecem.
+      </p>
+      <button type="submit" onclick="return confirm('Desativar esta turma?')"
+        class="border border-red-500/40 text-red-400 hover:bg-red-500/10 font-bold py-2 px-4 uppercase tracking-widest text-xs transition-colors">
+        Desativar
+      </button>
+    </div>
+  </form>
+</AdminLayout>
