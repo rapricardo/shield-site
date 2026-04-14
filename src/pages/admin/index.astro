@@ -20,18 +20,27 @@ const { count: acessosCount } = await admin
   .from('user_access')
   .select('*', { count: 'exact', head: true });
 
-// Receita últimos 30 dias
-const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-const { data: paymentsRecent } = await admin
+// Receita últimos 7, 30 e 90 dias
+const now = Date.now();
+const sevenDaysAgo = new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString();
+const thirtyDaysAgo = new Date(now - 30 * 24 * 60 * 60 * 1000).toISOString();
+const ninetyDaysAgo = new Date(now - 90 * 24 * 60 * 60 * 1000).toISOString();
+
+const { data: payments90d } = await admin
   .from('payments')
   .select('amount, created_at')
   .eq('status', 'completed')
-  .gte('created_at', thirtyDaysAgo);
+  .gte('created_at', ninetyDaysAgo);
 
-const receita30dCents = (paymentsRecent || []).reduce(
-  (sum: number, p: { amount: number | null }) => sum + (p.amount || 0),
-  0
-);
+const pagamentos90d = (payments90d || []) as { amount: number | null; created_at: string }[];
+
+const receita7dCents = pagamentos90d
+  .filter((p) => p.created_at >= sevenDaysAgo)
+  .reduce((sum, p) => sum + (p.amount || 0), 0);
+const receita30dCents = pagamentos90d
+  .filter((p) => p.created_at >= thirtyDaysAgo)
+  .reduce((sum, p) => sum + (p.amount || 0), 0);
+const receita90dCents = pagamentos90d.reduce((sum, p) => sum + (p.amount || 0), 0);
 
 // Últimos 10 pagamentos
 const { data: ultimosPagamentos } = await admin
@@ -39,6 +48,72 @@ const { data: ultimosPagamentos } = await admin
   .select('id, amount, status, created_at, product_slug, profiles(email, name)')
   .order('created_at', { ascending: false })
   .limit(10);
+
+// Top 5 aulas mais concluídas (agregação client-side)
+const { data: allProgress } = await admin
+  .from('lesson_progress')
+  .select('lesson_slug');
+
+const lessonCounts: Record<string, number> = {};
+for (const row of (allProgress || []) as { lesson_slug: string }[]) {
+  lessonCounts[row.lesson_slug] = (lessonCounts[row.lesson_slug] || 0) + 1;
+}
+const topSlugs = Object.entries(lessonCounts)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 5);
+
+const slugsList = topSlugs.map(([s]) => s);
+const { data: lessonTitles } =
+  slugsList.length > 0
+    ? await admin.from('lessons').select('slug, title').in('slug', slugsList)
+    : { data: [] as { slug: string; title: string }[] };
+
+const titleMap = new Map(
+  ((lessonTitles || []) as { slug: string; title: string }[]).map((l) => [l.slug, l.title])
+);
+
+const topLessons = topSlugs.map(([slug, count]) => ({
+  slug,
+  title: titleMap.get(slug) || slug,
+  count,
+}));
+
+// Conversão por produto: acessos vs pagamentos confirmados
+const { data: produtosAtivos } = await admin
+  .from('products')
+  .select('slug, name')
+  .eq('active', true);
+
+type ProductStat = {
+  slug: string;
+  name: string;
+  acessos: number;
+  pagamentos: number;
+  diferenca: number;
+};
+
+const productStats: ProductStat[] = [];
+for (const product of ((produtosAtivos || []) as { slug: string; name: string }[])) {
+  const { count: acessosCountProd } = await admin
+    .from('user_access')
+    .select('*', { count: 'exact', head: true })
+    .eq('product_slug', product.slug);
+  const { count: pagamentosCountProd } = await admin
+    .from('payments')
+    .select('*', { count: 'exact', head: true })
+    .eq('product_slug', product.slug)
+    .eq('status', 'completed');
+
+  const acessos = acessosCountProd || 0;
+  const pagamentos = pagamentosCountProd || 0;
+  productStats.push({
+    slug: product.slug,
+    name: product.name,
+    acessos,
+    pagamentos,
+    diferenca: acessos - pagamentos,
+  });
+}
 
 const currencyFmt = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -76,8 +151,8 @@ const pagamentos = (ultimosPagamentos || []) as PagamentoRow[];
     </p>
   </div>
 
-  <!-- Stat cards -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+  <!-- Stat cards: contagens -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
     <div class="bg-[#111] border border-gray-800 p-6 relative">
       <div class="absolute top-0 left-0 w-full h-1 bg-yellow-500"></div>
       <p class="text-xs font-mono uppercase tracking-wider text-gray-500 mb-2">
@@ -107,6 +182,19 @@ const pagamentos = (ultimosPagamentos || []) as PagamentoRow[];
         {acessosCount ?? 0}
       </p>
     </div>
+  </div>
+
+  <!-- Stat cards: receita -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+    <div class="bg-[#111] border border-gray-800 p-6 relative">
+      <div class="absolute top-0 left-0 w-full h-1 bg-yellow-500"></div>
+      <p class="text-xs font-mono uppercase tracking-wider text-gray-500 mb-2">
+        Receita 7 dias
+      </p>
+      <p class="font-industrial text-white text-3xl">
+        {formatCurrency(receita7dCents)}
+      </p>
+    </div>
 
     <div class="bg-[#111] border border-gray-800 p-6 relative">
       <div class="absolute top-0 left-0 w-full h-1 bg-yellow-500"></div>
@@ -115,6 +203,16 @@ const pagamentos = (ultimosPagamentos || []) as PagamentoRow[];
       </p>
       <p class="font-industrial text-white text-3xl">
         {formatCurrency(receita30dCents)}
+      </p>
+    </div>
+
+    <div class="bg-[#111] border border-gray-800 p-6 relative">
+      <div class="absolute top-0 left-0 w-full h-1 bg-yellow-500"></div>
+      <p class="text-xs font-mono uppercase tracking-wider text-gray-500 mb-2">
+        Receita 90 dias
+      </p>
+      <p class="font-industrial text-white text-3xl">
+        {formatCurrency(receita90dCents)}
       </p>
     </div>
   </div>
@@ -184,5 +282,100 @@ const pagamentos = (ultimosPagamentos || []) as PagamentoRow[];
         </table>
       </div>
     )}
+  </div>
+
+  <!-- Grid: Top aulas + Conversão por produto -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10">
+    <!-- Top 5 aulas concluídas -->
+    <div class="bg-[#111] border border-gray-800">
+      <div class="px-6 py-4 border-b border-gray-800">
+        <h2 class="font-industrial uppercase text-white text-sm tracking-wider">
+          Top 5 aulas concluídas
+        </h2>
+      </div>
+
+      {topLessons.length === 0 ? (
+        <p class="px-6 py-12 text-center text-gray-500 text-sm font-mono uppercase tracking-wider">
+          Nenhuma aula concluída ainda
+        </p>
+      ) : (
+        <ul>
+          {topLessons.map((lesson, idx) => (
+            <li class="px-6 py-3 border-b border-gray-800/50 flex items-center justify-between hover:bg-white/5">
+              <div class="flex items-center gap-3 min-w-0">
+                <span class="font-mono text-xs text-yellow-500 w-6 shrink-0">
+                  {String(idx + 1).padStart(2, '0')}
+                </span>
+                <div class="min-w-0">
+                  <p class="text-sm text-gray-300 truncate">{lesson.title}</p>
+                  <p class="text-xs font-mono text-gray-600 truncate">{lesson.slug}</p>
+                </div>
+              </div>
+              <span class="font-mono text-sm text-white shrink-0 ml-3">
+                {lesson.count}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+
+    <!-- Conversão por produto -->
+    <div class="bg-[#111] border border-gray-800">
+      <div class="px-6 py-4 border-b border-gray-800">
+        <h2 class="font-industrial uppercase text-white text-sm tracking-wider">
+          Conversão por produto
+        </h2>
+      </div>
+
+      {productStats.length === 0 ? (
+        <p class="px-6 py-12 text-center text-gray-500 text-sm font-mono uppercase tracking-wider">
+          Nenhum produto ativo
+        </p>
+      ) : (
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="border-b border-gray-800">
+                <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Produto</th>
+                <th class="text-right px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Acessos</th>
+                <th class="text-right px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Pagamentos</th>
+                <th class="text-right px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Diferença</th>
+              </tr>
+            </thead>
+            <tbody>
+              {productStats.map((p) => (
+                <tr class="border-b border-gray-800/50 hover:bg-white/5">
+                  <td class="px-6 py-3 text-sm text-gray-300">
+                    <p class="truncate">{p.name}</p>
+                    <p class="text-xs font-mono text-gray-600 truncate">{p.slug}</p>
+                  </td>
+                  <td class="px-6 py-3 text-sm font-mono text-white text-right">
+                    {p.acessos}
+                  </td>
+                  <td class="px-6 py-3 text-sm font-mono text-white text-right">
+                    {p.pagamentos}
+                  </td>
+                  <td class="px-6 py-3 text-sm font-mono text-right">
+                    <span class={
+                      p.diferenca > 0
+                        ? 'text-yellow-500'
+                        : p.diferenca < 0
+                          ? 'text-red-500'
+                          : 'text-gray-500'
+                    }>
+                      {p.diferenca > 0 ? `+${p.diferenca}` : p.diferenca}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p class="px-6 py-3 text-xs font-mono text-gray-600 border-t border-gray-800">
+            Diferença &gt; 0: grants manuais ou bundle includes (não é erro)
+          </p>
+        </div>
+      )}
+    </div>
   </div>
 </AdminLayout>
