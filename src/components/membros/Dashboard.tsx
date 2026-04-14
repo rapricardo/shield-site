@@ -1,6 +1,7 @@
 import { AlertTriangle, CheckCircle, ShoppingCart, Shield } from 'lucide-react';
 import LessonCard from './LessonCard';
 import type { LessonInfo } from './LessonCard';
+import CohortCard from './CohortCard';
 
 interface LessonFromDB {
   id: string;
@@ -21,6 +22,16 @@ interface CategoryGroupProps {
   lessons: LessonFromDB[];
 }
 
+interface EnrolledCohortProp {
+  cohort_id: string;
+  name: string;
+  product_name: string;
+  starts_at: string;
+  ends_at: string;
+  meet_url: string | null;
+  notes: string | null;
+}
+
 interface DashboardProps {
   name: string;
   accessSlugs: string[];
@@ -28,6 +39,7 @@ interface DashboardProps {
   mensagem?: string | null;
   categories: CategoryGroupProps[];
   isAdmin: boolean;
+  cohorts: EnrolledCohortProp[];
 }
 
 const MSG_CONFIG: Record<string, { icon: typeof AlertTriangle; color: string; bg: string; border: string; text: string }> = {
@@ -67,7 +79,7 @@ function buildLessonInfo(lesson: LessonFromDB, accessSlugs: string[], completedS
   };
 }
 
-const Dashboard = ({ name, accessSlugs, completedSlugs, mensagem, categories, isAdmin }: DashboardProps) => {
+const Dashboard = ({ name, accessSlugs, completedSlugs, mensagem, categories, isAdmin, cohorts }: DashboardProps) => {
   const hasMaquinaAccess = accessSlugs.includes('maquina-videos');
   const msgConfig = mensagem ? MSG_CONFIG[mensagem] : null;
 
@@ -93,6 +105,20 @@ const Dashboard = ({ name, accessSlugs, completedSlugs, mensagem, categories, is
           </a>
         )}
       </div>
+
+      {/* Minhas Turmas */}
+      {cohorts.length > 0 && (
+        <div className="mb-10">
+          <h2 className="font-industrial text-white uppercase text-lg mb-4 border-b border-gray-800 pb-2">
+            Minhas Turmas
+          </h2>
+          <div className="space-y-4">
+            {cohorts.map((c) => (
+              <CohortCard key={c.cohort_id} cohort={c} />
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Mensagem */}
       {msgConfig && (

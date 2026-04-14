@@ -5,6 +5,7 @@ import Layout from '../../layouts/Layout.astro';
 import Dashboard from '../../components/membros/Dashboard';
 import { getUserProfile, getLessonProgress, getUserAccess } from '../../lib/auth';
 import { getLessonsByCategory } from '../../lib/categories';
+import { getEnrolledCohorts } from '../../lib/cohorts';
 
 const session = Astro.locals.session!;
 const profile = await getUserProfile(session.user.id);
@@ -12,6 +13,7 @@ const progress = await getLessonProgress(session.user.id);
 const completedSlugs = progress.map((p) => p.lesson_slug);
 const accessSlugs = await getUserAccess(session.user.id);
 const categories = await getLessonsByCategory();
+const cohorts = await getEnrolledCohorts(session.user.id);
 
 const acesso = Astro.url.searchParams.get('acesso');
 const compra = Astro.url.searchParams.get('compra');
@@ -31,6 +33,7 @@ const isAdmin = profile?.role === 'admin';
       accessSlugs={accessSlugs}
       completedSlugs={completedSlugs}
       categories={categories}
+      cohorts={cohorts}
       mensagem={mensagem}
       isAdmin={isAdmin}
       client:load
