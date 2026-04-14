@@ -1,5 +1,5 @@
 import { defineMiddleware } from 'astro:middleware';
-import { getSession, getUserAccess, hasAccess } from './lib/auth';
+import { getSession, getUserAccess, hasAccess, getUserProfile } from './lib/auth';
 
 const PUBLIC_MEMBER_ROUTES = [
   '/membros/login',
@@ -13,6 +13,23 @@ const ROUTE_PRODUCT_MAP: Record<string, string> = {
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
+
+  // Gate de admin: /admin/* exige role=admin
+  if (pathname.startsWith('/admin')) {
+    const session = await getSession(context.cookies);
+    if (!session) {
+      return context.redirect('/membros/login/');
+    }
+
+    const profile = await getUserProfile(session.user.id);
+    if (!profile || profile.role !== 'admin') {
+      return context.redirect('/membros/?acesso=negado');
+    }
+
+    context.locals.session = session;
+    context.locals.profile = profile;
+    return next();
+  }
 
   if (!pathname.startsWith('/membros')) {
     return next();
