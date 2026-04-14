@@ -1,0 +1,100 @@
+---
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro';
+import MinhaContaForm from '../../components/membros/MinhaContaForm';
+import AcessosCard from '../../components/membros/AcessosCard';
+import HistoricoCompras from '../../components/membros/HistoricoCompras';
+import { getUserProfile } from '../../lib/auth';
+import { supabase } from '../../lib/supabase';
+
+const session = Astro.locals.session!;
+const profile = await getUserProfile(session.user.id);
+
+if (!profile) {
+  return Astro.redirect('/membros/login/');
+}
+
+// Acessos com nome do produto
+const { data: acessosRaw } = await supabase
+  .from('user_access')
+  .select('product_slug, granted_at, products(name)')
+  .eq('user_id', session.user.id)
+  .order('granted_at', { ascending: false });
+
+const acessos = (acessosRaw || []).map((a: any) => ({
+  product_slug: a.product_slug,
+  product_name: a.products?.name || a.product_slug,
+  granted_at: a.granted_at,
+}));
+
+// Histórico de pagamentos
+const { data: pagamentosRaw } = await supabase
+  .from('payments')
+  .select('id, asaas_payment_id, product_slug, amount, status, created_at, products(name)')
+  .eq('user_id', session.user.id)
+  .order('created_at', { ascending: false })
+  .limit(20);
+
+const pagamentos = (pagamentosRaw || []).map((p: any) => ({
+  id: p.id,
+  asaas_payment_id: p.asaas_payment_id,
+  product_slug: p.product_slug,
+  product_name: p.products?.name || p.product_slug,
+  amount: p.amount,
+  status: p.status,
+  created_at: p.created_at,
+}));
+
+const erro = Astro.url.searchParams.get('erro');
+const msg = Astro.url.searchParams.get('msg');
+---
+
+<Layout title="Minha Conta — Área de Membros" description="Gerencie seus dados, acessos e compras">
+  <section class="py-20 px-6 min-h-screen">
+    <div class="max-w-3xl mx-auto">
+      <a
+        href="/membros/"
+        class="text-xs font-mono text-gray-600 hover:text-yellow-500 uppercase tracking-wider transition-colors mb-8 inline-block"
+      >
+        &larr; Voltar ao painel
+      </a>
+
+      <h1 class="text-3xl font-bold font-industrial text-white uppercase mb-2">
+        Minha Conta
+      </h1>
+      <p class="text-gray-500 text-sm font-mono mb-12">
+        Gerencie seus dados e veja seus acessos
+      </p>
+
+      {/* Form de edição do perfil */}
+      <div class="mb-12">
+        <MinhaContaForm
+          name={profile.name || ''}
+          email={profile.email}
+          whatsapp={profile.whatsapp}
+          createdAt={profile.created_at}
+          erro={erro}
+          msg={msg}
+          client:load
+        />
+      </div>
+
+      {/* Acessos */}
+      <div class="mb-12">
+        <h2 class="font-industrial text-white uppercase text-lg mb-4 border-b border-gray-800 pb-2">
+          Meus Acessos
+        </h2>
+        <AcessosCard acessos={acessos} client:load />
+      </div>
+
+      {/* Histórico */}
+      <div>
+        <h2 class="font-industrial text-white uppercase text-lg mb-4 border-b border-gray-800 pb-2">
+          Histórico de Compras
+        </h2>
+        <HistoricoCompras pagamentos={pagamentos} client:load />
+      </div>
+    </div>
+  </section>
+</Layout>
