@@ -1,0 +1,211 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { createAdminClient } from '../../../lib/supabase-admin';
+
+const admin = createAdminClient();
+
+// Filtro de datas (default: últimos 30 dias)
+const deParam = Astro.url.searchParams.get('de');
+const ateParam = Astro.url.searchParams.get('ate');
+
+const hoje = new Date();
+const trintaDiasAtras = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+
+const deDate = deParam ? new Date(deParam) : trintaDiasAtras;
+const ateDate = ateParam ? new Date(ateParam) : hoje;
+
+// Normalizar início/fim do dia
+deDate.setHours(0, 0, 0, 0);
+ateDate.setHours(23, 59, 59, 999);
+
+const deISO = deDate.toISOString();
+const ateISO = ateDate.toISOString();
+
+const deInput = deDate.toISOString().slice(0, 10);
+const ateInput = ateDate.toISOString().slice(0, 10);
+
+const pageRaw = Astro.url.searchParams.get('page') ?? '1';
+const page = Math.max(1, parseInt(pageRaw, 10) || 1);
+const PAGE_SIZE = 50;
+const from = (page - 1) * PAGE_SIZE;
+const to = from + PAGE_SIZE - 1;
+
+// Query total + soma (sem paginação pro sum)
+const { data: todosPagamentos } = await admin
+  .from('payments')
+  .select('amount, status')
+  .gte('created_at', deISO)
+  .lte('created_at', ateISO);
+
+const totalItens = todosPagamentos?.length ?? 0;
+const somaTotal = (todosPagamentos || [])
+  .filter((p) => p.status === 'completed')
+  .reduce((sum: number, p: { amount: number | null }) => sum + (p.amount || 0), 0);
+
+// Query paginada com join
+const { data: pagamentos, error } = await admin
+  .from('payments')
+  .select('id, amount, status, created_at, product_slug, profiles(email, name)')
+  .gte('created_at', deISO)
+  .lte('created_at', ateISO)
+  .order('created_at', { ascending: false })
+  .range(from, to);
+
+const totalPages = Math.max(1, Math.ceil(totalItens / PAGE_SIZE));
+
+const currencyFmt = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+});
+const formatCurrency = (cents: number) => currencyFmt.format(cents / 100);
+const formatDate = (iso: string) => new Date(iso).toLocaleDateString('pt-BR');
+
+type PagamentoRow = {
+  id: string;
+  amount: number | null;
+  status: string | null;
+  created_at: string;
+  product_slug: string | null;
+  profiles: { email?: string | null; name?: string | null } | { email?: string | null; name?: string | null }[] | null;
+};
+
+function getProfileFromRow(row: PagamentoRow): { email?: string | null; name?: string | null } | null {
+  if (!row.profiles) return null;
+  if (Array.isArray(row.profiles)) return row.profiles[0] ?? null;
+  return row.profiles;
+}
+
+const lista = (pagamentos || []) as PagamentoRow[];
+
+const buildPageUrl = (p: number) => {
+  const params = new URLSearchParams();
+  params.set('de', deInput);
+  params.set('ate', ateInput);
+  params.set('page', String(p));
+  return `/admin/pagamentos/?${params.toString()}`;
+};
+---
+
+<AdminLayout title="Admin — Pagamentos" activeSection="pagamentos">
+  <div class="mb-8">
+    <h1 class="font-industrial uppercase text-white text-2xl tracking-wider mb-1">
+      Pagamentos
+    </h1>
+    <p class="text-gray-500 text-xs font-mono uppercase tracking-wider">
+      Histórico de transações
+    </p>
+  </div>
+
+  {error && (
+    <div class="bg-red-500/10 border border-red-500/30 text-red-400 text-sm p-3 mb-6 font-mono">
+      Erro: {error.message}
+    </div>
+  )}
+
+  <!-- Filtro de datas + total -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+    <form method="GET" class="bg-[#111] border border-gray-800 p-6 lg:col-span-2">
+      <div class="flex items-end gap-3 flex-wrap">
+        <div>
+          <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">De</label>
+          <input type="date" name="de" value={deInput}
+            class="bg-[#0a0a0a] border border-gray-700 text-white p-2 focus:border-yellow-500 focus:outline-none font-mono text-xs" />
+        </div>
+        <div>
+          <label class="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wider">Até</label>
+          <input type="date" name="ate" value={ateInput}
+            class="bg-[#0a0a0a] border border-gray-700 text-white p-2 focus:border-yellow-500 focus:outline-none font-mono text-xs" />
+        </div>
+        <button type="submit"
+          class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 px-4 uppercase tracking-widest text-xs transition-colors">
+          Filtrar
+        </button>
+        <a href="/admin/pagamentos/"
+          class="text-xs font-mono uppercase tracking-wider text-gray-500 hover:text-white">
+          resetar
+        </a>
+      </div>
+    </form>
+
+    <div class="bg-[#111] border border-gray-800 p-6 relative">
+      <div class="absolute top-0 left-0 w-full h-1 bg-yellow-500"></div>
+      <p class="text-xs font-mono uppercase tracking-wider text-gray-500 mb-2">
+        Total (completed) no período
+      </p>
+      <p class="font-industrial text-white text-3xl">
+        {formatCurrency(somaTotal)}
+      </p>
+      <p class="text-xs font-mono text-gray-600 mt-1">
+        {totalItens} transação(ões)
+      </p>
+    </div>
+  </div>
+
+  <div class="bg-[#111] border border-gray-800 overflow-x-auto">
+    {lista.length === 0 ? (
+      <p class="px-6 py-12 text-center text-gray-500 text-sm font-mono uppercase tracking-wider">
+        Nenhum pagamento no período
+      </p>
+    ) : (
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="border-b border-gray-800">
+            <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Data</th>
+            <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Aluno</th>
+            <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Produto</th>
+            <th class="text-right px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Valor</th>
+            <th class="text-left px-6 py-3 text-xs font-mono uppercase tracking-wider text-gray-500 font-normal">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {lista.map((p) => {
+            const prof = getProfileFromRow(p);
+            return (
+              <tr class="border-b border-gray-800/50 hover:bg-white/5">
+                <td class="px-6 py-3 text-sm font-mono text-gray-300">{formatDate(p.created_at)}</td>
+                <td class="px-6 py-3 text-sm text-gray-300">
+                  {prof?.email ?? <span class="text-gray-600 italic">—</span>}
+                </td>
+                <td class="px-6 py-3 text-sm font-mono text-gray-400">{p.product_slug ?? '—'}</td>
+                <td class="px-6 py-3 text-sm font-mono text-white text-right">
+                  {formatCurrency(p.amount ?? 0)}
+                </td>
+                <td class="px-6 py-3 text-xs font-mono uppercase tracking-wider">
+                  <span class={
+                    p.status === 'completed' ? 'text-green-500' :
+                    p.status === 'pending' ? 'text-yellow-500' :
+                    'text-gray-500'
+                  }>
+                    {p.status ?? '—'}
+                  </span>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    )}
+  </div>
+
+  {totalPages > 1 && (
+    <div class="mt-6 flex items-center justify-center gap-2 text-xs font-mono">
+      {page > 1 && (
+        <a href={buildPageUrl(page - 1)}
+          class="border border-gray-700 text-gray-300 hover:border-yellow-500 hover:text-yellow-500 py-2 px-3 uppercase tracking-wider">
+          ← Anterior
+        </a>
+      )}
+      <span class="text-gray-500 uppercase tracking-wider px-3">
+        Página {page} de {totalPages}
+      </span>
+      {page < totalPages && (
+        <a href={buildPageUrl(page + 1)}
+          class="border border-gray-700 text-gray-300 hover:border-yellow-500 hover:text-yellow-500 py-2 px-3 uppercase tracking-wider">
+          Próxima →
+        </a>
+      )}
+    </div>
+  )}
+</AdminLayout>
