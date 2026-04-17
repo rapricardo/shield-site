@@ -1,0 +1,95 @@
+---
+export const prerender = false;
+
+import Layout from '../../../layouts/Layout.astro';
+import ProductLessonList from '../../../components/membros/ProductLessonList';
+import { supabase } from '../../../lib/supabase';
+import { getNextLesson, getProductProgressList } from '../../../lib/progress';
+
+const session = Astro.locals.session!;
+const { productSlug } = Astro.params;
+
+if (!productSlug) {
+  return Astro.redirect('/membros/');
+}
+
+// Produto
+const { data: product } = await supabase
+  .from('products')
+  .select('slug, name, long_description')
+  .eq('slug', productSlug)
+  .eq('active', true)
+  .maybeSingle();
+
+if (!product) {
+  return Astro.redirect('/membros/?erro=produto-nao-encontrado');
+}
+
+// Aulas do produto
+const { data: lessons } = await supabase
+  .from('lessons')
+  .select('slug, title, description, order_index, is_free')
+  .eq('product_slug', productSlug)
+  .order('order_index', { ascending: true });
+
+// Progresso do aluno
+const { data: progress } = await supabase
+  .from('lesson_progress')
+  .select('lesson_slug')
+  .eq('user_id', session.user.id);
+
+const completedSet = new Set((progress || []).map((p) => p.lesson_slug));
+
+// Próxima aula
+const next = await getNextLesson(session.user.id, productSlug);
+
+// Progresso agregado
+const allProgress = await getProductProgressList(session.user.id);
+const thisProgress = allProgress.find((p) => p.productSlug === productSlug);
+---
+
+<Layout
+  title={`${product.name} — Área de Membros`}
+  description={`Aulas do produto ${product.name}`}
+>
+  <section class="py-20 px-6 min-h-screen">
+    <div class="max-w-3xl mx-auto">
+      <a
+        href="/membros/"
+        class="text-xs font-mono text-gray-600 hover:text-yellow-500 uppercase tracking-wider transition-colors mb-8 inline-block"
+      >
+        &larr; Voltar ao painel
+      </a>
+
+      <h1 class="text-3xl font-bold font-industrial text-white uppercase mb-2">
+        {product.name}
+      </h1>
+      {thisProgress && (
+        <div class="mb-10">
+          <p class="text-gray-500 text-sm font-mono mb-2">
+            {thisProgress.completed} de {thisProgress.total} aulas concluídas · {thisProgress.percent}%
+          </p>
+          <div class="h-1 bg-gray-800 w-full max-w-md">
+            <div
+              class="h-full bg-yellow-500 transition-all"
+              style={`width: ${thisProgress.percent}%`}
+            />
+          </div>
+        </div>
+      )}
+
+      <ProductLessonList
+        lessons={(lessons || []).map((l) => ({
+          slug: l.slug,
+          title: l.title,
+          description: l.description || '',
+          orderIndex: l.order_index,
+          isFree: l.is_free,
+          completed: completedSet.has(l.slug),
+        }))}
+        nextLessonSlug={next?.slug || null}
+        client:load
+      />
+    </div>
+  </section>
+</Layout>
