@@ -3,50 +3,113 @@ export const prerender = false;
 
 import Layout from '../../layouts/Layout.astro';
 import Dashboard from '../../components/membros/Dashboard';
-import { getUserProfile, getLessonProgress, getUserAccess } from '../../lib/auth';
-import { getLessonsByCategory } from '../../lib/categories';
+import { getUserProfile } from '../../lib/auth';
 import { getEnrolledCohorts } from '../../lib/cohorts';
+import {
+  getProductProgressList,
+  getMostRecentProduct,
+  getNextLesson,
+} from '../../lib/progress';
+import { supabase } from '../../lib/supabase';
 
 const session = Astro.locals.session!;
 const profile = await getUserProfile(session.user.id);
-const progress = await getLessonProgress(session.user.id);
-const completedSlugs = progress.map((p) => p.lesson_slug);
-const accessSlugs = await getUserAccess(session.user.id);
-const categories = await getLessonsByCategory();
+const products = await getProductProgressList(session.user.id);
 const cohorts = await getEnrolledCohorts(session.user.id);
+
+// Continuar de onde parou
+let continueFrom = null;
+if (products.length > 0) {
+  const recentSlug = await getMostRecentProduct(session.user.id);
+  if (recentSlug) {
+    const next = await getNextLesson(session.user.id, recentSlug);
+    const prod = products.find((p) => p.productSlug === recentSlug);
+    if (next && prod) {
+      continueFrom = {
+        productSlug: recentSlug,
+        productName: prod.productName,
+        nextLessonSlug: next.slug,
+        nextLessonTitle: next.title,
+        completed: prod.completed,
+        total: prod.total,
+        percent: prod.percent,
+      };
+    }
+  }
+}
+
+// Preview gratuita (quando aluno sem nenhum produto)
+let freeStarter = null;
+if (products.length === 0) {
+  const { data: firstFree } = await supabase
+    .from('lessons')
+    .select('slug, title, description')
+    .eq('is_free', true)
+    .order('order_index', { ascending: true })
+    .limit(1)
+    .maybeSingle();
+  if (firstFree) {
+    freeStarter = {
+      slug: firstFree.slug,
+      title: firstFree.title,
+      description: firstFree.description || '',
+    };
+  }
+}
+
+const isAdmin = profile?.role === 'admin';
 
 const acesso = Astro.url.searchParams.get('acesso');
 const compra = Astro.url.searchParams.get('compra');
 const msgParam = Astro.url.searchParams.get('msg');
-const mensagem = acesso === 'bloqueado' ? 'bloqueado'
-  : compra === 'sucesso' ? 'sucesso'
-  : msgParam === 'senha-atualizada' ? 'senha-atualizada'
-  : null;
-
-const isAdmin = profile?.role === 'admin';
+const mensagem =
+  acesso === 'bloqueado'
+    ? 'bloqueado'
+    : compra === 'sucesso'
+      ? 'sucesso'
+      : msgParam === 'senha-atualizada'
+        ? 'senha-atualizada'
+        : null;
 ---
 
-<Layout title="Área de Membros — Máquina de Vídeos com IA" description="Seu painel de aprendizado">
+<Layout
+  title="Área de Membros — Ricardo Tocha"
+  description="Seu painel de aprendizado"
+>
   <section class="py-20 px-6 min-h-screen">
     <Dashboard
       name={profile?.name || ''}
-      accessSlugs={accessSlugs}
-      completedSlugs={completedSlugs}
-      categories={categories}
+      isAdmin={isAdmin}
+      products={products}
+      continueFrom={continueFrom}
+      freeStarter={freeStarter}
       cohorts={cohorts}
       mensagem={mensagem}
-      isAdmin={isAdmin}
       client:load
     />
 
-    <div class="max-w-2xl mx-auto mt-12 text-center space-y-3">
-      <div class="flex items-center justify-center gap-6">
-        <a href="/membros/lives/" class="text-xs font-mono text-gray-500 hover:text-yellow-500 uppercase tracking-wider transition-colors">
+    <div class="max-w-3xl mx-auto mt-12 text-center space-y-3">
+      <div class="flex items-center justify-center gap-6 flex-wrap">
+        <a
+          href="/membros/lives/"
+          class="text-xs font-mono text-gray-500 hover:text-yellow-500 uppercase tracking-wider transition-colors"
+        >
           Lives
         </a>
-        <a href="/membros/minha-conta/" class="text-xs font-mono text-gray-500 hover:text-yellow-500 uppercase tracking-wider transition-colors">
+        <a
+          href="/membros/minha-conta/"
+          class="text-xs font-mono text-gray-500 hover:text-yellow-500 uppercase tracking-wider transition-colors"
+        >
           Minha Conta
         </a>
+        {isAdmin && (
+          <a
+            href="/admin/"
+            class="text-xs font-mono text-gray-500 hover:text-yellow-500 uppercase tracking-wider transition-colors"
+          >
+            Admin
+          </a>
+        )}
       </div>
       <form method="POST" action="/api/auth/logout">
         <button

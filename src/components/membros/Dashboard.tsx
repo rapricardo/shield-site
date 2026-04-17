@@ -1,25 +1,31 @@
-import { AlertTriangle, CheckCircle, ShoppingCart, Shield } from 'lucide-react';
-import LessonCard from './LessonCard';
-import type { LessonInfo } from './LessonCard';
+import { AlertTriangle, CheckCircle, Shield } from 'lucide-react';
 import CohortCard from './CohortCard';
+import ContinueCard from './ContinueCard';
+import FreeStarterCard from './FreeStarterCard';
+import ProductHubCard from './ProductHubCard';
 
-interface LessonFromDB {
-  id: string;
-  product_slug: string;
-  slug: string;
-  title: string;
-  description: string | null;
-  type: string;
-  is_free: boolean;
-  order_index: number;
-  category: string;
+interface ProductProgress {
+  productSlug: string;
+  productName: string;
+  total: number;
+  completed: number;
+  percent: number;
 }
 
-interface CategoryGroupProps {
-  category: string;
-  label: string;
+interface ContinueFrom {
+  productSlug: string;
+  productName: string;
+  nextLessonSlug: string;
+  nextLessonTitle: string;
+  completed: number;
+  total: number;
+  percent: number;
+}
+
+interface FreeStarter {
+  slug: string;
+  title: string;
   description: string;
-  lessons: LessonFromDB[];
 }
 
 interface EnrolledCohortProp {
@@ -34,15 +40,24 @@ interface EnrolledCohortProp {
 
 interface DashboardProps {
   name: string;
-  accessSlugs: string[];
-  completedSlugs: string[];
-  mensagem?: string | null;
-  categories: CategoryGroupProps[];
   isAdmin: boolean;
+  products: ProductProgress[];
+  continueFrom: ContinueFrom | null;
+  freeStarter: FreeStarter | null;
   cohorts: EnrolledCohortProp[];
+  mensagem?: string | null;
 }
 
-const MSG_CONFIG: Record<string, { icon: typeof AlertTriangle; color: string; bg: string; border: string; text: string }> = {
+const MSG_CONFIG: Record<
+  string,
+  {
+    icon: typeof AlertTriangle;
+    color: string;
+    bg: string;
+    border: string;
+    text: string;
+  }
+> = {
   bloqueado: {
     icon: AlertTriangle,
     color: 'text-yellow-500',
@@ -66,22 +81,17 @@ const MSG_CONFIG: Record<string, { icon: typeof AlertTriangle; color: string; bg
   },
 };
 
-function buildLessonInfo(lesson: LessonFromDB, accessSlugs: string[], completedSlugs: string[]): LessonInfo {
-  const hasAccess = lesson.is_free || accessSlugs.includes(lesson.product_slug);
-  return {
-    slug: lesson.slug,
-    title: lesson.title,
-    description: lesson.description || '',
-    href: `/membros/aulas/${lesson.slug}/`,
-    completed: completedSlugs.includes(lesson.slug),
-    locked: !hasAccess,
-    paid: !lesson.is_free,
-  };
-}
-
-const Dashboard = ({ name, accessSlugs, completedSlugs, mensagem, categories, isAdmin, cohorts }: DashboardProps) => {
-  const hasMaquinaAccess = accessSlugs.includes('maquina-videos');
+const Dashboard = ({
+  name,
+  isAdmin,
+  products,
+  continueFrom,
+  freeStarter,
+  cohorts,
+  mensagem,
+}: DashboardProps) => {
   const msgConfig = mensagem ? MSG_CONFIG[mensagem] : null;
+  const hasProducts = products.length > 0;
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -92,7 +102,7 @@ const Dashboard = ({ name, accessSlugs, completedSlugs, mensagem, categories, is
             Bem-vindo, {name}
           </h1>
           <p className="text-gray-500 text-sm font-mono">
-            {hasMaquinaAccess ? 'ACESSO COMPLETO' : 'ACESSO GRATUITO'}
+            {hasProducts ? 'ACESSO COMPLETO' : 'ACESSO GRATUITO'}
           </p>
         </div>
         {isAdmin && (
@@ -106,7 +116,20 @@ const Dashboard = ({ name, accessSlugs, completedSlugs, mensagem, categories, is
         )}
       </div>
 
-      {/* Minhas Turmas */}
+      {/* Mensagem de status */}
+      {msgConfig && (
+        <div
+          className={`${msgConfig.bg} border ${msgConfig.border} ${msgConfig.color} text-sm p-4 mb-8 flex items-center gap-3`}
+        >
+          <msgConfig.icon className="w-5 h-5 flex-shrink-0" />
+          {msgConfig.text}
+        </div>
+      )}
+
+      {/* Continuar de onde parou */}
+      {continueFrom && <ContinueCard {...continueFrom} />}
+
+      {/* Minhas turmas (mentoria) */}
       {cohorts.length > 0 && (
         <div className="mb-10">
           <h2 className="font-industrial text-white uppercase text-lg mb-4 border-b border-gray-800 pb-2">
@@ -120,66 +143,28 @@ const Dashboard = ({ name, accessSlugs, completedSlugs, mensagem, categories, is
         </div>
       )}
 
-      {/* Mensagem */}
-      {msgConfig && (
-        <div className={`${msgConfig.bg} border ${msgConfig.border} ${msgConfig.color} text-sm p-4 mb-8 flex items-center gap-3`}>
-          <msgConfig.icon className="w-5 h-5 flex-shrink-0" />
-          {msgConfig.text}
-        </div>
-      )}
-
-      {/* CTA de compra se não tiver acesso à máquina */}
-      {!hasMaquinaAccess && (
-        <div className="bg-[#111] border border-yellow-500/30 p-8 mb-10 text-center">
-          <h3 className="font-industrial text-white uppercase text-xl mb-2">
-            Desbloqueie o conteúdo completo
-          </h3>
-          <p className="text-gray-500 text-sm mb-6">
-            Acesse a Máquina de Produção completa: 66 arquivos, skills e templates prontos.
-          </p>
-          <form method="POST" action="/api/checkout">
-            <input type="hidden" name="productSlug" value="maquina-videos" />
-            <button
-              type="submit"
-              className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-4 px-8 uppercase tracking-widest transition-all inline-flex items-center gap-2 group"
-              style={{
-                clipPath: 'polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)',
-              }}
-            >
-              <ShoppingCart className="w-4 h-4" />
-              [ Adquirir Acesso Completo — 12x R$ 92,98 ]
-            </button>
-          </form>
-        </div>
-      )}
-
-      {/* Categorias de aulas */}
-      {categories.length === 0 && (
-        <p className="text-gray-500 text-sm font-mono text-center py-12">
-          Nenhuma aula disponível ainda.
-        </p>
-      )}
-
-      {categories.map((cat) => (
-        <div key={cat.category} className="mb-10">
-          <div className="mb-4 border-b border-gray-800 pb-2">
-            <h2 className="font-industrial text-white uppercase text-lg">
-              {cat.label}
-            </h2>
-            {cat.description && (
-              <p className="text-gray-600 text-xs font-mono mt-1">{cat.description}</p>
-            )}
-          </div>
-          <div className="space-y-3">
-            {cat.lessons.map((lesson) => (
-              <LessonCard
-                key={lesson.slug}
-                lesson={buildLessonInfo(lesson, accessSlugs, completedSlugs)}
-              />
+      {/* Meus produtos */}
+      {hasProducts && (
+        <div className="mb-10">
+          <h2 className="font-industrial text-white uppercase text-lg mb-4 border-b border-gray-800 pb-2">
+            Meus Produtos
+          </h2>
+          <div className="space-y-4">
+            {products.map((p) => (
+              <ProductHubCard key={p.productSlug} {...p} />
             ))}
           </div>
         </div>
-      ))}
+      )}
+
+      {/* Sem acesso — preview gratuita + CTA */}
+      {!hasProducts && (
+        <FreeStarterCard
+          firstFreeLessonSlug={freeStarter?.slug || null}
+          firstFreeLessonTitle={freeStarter?.title || null}
+          firstFreeLessonDesc={freeStarter?.description || null}
+        />
+      )}
     </div>
   );
 };
