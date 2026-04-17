@@ -8,6 +8,7 @@ export interface LessonInfo {
   completed: boolean;
   locked: boolean;
   paid: boolean;
+  sequentialLocked?: boolean;
 }
 
 interface LessonCardProps {
@@ -15,9 +16,28 @@ interface LessonCardProps {
 }
 
 const LessonCard = ({ lesson }: LessonCardProps) => {
-  const { title, description, href, completed, locked, paid } = lesson;
+  const { title, description, href, completed, locked, paid, sequentialLocked } = lesson;
 
-  // Estado: bloqueada
+  // Estado: bloqueada pela regra sequencial
+  if (sequentialLocked) {
+    return (
+      <div className="bg-[#111] border border-gray-800 p-6 opacity-50 relative">
+        <div className="flex items-start gap-4">
+          <div className="flex-shrink-0 mt-1">
+            <Lock className="w-5 h-5 text-gray-600" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-industrial text-white uppercase text-sm mb-1">{title}</h3>
+            <p className="text-gray-600 text-[11px] font-mono uppercase tracking-wider">
+              Complete a aula anterior para desbloquear
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Estado: bloqueada (sem acesso ao produto)
   if (locked) {
     return (
       <div className="bg-[#111] border border-gray-800 p-6 opacity-50 relative">
