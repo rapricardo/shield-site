@@ -6,6 +6,7 @@ interface MinhaContaFormProps {
   email: string;
   whatsapp: string | null;
   createdAt: string;
+  role?: string;
   erro?: string | null;
   msg?: string | null;
 }
@@ -31,7 +32,7 @@ function formatarData(iso: string): string {
   }
 }
 
-const MinhaContaForm = ({ name, email, whatsapp, createdAt, erro, msg }: MinhaContaFormProps) => {
+const MinhaContaForm = ({ name, email, whatsapp, createdAt, role, erro, msg }: MinhaContaFormProps) => {
   const [loading, setLoading] = useState(false);
 
   const errorText = erro ? ERROR_MAP[erro] || 'Erro desconhecido. Tente novamente.' : null;
@@ -42,9 +43,16 @@ const MinhaContaForm = ({ name, email, whatsapp, createdAt, erro, msg }: MinhaCo
       <div className="absolute top-0 left-0 w-full h-1 bg-yellow-500" />
 
       <div className="mb-8">
-        <h2 className="text-2xl font-bold font-industrial text-white mb-2 uppercase">
-          Dados da conta
-        </h2>
+        <div className="flex items-center gap-3 mb-2 flex-wrap">
+          <h2 className="text-2xl font-bold font-industrial text-white uppercase">
+            Dados da conta
+          </h2>
+          {role === 'admin' && (
+            <span className="text-[10px] font-mono uppercase tracking-wider bg-yellow-500/10 text-yellow-500 border border-yellow-500/30 px-2 py-0.5">
+              ADMIN
+            </span>
+          )}
+        </div>
         <p className="text-gray-500 text-sm font-mono uppercase tracking-wider">
           Membro desde: {formatarData(createdAt)}
         </p>
