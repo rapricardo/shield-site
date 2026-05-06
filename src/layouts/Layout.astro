@@ -34,7 +34,7 @@ const currentYear = new Date().getFullYear();
     })(window,document,'script','dataLayer','GTM-TKXT9V2H');</script>
     <!-- End Google Tag Manager -->
 
-    <!-- Tracking (UTMs, click IDs, sessão) -->
+    <!-- Tracking (UTMs, click IDs, sessao) -->
     <script is:inline src="/scripts/tracking.js"></script>
 
     <style>
@@ -74,143 +74,17 @@ const currentYear = new Date().getFullYear();
       <slot />
     </main>
     
-    <footer class="py-16 bg-black border-t border-gray-900">
-      <div class="max-w-7xl mx-auto px-6">
-        <!-- Colunas de soluções -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-          <!-- Coluna 1: Agências de Marketing -->
-          <div>
-            <h4 class="text-white font-bold font-industrial uppercase tracking-widest text-sm mb-6 border-b border-gray-800 pb-3">Agências de Marketing</h4>
-            <ul class="space-y-3">
-              <li>
-                <a href="/reduzir-churn-agencias/" class="text-gray-400 text-sm hover:text-yellow-500 transition-colors">Redução de Churn</a>
-              </li>
-              <li>
-                <a href="/operacoes-marketing-ia/" class="text-gray-400 text-sm hover:text-yellow-500 transition-colors">Apex MKT — Operações de Marketing</a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Coluna 2: Gestores Comerciais -->
-          <div>
-            <h4 class="text-white font-bold font-industrial uppercase tracking-widest text-sm mb-6 border-b border-gray-800 pb-3">Gestores Comerciais</h4>
-            <ul class="space-y-3">
-              <li>
-                <a href="/auditoria-comercial-ia/" class="text-gray-400 text-sm hover:text-yellow-500 transition-colors">Athena — Auditoria Comercial</a>
-              </li>
-              <li>
-                <a href="/prospeccao-whatsapp-ia/" class="text-gray-400 text-sm hover:text-yellow-500 transition-colors">Apolo — Prospecção via WhatsApp</a>
-              </li>
-              <li>
-                <span class="text-gray-600 text-sm">Sales War Room — em breve</span>
-              </li>
-              <li>
-                <a href="/video-ia/" class="text-gray-400 text-sm hover:text-yellow-500 transition-colors">Máquina de Produção — Vídeo com IA</a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Coluna 3: Gestão -->
-          <div>
-            <h4 class="text-white font-bold font-industrial uppercase tracking-widest text-sm mb-6 border-b border-gray-800 pb-3">Gestão</h4>
-            <ul class="space-y-3">
-              <li>
-                <a href="/gestao-integrada-ia/" class="text-gray-400 text-sm hover:text-yellow-500 transition-colors">Mercúrio — Gestão Integrada</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Copyright -->
-        <div class="border-t border-gray-900 pt-8 text-center">
-          <p class="text-gray-600 text-sm font-mono">
-            © {currentYear} Ricardo Tocha. Arquitetura de Operações Híbridas.
-          </p>
+    <footer class="py-8 bg-black border-t border-gray-900">
+      <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono">
+        <p class="text-gray-600">
+          © {currentYear} Ricardo Tocha
+        </p>
+        <div class="flex items-center gap-5 text-gray-600">
+          <a href="/manifesto/" class="hover:text-yellow-500 transition-colors uppercase tracking-widest">Manifesto</a>
+          <a href="/circulo/" class="hover:text-yellow-500 transition-colors uppercase tracking-widest">Círculo</a>
+          <a href="/membros/login/" class="hover:text-yellow-500 transition-colors uppercase tracking-widest">Login</a>
         </div>
       </div>
     </footer>
-    <!-- Script de captura de tracking (UTMs, click IDs, cookies, sessão) -->
-    <script is:inline>
-    (function() {
-      function getParam(name) {
-        var match = RegExp("[?&]" + name + "=([^&]*)").exec(window.location.search);
-        return match ? decodeURIComponent(match[1].replace(/\+/g, " ")) : "";
-      }
-      function getCookie(name) {
-        var match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
-        return match ? decodeURIComponent(match[2]) : "";
-      }
-      function generateSessionId() {
-        return Date.now().toString(36) + "." + Math.random().toString(36).substring(2, 10);
-      }
-
-      var STORAGE_KEY = "__wl_tracking";
-      var urlParams = [
-        "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term",
-        "gclid", "gbraid", "wbraid", "gad_campaignid", "gad_source",
-        "fbclid",
-        "ttclid", "msclkid", "li_fat_id", "twclid", "sck",
-        "ref"
-      ];
-
-      var stored = null;
-      try { stored = JSON.parse(sessionStorage.getItem(STORAGE_KEY)); } catch(e) {}
-
-      if (!stored) {
-        stored = {};
-        urlParams.forEach(function(p) {
-          var val = getParam(p);
-          if (val) stored[p] = val;
-        });
-        var fbc = getCookie("_fbc");
-        var fbp = getCookie("_fbp");
-        if (fbc) stored.fbc = fbc;
-        if (fbp) stored.fbp = fbp;
-        if (stored.fbclid && !stored.fbc) {
-          stored.fbc = "fb.1." + Date.now() + "." + stored.fbclid;
-        }
-        stored.landing_page = window.location.href;
-        stored.originPage = window.location.href;
-        stored.referrer = document.referrer || "";
-        stored.user_agent = navigator.userAgent;
-        stored.first_visit = new Date().toISOString();
-        stored.session_id = generateSessionId();
-        var attrs = {};
-        urlParams.forEach(function(p) { if (stored[p]) attrs[p] = stored[p]; });
-        try { stored.session_attributes_encoded = btoa(JSON.stringify(attrs)); } catch(e) {}
-        try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(stored)); } catch(e) {}
-      }
-
-      function populateHiddenFields() {
-        var fields = [
-          "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term",
-          "gclid", "gbraid", "wbraid", "gad_campaignid", "gad_source",
-          "fbclid", "fbc", "fbp",
-          "ttclid", "msclkid", "li_fat_id", "twclid", "sck",
-          "landing_page", "referrer", "user_agent", "first_visit",
-          "session_id", "session_attributes_encoded", "originPage", "ref"
-        ];
-        fields.forEach(function(f) {
-          var el = document.getElementById("h_" + f);
-          if (el && stored[f]) el.value = stored[f];
-        });
-      }
-
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", populateHiddenFields);
-      } else {
-        populateHiddenFields();
-      }
-
-      window.__wlTracking = stored;
-
-      if (stored.fbclid) {
-        var fbcVal = stored.fbc || ("fb.1." + Date.now() + "." + stored.fbclid);
-        document.cookie = "_fbc=" + encodeURIComponent(fbcVal)
-          + ";max-age=" + (90*24*60*60) + ";path=/;SameSite=Lax";
-      }
-    })();
-    </script>
   </body>
 </html>
-

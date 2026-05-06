@@ -2,27 +2,13 @@
 import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import tochaBio from '../assets/tocha-bio.webp';
-import logoAmarelo from '../assets/logo-web-amarelo.webp';
+import Nav from '../components/Nav.astro';
+import TrackingHiddenFields from '../components/TrackingHiddenFields.astro';
 ---
 
-<Layout title="Ricardo Tocha | Arquitetura de Operações Híbridas" description="Governança Comercial e Infraestrutura de IA para Negócios B2B. Escale a receita. Congele o RH.">
+<Layout title="Ricardo Tocha | IA para operações de vendas B2B" description="Construo a infraestrutura de IA que cresce sua receita sem inflar a folha de pagamento.">
 
-  <!-- BARRA DE NAVEGAÇÃO SUPERIOR -->
-  <nav class="fixed w-full z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-gray-800">
-    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="/">
-        <Image src={logoAmarelo} alt="Ricardo Tocha" width={160} height={40} class="h-8 w-auto" />
-      </a>
-      <div class="hidden md:flex items-center gap-3">
-        <a href="/membros/" class="border border-gray-700 hover:border-yellow-500 text-gray-300 hover:text-yellow-500 text-xs font-bold uppercase tracking-widest px-4 py-2 transition-colors">
-          Área de Membros
-        </a>
-        <a href="#auditoria" class="bg-yellow-500 text-black text-xs font-bold uppercase tracking-widest px-4 py-2 hover:bg-yellow-400 transition-colors">
-          Iniciar Diagnóstico
-        </a>
-      </div>
-    </div>
-  </nav>
+  <Nav />
 
   <!-- DOBRA 1: HERO -->
   <section class="relative min-h-screen flex items-center pt-20 pb-12 px-6 border-b border-gray-800 bg-grid-pattern overflow-hidden">
@@ -32,46 +18,90 @@ import logoAmarelo from '../assets/logo-web-amarelo.webp';
         <!-- PRE-HEADLINE -->
         <div class="inline-flex items-center gap-2 border border-yellow-500/30 bg-yellow-500/10 text-yellow-500 text-xs font-bold uppercase tracking-widest px-4 py-1.5 mb-8 animate-fade-in-up">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-          Governança Comercial e Infraestrutura de IA para Negócios B2B
+          Infraestrutura de IA para vendas B2B
         </div>
 
         <!-- HEADLINE -->
         <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold font-industrial text-white uppercase tracking-tight leading-[1.1] mb-8 animate-fade-in-up">
-          Eu descolo o
-          <span class="text-yellow-500 bg-yellow-900/20 px-2">crescimento</span> da
-          sua empresa da necessidade de
-          contratar.
+          Cresça
+          <span class="text-yellow-500 bg-yellow-900/20 px-2">sem contratar</span>
+          mais gente.
         </h1>
 
         <!-- SUB-HEADLINE -->
         <div class="max-w-2xl mb-12 border-l-2 border-yellow-500/50 pl-6 animate-fade-in-up">
           <p class="text-lg md:text-xl text-gray-400 font-light leading-relaxed">
-            Eu construo a infraestrutura de dados e IA que audita 100% da sua operação de vendas e dá superpoderes aos seus melhores talentos.
+            Construo a infraestrutura de IA que resolve gargalos de <strong class="text-white">vendas, atendimento e operação</strong> — sem precisar empilhar pessoas, planilhas e retrabalho.
           </p>
         </div>
 
         <!-- CALL TO ACTION -->
-        <a href="#auditoria" class="group relative inline-block bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-widest px-8 py-4 text-sm md:text-base transition-all animate-fade-in-up" style="clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);">
-          Aplicar para Intervenção Estratégica
+        <a href="#contato" class="group relative inline-block bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-widest px-8 py-4 text-sm md:text-base transition-all animate-fade-in-up" style="clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);">
+          Falar comigo
           <svg class="inline-block w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
         </a>
         <p class="text-gray-600 text-xs mt-4 uppercase tracking-widest font-mono">
-          * Apenas para operações com faturamento superior a R$ 5M/ano.
+          * Para empresas com faturamento acima de R$ 5M/ano.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- DOBRA 2: O MANIFESTO DE GOVERNANÇA -->
+  <!-- FAIXA: GANCHO PARA O QUIZ (público PF / Círculo) -->
+  <aside class="bg-yellow-500 border-b-2 border-black px-6 py-8 md:py-10">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div class="max-w-3xl">
+        <p class="text-black font-bold font-industrial text-xl md:text-3xl uppercase leading-tight">
+          Só 6% das pessoas no mundo usam IA de verdade. Você é uma delas?
+        </p>
+        <p class="text-black/80 mt-2 text-sm md:text-base">
+          Em 90 segundos, você descobre.
+        </p>
+      </div>
+      <a href="/quiz/" class="shrink-0 inline-flex items-center justify-center gap-2 bg-black hover:bg-gray-900 text-yellow-500 font-bold uppercase tracking-widest px-6 py-4 text-sm md:text-base transition-colors whitespace-nowrap self-start md:self-auto">
+        Fazer o teste
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- DOBRA 2: BIO (autoridade rápida) -->
+  <section class="py-24 px-6 border-b border-gray-800 bg-[#0a0a0a]">
+    <div class="max-w-4xl mx-auto text-center md:text-left flex flex-col md:flex-row items-center gap-12">
+      <div class="shrink-0 border border-gray-700 overflow-hidden bg-gray-800">
+        <Image src={tochaBio} alt="Ricardo Tocha" class="object-cover" loading="lazy" />
+      </div>
+
+      <div>
+        <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-2">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+          Quem está por trás
+        </span>
+        <h2 class="text-3xl md:text-4xl font-bold font-industrial text-white uppercase tracking-tight mb-6 leading-none">
+          Sobre mim.
+        </h2>
+        <div class="space-y-4 text-gray-400 leading-relaxed text-sm md:text-base">
+          <p>
+            Ajudo empresas de serviços a aplicar IA em vendas, atendimento e operação para crescer com mais margem, menos retrabalho e menos dependência de contratação.
+          </p>
+          <p>
+            Minha experiência combina vendas B2B, marketing, produto, processos, design, código e execução.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOBRA 3: O DIAGNÓSTICO -->
   <section class="py-24 px-6 border-b border-gray-800 bg-[#0f0f0f]">
     <div class="max-w-7xl mx-auto">
       <div class="mb-16">
         <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-4">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-          O Diagnóstico
+          Onde está travando
         </span>
         <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight max-w-3xl leading-none">
-          A sua operação de vendas é uma caixa preta.
+          Sua operação está vazando. Em 3 lugares.
         </h2>
       </div>
 
@@ -84,20 +114,20 @@ import logoAmarelo from '../assets/logo-web-amarelo.webp';
           <div class="w-16 h-16 bg-green-900/20 border border-green-700/50 mb-6 flex items-center justify-center group-hover:bg-green-900/30 transition-colors">
             <svg class="w-7 h-7 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
           </div>
-          <h3 class="text-white font-bold text-lg mb-4 uppercase tracking-widest font-industrial border-b border-gray-800 pb-4">01. A Ilusão do Dado</h3>
+          <h3 class="text-white font-bold text-lg mb-4 uppercase tracking-widest font-industrial border-b border-gray-800 pb-4">01. Sua diretoria não vê o que vende</h3>
           <p class="text-gray-400 text-sm leading-relaxed">
-            A realidade das negociações acontece no WhatsApp, fora do alcance da diretoria. Leads caríssimos morrem no silêncio operacional da equipe comercial. Sem auditoria em tempo real, o seu CAC vira dinheiro queimado.
+            A negociação real acontece no WhatsApp, longe do CRM e fora do alcance da diretoria. Leads caros são perdidos sem ninguém saber por quê.
           </p>
         </div>
 
         <!-- Bloco 2 -->
         <div class="relative z-10 bg-[#0a0a0a] p-8 border border-gray-800 hover:border-gray-600 transition-colors group">
           <div class="w-16 h-16 bg-yellow-900/20 border border-yellow-700/50 mb-6 flex items-center justify-center group-hover:bg-yellow-900/30 transition-colors">
-            <svg class="w-7 h-7 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+            <svg class="w-7 h-7 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
           </div>
-          <h3 class="text-white font-bold text-lg mb-4 uppercase tracking-widest font-industrial border-b border-gray-800 pb-4">02. O Desperdício de Talento</h3>
+          <h3 class="text-white font-bold text-lg mb-4 uppercase tracking-widest font-industrial border-b border-gray-800 pb-4">02. Seu cliente espera mais do que aceita</h3>
           <p class="text-gray-400 text-sm leading-relaxed">
-            Seus A-Players gastam energia cobrando SLAs básicos e gerenciando falhas de funcionários medianos. A incompetência operacional da base drena o caixa e sabota o fechamento de grandes contratos.
+            Tickets espalhados em e-mail, WhatsApp e planilha. SLAs descumpridos sem ninguém perceber. O cliente que custou caro pra entrar vai embora antes que você consiga resgatar.
           </p>
         </div>
 
@@ -106,17 +136,109 @@ import logoAmarelo from '../assets/logo-web-amarelo.webp';
           <div class="w-16 h-16 bg-red-900/20 border border-red-700/50 mb-6 flex items-center justify-center group-hover:bg-red-900/30 transition-colors">
             <svg class="w-7 h-7 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" /></svg>
           </div>
-          <h3 class="text-white font-bold text-lg mb-4 uppercase tracking-widest font-industrial border-b border-gray-800 pb-4">03. O Colapso da Margem</h3>
+          <h3 class="text-white font-bold text-lg mb-4 uppercase tracking-widest font-industrial border-b border-gray-800 pb-4">03. Cada contratação derruba sua margem</h3>
           <p class="text-gray-400 text-sm leading-relaxed">
-            Escalar inflando o quadro de funcionários destrói o Unit Economics. Cada cadeira nova multiplica atrito, inflaciona o OPEX e aumenta o passivo trabalhista.
+            Crescer pelo CLT custa caro: salário, encargos, gestão e mais ruído na operação. A margem encolhe na mesma velocidade que o time aumenta.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- DOBRA 3: O ARSENAL -->
-  <section class="py-24 px-6 border-b border-gray-800 bg-[#0a0a0a] relative overflow-hidden">
+  <!-- DOBRA 4: CASOS REAIS -->
+  <section class="py-24 px-6 border-b border-gray-800 bg-[#0a0a0a]">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-16">
+        <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-4">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          Prova de Conceito
+        </span>
+        <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight max-w-4xl leading-none">
+          Casos reais.
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Case 1 -->
+        <div class="border border-gray-800 p-8 flex flex-col h-full hover:border-yellow-500/50 transition-colors bg-[#0a0a0a]">
+          <div class="mb-8">
+            <h3 class="text-xl font-bold font-industrial text-white uppercase tracking-tight mb-1">IBREP</h3>
+            <div class="flex flex-wrap items-center gap-2">
+              <p class="text-gray-500 uppercase tracking-widest text-[10px] font-mono">Auditoria e Recuperação de Margem</p>
+              <span class="text-[10px] uppercase tracking-widest font-mono text-yellow-500/80 border border-yellow-500/30 px-1.5 py-0.5">Vendas</span>
+            </div>
+          </div>
+          <div class="space-y-6 flex-grow">
+            <div>
+              <span class="bg-red-950/50 text-red-500 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O problema</span>
+              <p class="text-gray-400 text-sm">Marketing entregava leads caros, mas a diretoria não tinha como saber quantos eram realmente atendidos nem como os corretores conduziam a conversa no WhatsApp.</p>
+            </div>
+            <div>
+              <span class="bg-gray-800 text-gray-300 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O que fizemos</span>
+              <p class="text-gray-400 text-sm">Instalamos o Athena para auditar todas as conversas em tempo real e cruzar com o CRM. A diretoria passou a ver onde cada lead esfriava e onde cada corretor travava.</p>
+            </div>
+            <div>
+              <span class="bg-green-950/50 text-green-500 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O resultado</span>
+              <p class="text-white text-sm font-semibold">Tempo de resposta caiu de horas para minutos, conversão subiu e a diretoria parou de tomar decisão no escuro.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case 2 -->
+        <div class="border border-gray-800 p-8 flex flex-col h-full hover:border-yellow-500/50 transition-colors bg-[#0a0a0a]">
+          <div class="mb-8">
+            <h3 class="text-xl font-bold font-industrial text-white uppercase tracking-tight mb-1">REZULTZ</h3>
+            <div class="flex flex-wrap items-center gap-2">
+              <p class="text-gray-500 uppercase tracking-widest text-[10px] font-mono">War Room de Vendas</p>
+              <span class="text-[10px] uppercase tracking-widest font-mono text-yellow-500/80 border border-yellow-500/30 px-1.5 py-0.5">Vendas + Atendimento</span>
+            </div>
+          </div>
+          <div class="space-y-6 flex-grow">
+            <div>
+              <span class="bg-red-950/50 text-red-500 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O problema</span>
+              <p class="text-gray-400 text-sm">Equipe comercial travada em planilhas dispersas e processos manuais. Gestores sem visão real de meta, carteira ou status de crédito de cada cliente.</p>
+            </div>
+            <div>
+              <span class="bg-gray-800 text-gray-300 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O que fizemos</span>
+              <p class="text-gray-400 text-sm">Construímos uma sala de operação que junta meta, carteira, WhatsApp e análise de crédito numa tela só. Saíram as planilhas e as ferramentas soltas.</p>
+            </div>
+            <div>
+              <span class="bg-green-950/50 text-green-500 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O resultado</span>
+              <p class="text-white text-sm font-semibold">Receita e TPV crescendo de forma previsível, onboarding de cliente mais rápido e fim das análises manuais que travavam o ciclo.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case 3 -->
+        <div class="border border-gray-800 p-8 flex flex-col h-full hover:border-yellow-500/50 transition-colors bg-[#0a0a0a]">
+          <div class="mb-8">
+            <h3 class="text-xl font-bold font-industrial text-white uppercase tracking-tight mb-1">PLANA AMBIENTAL</h3>
+            <div class="flex flex-wrap items-center gap-2">
+              <p class="text-gray-500 uppercase tracking-widest text-[10px] font-mono">Orquestração Agêntica</p>
+              <span class="text-[10px] uppercase tracking-widest font-mono text-yellow-500/80 border border-yellow-500/30 px-1.5 py-0.5">Operação</span>
+            </div>
+          </div>
+          <div class="space-y-6 flex-grow">
+            <div>
+              <span class="bg-red-950/50 text-red-500 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O problema</span>
+              <p class="text-gray-400 text-sm">Comercial, financeiro e produção rodavam em planilhas e softwares desconectados. Prazo perdido virou rotina, e a margem caía a cada nova obra.</p>
+            </div>
+            <div>
+              <span class="bg-gray-800 text-gray-300 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O que fizemos</span>
+              <p class="text-gray-400 text-sm">Conectamos os três departamentos num fluxo só, com IA executando as etapas repetitivas de ponta a ponta — proposta, ordem de serviço, faturamento.</p>
+            </div>
+            <div>
+              <span class="bg-green-950/50 text-green-500 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O resultado</span>
+              <p class="text-white text-sm font-semibold">O trabalho de um departamento inteiro passou a caber em um único operador. Folha estacionou, volume de entregas multiplicou.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOBRA 5: A INFRAESTRUTURA -->
+  <section class="py-24 px-6 border-b border-gray-800 bg-[#0f0f0f] relative overflow-hidden">
     <div class="absolute top-0 right-0 w-1/3 h-full bg-yellow-500/5 -skew-x-12 transform origin-top-right"></div>
     <div class="max-w-7xl mx-auto relative z-10">
       <div class="mb-16">
@@ -125,22 +247,25 @@ import logoAmarelo from '../assets/logo-web-amarelo.webp';
           A Infraestrutura
         </span>
         <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight max-w-4xl leading-none">
-          A tecnologia para descolar a receita da folha de pagamento.
+          A tecnologia que cresce a receita sem inflar a folha.
         </h2>
         <div class="h-1 w-24 bg-yellow-500 mt-6"></div>
       </div>
 
       <div class="space-y-6">
-        <!-- Arsenal 1 -->
+        <!-- Arsenal 1: ATHENA -->
         <div class="flex items-start gap-6 bg-[#111] p-8 md:p-12 border border-gray-800 hover:border-yellow-500/50 transition-all duration-300 group flex-col md:flex-row">
           <div class="shrink-0 p-3 bg-black border border-gray-700 group-hover:border-yellow-500 transition-colors">
             <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" /></svg>
           </div>
           <div>
-            <h3 class="text-2xl font-bold font-industrial text-white uppercase tracking-tight mb-1">Auditoria Comercial por IA</h3>
-            <p class="text-yellow-500 uppercase tracking-widest text-xs font-mono mb-4">athena.app.br</p>
+            <h3 class="text-2xl font-bold font-industrial text-white uppercase tracking-tight mb-1">Athena <span class="text-gray-500 font-light normal-case tracking-normal">— Auditoria de WhatsApp comercial</span></h3>
+            <div class="flex flex-wrap items-center gap-2 mb-4">
+              <span class="text-yellow-500 uppercase tracking-widest text-xs font-mono">athena.app.br</span>
+              <span class="text-[10px] uppercase tracking-widest font-mono text-gray-500 border border-gray-800 px-2 py-0.5">Vendas + Atendimento</span>
+            </div>
             <p class="text-gray-400 leading-relaxed mb-4">
-              O Athena intercepta e analisa 100% das conversas de vendas no WhatsApp em tempo real. Cruza os dados com o CRM automaticamente e entrega à diretoria um raio-x completo de SLAs, objeções e aderência ao playbook.
+              Lê e analisa 100% das conversas de vendas no WhatsApp em tempo real. Cruza com o CRM e mostra à diretoria onde o time está ganhando, onde está perdendo e o que falar com cada lead.
             </p>
             <a href="/auditoria-comercial-ia/" class="inline-flex items-center gap-2 text-yellow-500 text-sm font-bold uppercase tracking-widest hover:text-yellow-400 transition-colors">
               Conhecer o Athena
@@ -153,16 +278,19 @@ import logoAmarelo from '../assets/logo-web-amarelo.webp';
           </div>
         </div>
 
-        <!-- Arsenal 2 -->
+        <!-- Arsenal 2: ÂNGULO -->
         <div class="flex items-start gap-6 bg-[#111] p-8 md:p-12 border border-gray-800 hover:border-yellow-500/50 transition-all duration-300 group flex-col md:flex-row">
           <div class="shrink-0 p-3 bg-black border border-gray-700 group-hover:border-yellow-500 transition-colors">
             <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
           </div>
           <div>
-            <h3 class="text-2xl font-bold font-industrial text-white uppercase tracking-tight mb-1">Prospecção Inteligente via WhatsApp</h3>
-            <p class="text-yellow-500 uppercase tracking-widest text-xs font-mono mb-4">angulo.ia.br</p>
+            <h3 class="text-2xl font-bold font-industrial text-white uppercase tracking-tight mb-1">Ângulo <span class="text-gray-500 font-light normal-case tracking-normal">— Prospecção em grupos de WhatsApp</span></h3>
+            <div class="flex flex-wrap items-center gap-2 mb-4">
+              <span class="text-yellow-500 uppercase tracking-widest text-xs font-mono">angulo.ia.br</span>
+              <span class="text-[10px] uppercase tracking-widest font-mono text-gray-500 border border-gray-800 px-2 py-0.5">Vendas</span>
+            </div>
             <p class="text-gray-400 leading-relaxed mb-4">
-              IA de vendas que monitora grupos de WhatsApp 24/7, identifica intenções de compra em tempo real e aborda o lead no direct automaticamente. Sem custo por clique, sem prospecção manual.
+              Monitora grupos de WhatsApp 24/7, identifica quem está pronto para comprar e manda mensagem no direct na hora. Sem custo por clique, sem SDR no telefone.
             </p>
             <a href="/prospeccao-whatsapp-ia/" class="inline-flex items-center gap-2 text-yellow-500 text-sm font-bold uppercase tracking-widest hover:text-yellow-400 transition-colors">
               Conhecer o Ângulo
@@ -175,38 +303,19 @@ import logoAmarelo from '../assets/logo-web-amarelo.webp';
           </div>
         </div>
 
-        <!-- Arsenal 3 -->
-        <div class="flex items-start gap-6 bg-[#111] p-8 md:p-12 border border-gray-800 hover:border-yellow-500/50 transition-all duration-300 group flex-col md:flex-row">
-          <div class="shrink-0 p-3 bg-black border border-gray-700 group-hover:border-yellow-500 transition-colors">
-            <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
-          </div>
-          <div>
-            <h3 class="text-2xl font-bold font-industrial text-white uppercase tracking-tight mb-1">Operações de Marketing Assistidas por IA</h3>
-            <p class="text-yellow-500 uppercase tracking-widest text-xs font-mono mb-4">apexmkt.ia.br</p>
-            <p class="text-gray-400 leading-relaxed mb-4">
-              Cada pessoa da sua agência ganha um assistente de IA. A IA executa, organiza e sugere — reduzindo burocracia e multiplicando a qualidade de entrega por ciclo.
-            </p>
-            <a href="/operacoes-marketing-ia/" class="inline-flex items-center gap-2 text-yellow-500 text-sm font-bold uppercase tracking-widest hover:text-yellow-400 transition-colors">
-              Conhecer o Apex MKT
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-            </a>
-            <a href="https://apexmkt.ia.br/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-gray-500 text-xs font-mono uppercase tracking-widest hover:text-yellow-500 transition-colors ml-4">
-              Acessar SaaS
-              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-            </a>
-          </div>
-        </div>
-
-        <!-- Arsenal 4: MERCÚRIO -->
+        <!-- Arsenal 3: MERCÚRIO -->
         <div class="flex items-start gap-6 bg-[#111] p-8 md:p-12 border border-gray-800 hover:border-yellow-500/50 transition-all duration-300 group flex-col md:flex-row">
           <div class="shrink-0 p-3 bg-black border border-gray-700 group-hover:border-yellow-500 transition-colors">
             <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
           </div>
           <div>
-            <h3 class="text-2xl font-bold font-industrial text-white uppercase tracking-tight mb-1">Gestão Integrada por IA</h3>
-            <p class="text-yellow-500 uppercase tracking-widest text-xs font-mono mb-4">mercurio.ia.br</p>
+            <h3 class="text-2xl font-bold font-industrial text-white uppercase tracking-tight mb-1">Mercúrio <span class="text-gray-500 font-light normal-case tracking-normal">— ERP/CRM unificado por IA</span></h3>
+            <div class="flex flex-wrap items-center gap-2 mb-4">
+              <span class="text-yellow-500 uppercase tracking-widest text-xs font-mono">mercurio.ia.br</span>
+              <span class="text-[10px] uppercase tracking-widest font-mono text-gray-500 border border-gray-800 px-2 py-0.5">Operação</span>
+            </div>
             <p class="text-gray-400 leading-relaxed mb-4">
-              Do comercial ao financeiro, num fluxo só. Proposta, execução e faturamento conectados sem planilhas paralelas, sem retrabalho, sem informação perdida.
+              Do comercial ao financeiro num fluxo só: proposta, execução e faturamento ligados, sem planilhas paralelas e sem retrabalho.
             </p>
             <a href="/gestao-integrada-ia/" class="inline-flex items-center gap-2 text-yellow-500 text-sm font-bold uppercase tracking-widest hover:text-yellow-400 transition-colors">
               Conhecer o Mercúrio
@@ -219,16 +328,19 @@ import logoAmarelo from '../assets/logo-web-amarelo.webp';
           </div>
         </div>
 
-        <!-- Arsenal 5: VÍDEO -->
+        <!-- Arsenal 4: VÍDEO -->
         <div class="flex items-start gap-6 bg-[#111] p-8 md:p-12 border border-gray-800 hover:border-yellow-500/50 transition-all duration-300 group flex-col md:flex-row">
           <div class="shrink-0 p-3 bg-black border border-gray-700 group-hover:border-yellow-500 transition-colors">
             <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-2.625 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 016 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m-12 5.25v-5.25m0 5.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125m-12 0v-1.5c0-.621-.504-1.125-1.125-1.125M18 18.375v-5.25m0 5.25v-1.5c0-.621.504-1.125 1.125-1.125M18 13.125v1.5c0 .621.504 1.125 1.125 1.125M18 13.125c0-.621.504-1.125 1.125-1.125M6 13.125v1.5c0 .621-.504 1.125-1.125 1.125M6 13.125C6 12.504 5.496 12 4.875 12m-1.5 0h1.5m-1.5 0c-.621 0-1.125-.504-1.125-1.125v-1.5c0-.621.504-1.125 1.125-1.125m1.5 3.75c-.621 0-1.125-.504-1.125-1.125v-1.5c0-.621.504-1.125 1.125-1.125" /></svg>
           </div>
           <div>
-            <h3 class="text-2xl font-bold font-industrial text-white uppercase tracking-tight mb-1">Produção de Vídeo com IA</h3>
-            <p class="text-yellow-500 uppercase tracking-widest text-xs font-mono mb-4">Máquina de Produção</p>
+            <h3 class="text-2xl font-bold font-industrial text-white uppercase tracking-tight mb-1">Máquina de Produção <span class="text-gray-500 font-light normal-case tracking-normal">— Vídeo com IA</span></h3>
+            <div class="flex flex-wrap items-center gap-2 mb-4">
+              <span class="text-yellow-500 uppercase tracking-widest text-xs font-mono">Pipeline interno</span>
+              <span class="text-[10px] uppercase tracking-widest font-mono text-gray-500 border border-gray-800 px-2 py-0.5">Marketing</span>
+            </div>
             <p class="text-gray-400 leading-relaxed mb-4">
-              Pipeline completo que transforma uma ideia em vídeo finalizado — roteiro, storyboard, imagens, clips, efeitos sonoros e timeline montada. Tudo orquestrado por IA.
+              De uma ideia ao vídeo pronto: roteiro, storyboard, imagens, clipes, efeitos e timeline montada. Tudo orquestrado por IA.
             </p>
             <a href="/video-ia/" class="inline-flex items-center gap-2 text-yellow-500 text-sm font-bold uppercase tracking-widest hover:text-yellow-400 transition-colors">
               Conhecer a Máquina
@@ -240,337 +352,120 @@ import logoAmarelo from '../assets/logo-web-amarelo.webp';
     </div>
   </section>
 
-  <!-- DOBRA 4: O CAMPO DE BATALHA (CASES) -->
-  <section class="py-24 px-6 border-b border-gray-800 bg-[#0a0a0a]">
-    <div class="max-w-7xl mx-auto">
-      <div class="mb-16">
-        <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-4">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-          Prova de Conceito
-        </span>
-        <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight max-w-4xl leading-none">
-          Intervenções Cirúrgicas em Unit Economics.
-        </h2>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Case 1 -->
-        <div class="border border-gray-800 p-8 flex flex-col h-full hover:border-yellow-500/50 transition-colors bg-[#0a0a0a]">
-          <div class="mb-8">
-            <h3 class="text-xl font-bold font-industrial text-white uppercase tracking-tight mb-1">IBREP</h3>
-            <p class="text-gray-500 uppercase tracking-widest text-[10px] font-mono">Auditoria e Recuperação de Margem</p>
-          </div>
-          <div class="space-y-6 flex-grow">
-            <div>
-              <span class="bg-red-950/50 text-red-500 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O Sangramento</span>
-              <p class="text-gray-400 text-sm">Leads de alto custo gerados pelo marketing escoavam para um vácuo operacional. A diretoria desconhecia a taxa real de rejeição e a qualidade da argumentação da equipe no WhatsApp.</p>
-            </div>
-            <div>
-              <span class="bg-gray-800 text-gray-300 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">A Intervenção</span>
-              <p class="text-gray-400 text-sm">O Athena assumiu a auditoria integral das interações entre corretores e clientes. O sistema cruzou os dados brutos com o pipeline do CRM em tempo real para expor a realidade da operação.</p>
-            </div>
-            <div>
-              <span class="bg-green-950/50 text-green-500 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O Lucro Protegido</span>
-              <p class="text-white text-sm font-semibold">O ponto cego gerencial foi erradicado. A conversão de vendas escalou através da imposição rigorosa de SLAs de resposta e correção imediata de rota.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Case 2 -->
-        <div class="border border-gray-800 p-8 flex flex-col h-full hover:border-yellow-500/50 transition-colors bg-[#0a0a0a]">
-          <div class="mb-8">
-            <h3 class="text-xl font-bold font-industrial text-white uppercase tracking-tight mb-1">REZULTZ</h3>
-            <p class="text-gray-500 uppercase tracking-widest text-[10px] font-mono">War Room de Vendas</p>
-          </div>
-          <div class="space-y-6 flex-grow">
-            <div>
-              <span class="bg-red-950/50 text-red-500 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O Sangramento</span>
-              <p class="text-gray-400 text-sm">Equipe comercial travada por excesso de burocracia — planilhas fragmentadas, processos 100% manuais e gestores sem visibilidade real da operação.</p>
-            </div>
-            <div>
-              <span class="bg-gray-800 text-gray-300 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">A Intervenção</span>
-              <p class="text-gray-400 text-sm">Desenvolvemos um War Room de vendas com visão completa de metas e carteira de clientes, integrado ao WhatsApp e ao funil de análise de crédito — eliminando planilhas e ferramentas dispersas.</p>
-            </div>
-            <div>
-              <span class="bg-green-950/50 text-green-500 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O Lucro Protegido</span>
-              <p class="text-white text-sm font-semibold">Previsibilidade restaurada, TPV e receita em crescimento, onboarding de novos clientes agilizado e fim das análises manuais prolongadas.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Case 3 -->
-        <div class="border border-gray-800 p-8 flex flex-col h-full hover:border-yellow-500/50 transition-colors bg-[#0a0a0a]">
-          <div class="mb-8">
-            <h3 class="text-xl font-bold font-industrial text-white uppercase tracking-tight mb-1">PLANA AMBIENTAL</h3>
-            <p class="text-gray-500 uppercase tracking-widest text-[10px] font-mono">Orquestração Agêntica</p>
-          </div>
-          <div class="space-y-6 flex-grow">
-            <div>
-              <span class="bg-red-950/50 text-red-500 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O Sangramento</span>
-              <p class="text-gray-400 text-sm">Um ecossistema fragmentado de planilhas e softwares genéricos inviabilizava a expansão da empresa. O passivo operacional e a perda crônica de prazos estrangulavam a margem líquida.</p>
-            </div>
-            <div>
-              <span class="bg-gray-800 text-gray-300 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">A Intervenção</span>
-              <p class="text-gray-400 text-sm">Orquestramos a fusão dos departamentos comercial, financeiro e produtivo via inteligência artificial. Workflows agênticos assumiram a execução de processos de ponta a ponta sem intervenção humana.</p>
-            </div>
-            <div>
-              <span class="bg-green-950/50 text-green-500 text-[10px] uppercase tracking-widest font-bold px-2 py-1 mb-2 inline-block">O Lucro Protegido</span>
-              <p class="text-white text-sm font-semibold">A capacidade produtiva de um departamento inteiro foi transferida para um único operador estratégico. A folha de pagamento estacionou enquanto o volume de entregas foi multiplicado.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DOBRA 5: A BIO EXECUTIVA -->
-  <section class="py-24 px-6 border-b border-gray-800 bg-[#0f0f0f]">
-    <div class="max-w-4xl mx-auto text-center md:text-left flex flex-col md:flex-row items-center gap-12">
-      <div class="shrink-0 border border-gray-700 overflow-hidden bg-gray-800">
-        <Image src={tochaBio} alt="Ricardo Tocha" class="object-cover" loading="lazy" />
-      </div>
-
-      <div>
-        <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-2">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
-          O Construtor
-        </span>
-        <h2 class="text-3xl md:text-4xl font-bold font-industrial text-white uppercase tracking-tight mb-6 leading-none">
-          O Arquiteto Cognitivo.
-        </h2>
-        <p class="text-gray-400 leading-relaxed text-sm md:text-base">
-          Sou Ricardo Tocha. Híbrido entre Vendas B2B Enterprise e Engenharia de Software. Construo a infraestrutura de dados e IA que protege o fluxo de caixa de operações complexas. Orquestração agêntica e LLMs de fronteira para execução cirúrgica do seu Go-To-Market.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- DOBRA 6: A QUALIFICAÇÃO (FORMULÁRIO EMBUTIDO) -->
-  <section id="auditoria" class="py-24 px-6 bg-[#0a0a0a] relative bg-grid-pattern">
+  <!-- DOBRA 6: CONTATO -->
+  <section id="contato" class="py-24 px-6 bg-[#0a0a0a] relative bg-grid-pattern">
     <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
-    <div class="max-w-3xl mx-auto relative z-10">
+    <div class="max-w-2xl mx-auto relative z-10">
       <div class="text-center mb-12">
+        <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-4">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>
+          Contato
+        </span>
         <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight mb-4 leading-none">
-          Sua operação suporta uma auditoria?
+          Vamos conversar.
         </h2>
-        <p class="text-gray-400">
-          Se sua empresa fatura mais de R$ 5M/ano e você tem orçamento para estancar o sangramento da folha de pagamento, inicie o diagnóstico abaixo. <strong class="text-white">Se não, feche a aba.</strong>
+        <p class="text-gray-400 text-base md:text-lg">
+          Conta o que você precisa. Te respondo no WhatsApp em breve.
         </p>
       </div>
 
-      <div class="bg-[#111] border border-gray-800 p-8 md:p-12 shadow-2xl relative overflow-hidden">
+      <div class="bg-[#111] border border-gray-800 p-8 md:p-10 shadow-2xl relative overflow-hidden">
         <!-- Barra superior amarela -->
         <div class="absolute top-0 left-0 w-full h-1 bg-yellow-500"></div>
 
         <!-- Estado de sucesso -->
-        <div id="form-home-success" style="display:none" class="text-center py-8">
-          <h3 class="text-2xl font-bold font-industrial text-white uppercase mb-4">Diagnóstico recebido.</h3>
-          <p class="text-gray-400">Entraremos em contato em breve.</p>
+        <div id="form-contato-success" style="display:none" class="text-center py-8">
+          <h3 class="text-2xl font-bold font-industrial text-white uppercase mb-3">Recebido.</h3>
+          <p class="text-gray-400">Te chamo no WhatsApp em breve.</p>
         </div>
 
-        <form id="form-home" onsubmit="handleHomeFormSubmit(event)">
+        <form id="form-contato" onsubmit="handleContatoSubmit(event)">
           <!-- Estado de erro -->
-          <p id="form-home-error" style="display:none" class="text-red-500 text-sm mb-4 text-center">Erro ao enviar. Tente novamente.</p>
+          <p id="form-contato-error" style="display:none" class="text-red-500 text-sm mb-4 text-center">Erro ao enviar. Tente novamente.</p>
 
           <!-- ===== CAMPOS OCULTOS PADRAO GTM ===== -->
-          <!-- UTM Parameters -->
-          <input type="hidden" name="utm_source" id="h_utm_source">
-          <input type="hidden" name="utm_medium" id="h_utm_medium">
-          <input type="hidden" name="utm_campaign" id="h_utm_campaign">
-          <input type="hidden" name="utm_content" id="h_utm_content">
-          <input type="hidden" name="utm_term" id="h_utm_term">
-          <!-- Google Ads -->
-          <input type="hidden" name="gclid" id="h_gclid">
-          <input type="hidden" name="gbraid" id="h_gbraid">
-          <input type="hidden" name="wbraid" id="h_wbraid">
-          <input type="hidden" name="gad_campaignid" id="h_gad_campaignid">
-          <input type="hidden" name="gad_source" id="h_gad_source">
-          <!-- Meta / Facebook -->
-          <input type="hidden" name="fbclid" id="h_fbclid">
-          <input type="hidden" name="fbc" id="h_fbc">
-          <input type="hidden" name="fbp" id="h_fbp">
-          <!-- Outras Plataformas -->
-          <input type="hidden" name="ttclid" id="h_ttclid">
-          <input type="hidden" name="msclkid" id="h_msclkid">
-          <input type="hidden" name="li_fat_id" id="h_li_fat_id">
-          <input type="hidden" name="twclid" id="h_twclid">
-          <input type="hidden" name="sck" id="h_sck">
-          <!-- Sessao / Atribuicao -->
-          <input type="hidden" name="landing_page" id="h_landing_page">
-          <input type="hidden" name="referrer" id="h_referrer">
-          <input type="hidden" name="user_agent" id="h_user_agent">
-          <input type="hidden" name="first_visit" id="h_first_visit">
-          <input type="hidden" name="session_id" id="h_session_id">
-          <input type="hidden" name="session_attributes_encoded" id="h_session_attributes_encoded">
-          <input type="hidden" name="originPage" id="h_originPage">
-          <input type="hidden" name="ref" id="h_ref">
+          <TrackingHiddenFields />
 
-          <!-- Pergunta 1 -->
-          <div class="mb-10">
-            <label class="block text-white font-bold mb-1 font-industrial">1. Qual a porcentagem exata de conversas de vendas que sua diretoria audita hoje?</label>
-            <span class="text-xs font-mono text-gray-500 mb-4 block uppercase tracking-wider">Selecione uma opção</span>
-            <div class="space-y-3">
-              <label class="flex items-center space-x-3 p-3 border border-gray-800 hover:border-gray-600 cursor-pointer transition-colors">
-                <input type="radio" name="q1" class="accent-yellow-500 bg-[#0a0a0a] border-gray-700" required>
-                <span class="text-gray-400">100%</span>
-              </label>
-              <label class="flex items-center space-x-3 p-3 border border-gray-800 hover:border-gray-600 cursor-pointer transition-colors">
-                <input type="radio" name="q1" class="accent-yellow-500 bg-[#0a0a0a] border-gray-700">
-                <span class="text-gray-400">Menos de 10%</span>
-              </label>
-              <label class="flex items-center space-x-3 p-3 border border-gray-800 hover:border-gray-600 cursor-pointer transition-colors">
-                <input type="radio" name="q1" class="accent-yellow-500 bg-[#0a0a0a] border-gray-700">
-                <span class="text-gray-400">0% (Operamos no escuro)</span>
-              </label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="contato-nome" class="block text-white text-xs font-bold mb-2 font-industrial uppercase tracking-widest">Nome</label>
+              <input id="contato-nome" type="text" name="name" required class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3.5 focus:border-yellow-500 focus:outline-none transition-colors placeholder-gray-700" placeholder="Como te chamar">
+            </div>
+            <div>
+              <label for="contato-empresa" class="block text-white text-xs font-bold mb-2 font-industrial uppercase tracking-widest">Empresa</label>
+              <input id="contato-empresa" type="text" name="company" class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3.5 focus:border-yellow-500 focus:outline-none transition-colors placeholder-gray-700" placeholder="Onde você atua">
             </div>
           </div>
 
-          <!-- Pergunta 2 -->
-          <div class="mb-10">
-            <label class="block text-white font-bold mb-1 font-industrial">2. Se o seu faturamento dobrar amanhã, quantas pessoas você precisaria contratar para suportar a operação?</label>
-            <span class="text-xs font-mono text-gray-500 mb-4 block uppercase tracking-wider">Digite um número</span>
-            <input type="number" class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-4 focus:border-yellow-500 focus:outline-none transition-colors placeholder-gray-700" placeholder="Ex: 5, 10, 20..." required>
-          </div>
-
-          <!-- Pergunta 3 -->
-          <div class="mb-10">
-            <label class="block text-white font-bold mb-1 font-industrial">3. Qual o ralo de dinheiro mais crítico da sua empresa hoje?</label>
-            <span class="text-xs font-mono text-gray-500 mb-4 block uppercase tracking-wider">Selecione uma opção</span>
-            <div class="space-y-3">
-              <label class="flex items-center space-x-3 p-3 border border-gray-800 hover:border-gray-600 cursor-pointer transition-colors">
-                <input type="radio" name="q3" class="accent-yellow-500 bg-[#0a0a0a] border-gray-700" required>
-                <span class="text-gray-400 text-sm">Leads esfriando por falta de SLA de resposta</span>
-              </label>
-              <label class="flex items-center space-x-3 p-3 border border-gray-800 hover:border-gray-600 cursor-pointer transition-colors">
-                <input type="radio" name="q3" class="accent-yellow-500 bg-[#0a0a0a] border-gray-700">
-                <span class="text-gray-400 text-sm">A-Players sobrecarregados agindo como babás de processo</span>
-              </label>
-              <label class="flex items-center space-x-3 p-3 border border-gray-800 hover:border-gray-600 cursor-pointer transition-colors">
-                <input type="radio" name="q3" class="accent-yellow-500 bg-[#0a0a0a] border-gray-700">
-                <span class="text-gray-400 text-sm">Falta de visibilidade real (CRM mentiroso)</span>
-              </label>
-              <label class="flex items-center space-x-3 p-3 border border-gray-800 hover:border-gray-600 cursor-pointer transition-colors">
-                <input type="radio" name="q3" class="accent-yellow-500 bg-[#0a0a0a] border-gray-700">
-                <span class="text-gray-400 text-sm">Custo fixo alto de operação corroendo a margem</span>
-              </label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label for="contato-whatsapp" class="block text-white text-xs font-bold mb-2 font-industrial uppercase tracking-widest">WhatsApp</label>
+              <input id="contato-whatsapp" type="tel" name="whatsapp" required class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3.5 focus:border-yellow-500 focus:outline-none transition-colors placeholder-gray-700" placeholder="+55 11 90000-0000">
+            </div>
+            <div>
+              <label for="contato-email" class="block text-white text-xs font-bold mb-2 font-industrial uppercase tracking-widest">Email</label>
+              <input id="contato-email" type="email" name="email" required class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3.5 focus:border-yellow-500 focus:outline-none transition-colors placeholder-gray-700" placeholder="seu@email.com">
             </div>
           </div>
 
-          <!-- Pergunta 4 -->
-          <div class="mb-10">
-            <label class="block text-white font-bold mb-1 font-industrial">4. Sua empresa fatura acima de R$ 5M/ano e possui uma equipe comercial de pelo menos 10 pessoas?</label>
-            <span class="text-xs font-mono text-gray-500 mb-4 block uppercase tracking-wider">Selecione uma opção</span>
-            <div class="flex gap-4">
-              <label class="flex-1 flex justify-center items-center p-4 border border-gray-800 hover:border-gray-600 cursor-pointer transition-colors text-center">
-                <input type="radio" name="q4" class="hidden peer" required>
-                <span class="text-gray-400 peer-checked:text-yellow-500 peer-checked:font-bold">SIM</span>
-              </label>
-              <label class="flex-1 flex justify-center items-center p-4 border border-gray-800 hover:border-gray-600 cursor-pointer transition-colors text-center">
-                <input type="radio" name="q4" class="hidden peer">
-                <span class="text-gray-400 peer-checked:text-yellow-500 peer-checked:font-bold">NÃO</span>
-              </label>
-            </div>
+          <div class="mb-8">
+            <label for="contato-mensagem" class="block text-white text-xs font-bold mb-2 font-industrial uppercase tracking-widest">Como posso ajudar? <span class="text-gray-600 font-normal lowercase tracking-normal">(opcional)</span></label>
+            <textarea id="contato-mensagem" name="message" rows="4" class="w-full bg-[#0a0a0a] border border-gray-700 text-white p-3.5 focus:border-yellow-500 focus:outline-none transition-colors placeholder-gray-700 resize-none" placeholder="Escreva à vontade. Ou só mande oi e a gente conversa."></textarea>
           </div>
 
-          <!-- Pergunta 5 -->
-          <div class="mb-12">
-            <label class="block text-white font-bold mb-1 font-industrial">5. Você está disposto a investir entre R$ 30k e R$ 80k para descolar seu crescimento da folha de pagamento e implementar uma Infraestrutura de Governança?</label>
-            <span class="text-xs font-mono text-gray-500 mb-4 block uppercase tracking-wider">Selecione uma opção</span>
-            <div class="space-y-3">
-              <label class="flex items-center space-x-3 p-3 border border-gray-800 hover:border-gray-600 cursor-pointer transition-colors">
-                <input type="radio" name="q5" class="accent-yellow-500 bg-[#0a0a0a] border-gray-700" required>
-                <span class="text-gray-400 text-sm">Sim, prioridade imediata.</span>
-              </label>
-              <label class="flex items-center space-x-3 p-3 border border-gray-800 hover:border-gray-600 cursor-pointer transition-colors">
-                <input type="radio" name="q5" class="accent-yellow-500 bg-[#0a0a0a] border-gray-700">
-                <span class="text-gray-400 text-sm">Quero entender o ROI e o Unit Economics primeiro.</span>
-              </label>
-              <label class="flex items-center space-x-3 p-3 border border-gray-800 hover:border-gray-600 cursor-pointer transition-colors">
-                <input type="radio" name="q5" class="accent-yellow-500 bg-[#0a0a0a] border-gray-700">
-                <span class="text-gray-400 text-sm">Não tenho orçamento para isso no momento.</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- SUBMIT -->
           <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-widest py-4 text-sm md:text-base transition-all flex items-center justify-center gap-2 group">
-            Solicitar Análise de Board
-            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>
+            <span class="contato-btn-label">Enviar contato</span>
+            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </button>
 
           <p class="flex items-center justify-center gap-2 text-xs text-gray-600 mt-4">
             <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
-            Suas informações são confidenciais e protegidas.
+            Suas informações são confidenciais.
           </p>
-
         </form>
       </div>
     </div>
   </section>
 
   <script is:inline>
-  function handleHomeFormSubmit(e) {
+  function handleContatoSubmit(e) {
     e.preventDefault();
     var form = e.target;
     var btn = form.querySelector('button[type="submit"]');
-    var btnText = btn.querySelector('span') || btn;
+    var btnLabel = btn.querySelector('.contato-btn-label');
+    var originalLabel = btnLabel ? btnLabel.textContent : '';
     btn.disabled = true;
-    btnText.textContent = 'Enviando...';
+    if (btnLabel) btnLabel.textContent = 'Enviando...';
 
+    if (window.__wlPopulateHiddenFields) window.__wlPopulateHiddenFields(form);
     var tracking = window.__wlTracking || {};
     var formData = new FormData(form);
     var payload = {};
     formData.forEach(function(value, key) { payload[key] = value; });
     Object.keys(tracking).forEach(function(k) { payload[k] = tracking[k]; });
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: "form_submit_lead",
-      lead_name: null,
-      lead_email: null,
-      lead_whatsapp: null,
-      utm_source: tracking.utm_source || null,
-      utm_medium: tracking.utm_medium || null,
-      utm_campaign: tracking.utm_campaign || null,
-      utm_content: tracking.utm_content || null,
-      utm_term: tracking.utm_term || null,
-      gclid: tracking.gclid || null,
-      gbraid: tracking.gbraid || null,
-      wbraid: tracking.wbraid || null,
-      gad_campaignid: tracking.gad_campaignid || null,
-      gad_source: tracking.gad_source || null,
-      fbclid: tracking.fbclid || null,
-      fbc: tracking.fbc || null,
-      fbp: tracking.fbp || null,
-      ttclid: tracking.ttclid || null,
-      msclkid: tracking.msclkid || null,
-      li_fat_id: tracking.li_fat_id || null,
-      twclid: tracking.twclid || null,
-      sck: tracking.sck || null,
-      landing_page: tracking.landing_page || null,
-      referrer: tracking.referrer || null,
-      user_agent: tracking.user_agent || null,
-      first_visit: tracking.first_visit || null,
-      session_id: tracking.session_id || null,
-      session_attributes_encoded: tracking.session_attributes_encoded || null,
-      origin_page: tracking.originPage || null,
-      ref: tracking.ref || null
-    });
+    if (window.__wlPushLeadSubmit) {
+      window.__wlPushLeadSubmit({
+        name: payload.name,
+        email: payload.email,
+        whatsapp: payload.whatsapp
+      });
+    }
 
-    payload.source = "shield_home";
+    payload.source = "tocha_home_contato";
 
     fetch("https://apolo-lead-proxy.rapricardo.workers.dev", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     }).then(function() {
-      var successDiv = document.getElementById('form-home-success');
+      var successDiv = document.getElementById('form-contato-success');
       if (successDiv) successDiv.style.display = 'block';
       form.style.display = 'none';
     }).catch(function() {
       btn.disabled = false;
-      btnText.textContent = 'Solicitar Análise de Board';
-      var errorMsg = document.getElementById('form-home-error');
+      if (btnLabel) btnLabel.textContent = originalLabel;
+      var errorMsg = document.getElementById('form-contato-error');
       if (errorMsg) errorMsg.style.display = 'block';
     });
   }

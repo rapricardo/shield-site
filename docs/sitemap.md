@@ -1,28 +1,31 @@
-# Sitemap — Agency Shield AI
+# Sitemap — Ricardo Tocha
 
 ## Páginas
 
-### / (Home) — Landing Page
-Página única (one-page) com seções:
+### / (Home) — Hub institucional e diagnóstico
+Página principal com seções:
 
-1. **Hero** — headline principal, CTA
-2. **PainCycle** — O Ciclo da Morte da Agência (3 steps)
-3. **Solution** — O que entregamos (4 deliverables)
-4. **BusinessModel** — Como funciona a parceria (2 colunas)
-5. **Authority** — Sobre o fundador
-6. **FAQ** — Perguntas frequentes (accordion, React)
-7. **ContactForm** — Formulário de aplicação (React)
-8. **Footer** — Copyright (no Layout)
+1. **Hero** — tese principal e CTA de diagnóstico
+2. **Diagnóstico** — problemas de visibilidade, talento e margem
+3. **Infraestrutura** — arsenal de produtos/soluções conectadas
+4. **Cases** — provas de conceito e unit economics
+5. **Autoridade** — sobre Ricardo Tocha
+6. **Formulário** — aplicação para auditoria/intervenção
+7. **Footer** — links para soluções e copyright
 
 ## Componentes
 
 | Componente | Tipo | Interatividade |
 |-----------|------|---------------|
-| Hero.astro | section | Não (scroll to CTA) |
-| PainCycle.astro | section | Não |
-| Solution.astro | section | Não |
-| BusinessModel.astro | section | Não |
-| Authority.astro | section | Não |
-| FAQ.tsx | section | Sim (accordion) — `client:visible` |
-| ContactForm.tsx | section | Sim (form) — `client:load` |
 | Layout.astro | layout | Não |
+| TrackingHiddenFields.astro | form helper | Não |
+| ContactForm.tsx | form | Sim — `client:load` |
+| FAQ.tsx | section | Sim — `client:visible` |
+
+## Areas
+
+- **Public site:** home e paginas de servico.
+- **Funnels:** `/video-ia/*`.
+- **Members:** `/membros/*`.
+- **Admin:** `/admin/*`.
+- **Platform:** Supabase, Asaas, Workers, tracking e emails.

@@ -1,0 +1,187 @@
+---
+interface Props {
+  nivelAtual: 1 | 2 | 3;
+}
+const { nivelAtual } = Astro.props;
+
+interface Conceito {
+  nome: string;
+  oque: string;
+  porque: string;
+}
+
+const conceitosPorNivel: Record<1 | 2 | 3, Conceito[]> = {
+  1: [
+    {
+      nome: 'Projeto / Contexto persistente',
+      oque: 'Pasta de trabalho que o Claude/ChatGPT lembra entre conversas.',
+      porque: 'Você para de explicar tudo do zero toda vez. Já dobra sua produtividade.',
+    },
+    {
+      nome: 'Prompt versionado',
+      oque: 'Prompts salvos como arquivo (não no histórico do chat).',
+      porque: 'Vira ativo seu — você reaproveita, melhora e compartilha.',
+    },
+    {
+      nome: 'Cursor / Windsurf',
+      oque: 'Editor de código onde a IA lê e edita seus arquivos.',
+      porque: 'Mesmo se você não é dev, automatiza planilha, contrato, relatório.',
+    },
+    {
+      nome: 'Claude Code / CLI agêntica',
+      oque: 'Versão de terminal do Claude que executa tarefas em sequência sozinha.',
+      porque: 'É a porta de entrada para deixar a IA trabalhar sem supervisão.',
+    },
+  ],
+  2: [
+    {
+      nome: 'MCP (Model Context Protocol)',
+      oque: 'O "USB-C" dos agentes — conecta Claude a Slack, Notion, GitHub, banco de dados.',
+      porque: 'Transforma seu Claude num orquestrador de qualquer ferramenta sua.',
+    },
+    {
+      nome: 'Skills versionadas',
+      oque: 'Prompt + ferramenta + contexto, salvos como pacote reutilizável.',
+      porque: 'Você para de copiar/colar prompt — ele virou software.',
+    },
+    {
+      nome: 'Self-hosting (VPS)',
+      oque: 'IA rodando em servidor seu, 24/7, fora do navegador.',
+      porque: 'A IA não dorme, não fecha aba, não esquece.',
+    },
+    {
+      nome: 'Agente em background',
+      oque: 'Tarefa que executa sem você abrir nada (cron, webhook, fila).',
+      porque: 'É a diferença entre "uso" e "tenho funcionário digital".',
+    },
+  ],
+  3: [
+    {
+      nome: 'Multi-agent orquestration',
+      oque: 'Vários agentes especializados trabalhando em paralelo, coordenados.',
+      porque: 'É como ter departamentos inteiros operando em segundo plano.',
+    },
+    {
+      nome: 'Observability de agentes',
+      oque: 'Logs, métricas e traces de cada execução de agente.',
+      porque: 'Sem isso, você opera no escuro quando algo dá errado em produção.',
+    },
+    {
+      nome: 'Eval-driven development',
+      oque: 'Testar agentes contra cenários reais antes de subir.',
+      porque: 'Garante que upgrade de modelo não quebra tudo.',
+    },
+    {
+      nome: 'Arquitetura híbrida humano-agente',
+      oque: 'Decidir o que IA faz sozinha, o que pede aprovação, o que humano nem vê.',
+      porque: 'É o ponto onde sua escala vira realmente ilimitada.',
+    },
+  ],
+};
+
+const conceitos = conceitosPorNivel[nivelAtual];
+---
+
+<!-- BLOCO: O que você ainda não sabe -->
+<section class="py-20 px-6 border-b border-gray-800 bg-[#0a0a0a]">
+  <div class="max-w-5xl mx-auto">
+    <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-4">
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+      O que você ainda não sabe
+    </span>
+    <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight leading-none mb-12">
+      4 conceitos que separam você do próximo nível.
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {conceitos.map((c) => (
+        <div class="bg-[#111] border border-gray-800 p-6 md:p-8 hover:border-yellow-500/50 transition-colors">
+          <h3 class="text-lg md:text-xl font-bold font-industrial text-yellow-500 uppercase tracking-tight mb-4">{c.nome}</h3>
+          <p class="text-gray-300 text-sm leading-relaxed mb-3">
+            <strong class="text-white">O que é:</strong> {c.oque}
+          </p>
+          <p class="text-gray-300 text-sm leading-relaxed">
+            <strong class="text-white">Por que importa:</strong> {c.porque}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- BLOCO: Os 4 modos -->
+<section class="py-20 px-6 border-b border-gray-800 bg-[#0f0f0f]">
+  <div class="max-w-5xl mx-auto">
+    <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-4">
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+      Onde você está no framework
+    </span>
+    <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight leading-none mb-6">
+      O que a McKinsey chama de "Orquestrador" a gente chama de Soberano.
+    </h2>
+    <p class="text-gray-400 text-sm md:text-base leading-relaxed mb-12 max-w-3xl">
+      McKinsey e BCG mapearam 4 modos de trabalho com IA. A gente não inventou as 3 identidades — demos um nome melhor a um framework que já é referência mundial.
+    </p>
+
+    <div class="overflow-hidden border border-gray-800">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="bg-[#111] border-b border-gray-800">
+            <th class="p-4 text-yellow-500 text-xs uppercase tracking-widest font-mono">Modo (BCG/McKinsey)</th>
+            <th class="p-4 text-yellow-500 text-xs uppercase tracking-widest font-mono">Nossa categoria</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-300">
+          <tr class="border-b border-gray-800" class:list={[{ 'bg-yellow-500/10': nivelAtual === 1 }]}>
+            <td class="p-4">Autor — humano faz, IA ajuda em fragmentos</td>
+            <td class="p-4 font-bold">O Curioso</td>
+          </tr>
+          <tr class="border-b border-gray-800">
+            <td class="p-4">Revisor — IA escreve, humano aprova</td>
+            <td class="p-4 font-bold">Curioso → Construtor (transição)</td>
+          </tr>
+          <tr class="border-b border-gray-800" class:list={[{ 'bg-yellow-500/10': nivelAtual === 2 }]}>
+            <td class="p-4">Diretor — humano dá tarefa multi-etapas, IA executa</td>
+            <td class="p-4 font-bold">O Construtor</td>
+          </tr>
+          <tr class:list={[{ 'bg-yellow-500/10': nivelAtual === 3 }]}>
+            <td class="p-4 font-bold text-white">Orquestrador — humano projeta sistema, agentes rodam em paralelo</td>
+            <td class="p-4 font-bold text-yellow-500">O Soberano</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- BLOCO: A regra 10-20-70 -->
+<section class="py-20 px-6 border-b border-gray-800 bg-[#0a0a0a]">
+  <div class="max-w-4xl mx-auto">
+    <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-4">
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+      A regra que ninguém te conta
+    </span>
+    <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight leading-none mb-12">
+      O modelo é commodity. O processo é tudo.
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+      <div class="bg-[#111] border border-gray-800 p-6 text-center">
+        <p class="text-yellow-500 text-5xl md:text-6xl font-bold font-industrial mb-2">10%</p>
+        <p class="text-gray-400 text-sm uppercase tracking-widest font-mono">Modelo (GPT, Claude...)</p>
+      </div>
+      <div class="bg-[#111] border border-gray-800 p-6 text-center">
+        <p class="text-yellow-500 text-5xl md:text-6xl font-bold font-industrial mb-2">20%</p>
+        <p class="text-gray-400 text-sm uppercase tracking-widest font-mono">Infraestrutura</p>
+      </div>
+      <div class="bg-[#111] border-2 border-yellow-500 p-6 text-center">
+        <p class="text-yellow-500 text-5xl md:text-6xl font-bold font-industrial mb-2">70%</p>
+        <p class="text-white text-sm uppercase tracking-widest font-mono font-bold">Pessoas e processo</p>
+      </div>
+    </div>
+
+    <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+      Pesquisa BCG. Os 6% que ganham com IA não têm o melhor GPT — têm coragem de redesenhar o trabalho. <strong class="text-white">2,8x</strong> mais propensos a reconstruir do que sobrepor IA num processo quebrado.
+    </p>
+  </div>
+</section>

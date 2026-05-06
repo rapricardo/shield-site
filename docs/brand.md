@@ -1,4 +1,4 @@
-# Brand Guidelines — Agency Shield AI
+# Brand Guidelines — Ricardo Tocha
 
 ## Identidade Visual
 
@@ -19,10 +19,10 @@
 
 ### Tom de Voz
 - Industrial, direto, sem rodeios
-- Metáforas de engenharia e infraestrutura
+- Metáforas de engenharia, governança e infraestrutura
 - Confiança sem arrogância
-- Foco em resultados mensuráveis
-- Linguagem B2B2B (fala com agências sobre os clientes delas)
+- Foco em resultados mensuráveis e unit economics
+- Linguagem B2B para gestores, donos de negócio e operações comerciais complexas
 
 ### Padrões Visuais
 - Grid pattern no background (40px)
@@ -34,8 +34,8 @@
 
 ## Posicionamento
 
-**Proposta:** "Infraestrutura de IA para retenção de clientes de agências de performance"
+**Proposta:** "Arquitetura de Operações Híbridas para negócios B2B"
 
-**Diferencial:** Não é mais um SaaS. É parceria técnica (White Label ou estratégica) que instala sistemas de atendimento e qualificação via IA dentro dos clientes da agência.
+**Diferencial:** Não é mais um SaaS isolado. É a combinação de diagnóstico, governança comercial, dados e automação por IA para descolar crescimento da necessidade linear de contratação.
 
-**Persona alvo:** Dono de agência de performance digital com 10+ clientes ativos, que perde contratos por falta de conversão dos leads gerados.
+**Persona alvo:** Donos, diretores e gestores comerciais de empresas B2B com operação de vendas relevante, gargalos de visibilidade e pressão para crescer sem inflar OPEX.

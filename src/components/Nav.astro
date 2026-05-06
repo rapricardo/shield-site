@@ -1,0 +1,65 @@
+---
+import { Image } from 'astro:assets';
+import logoAmarelo from '../assets/logo-web-amarelo.webp';
+
+interface Props {
+  cta?: { label: string; href: string };
+}
+
+const { cta = { label: 'Fazer o teste', href: '/quiz/' } } = Astro.props;
+
+const links = [
+  { label: 'Manifesto', href: '/manifesto/' },
+  { label: 'O Círculo', href: '/circulo/' },
+  { label: 'Login', href: '/membros/login/' },
+];
+
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => currentPath === href || currentPath.startsWith(href);
+---
+
+<nav class="fixed w-full z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-gray-800">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
+    <a href="/" class="shrink-0">
+      <Image src={logoAmarelo} alt="Ricardo Tocha" width={160} height={40} class="h-8 w-auto" />
+    </a>
+
+    <div class="flex items-center gap-1 md:gap-2">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class:list={[
+            'hidden md:inline-flex text-xs font-bold uppercase tracking-widest px-3 py-2 transition-colors',
+            isActive(link.href)
+              ? 'text-yellow-500'
+              : 'text-gray-400 hover:text-yellow-500',
+          ]}
+        >
+          {link.label}
+        </a>
+      ))}
+
+      <a
+        href={cta.href}
+        class="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black text-xs font-bold uppercase tracking-widest px-4 py-2 transition-colors ml-2"
+      >
+        {cta.label}
+      </a>
+    </div>
+  </div>
+
+  <!-- Linha mobile com navegação compacta -->
+  <div class="md:hidden border-t border-gray-800 px-6 py-2 flex items-center gap-3 overflow-x-auto">
+    {links.map((link) => (
+      <a
+        href={link.href}
+        class:list={[
+          'text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-colors',
+          isActive(link.href) ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500',
+        ]}
+      >
+        {link.label}
+      </a>
+    ))}
+  </div>
+</nav>

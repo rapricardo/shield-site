@@ -1,0 +1,170 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Nav from '../../../components/Nav.astro';
+import EscadaNiveis from '../../../components/operador/EscadaNiveis.astro';
+import SecoesComuns from '../../../components/operador/SecoesComuns.astro';
+import ConviteCirculo from '../../../components/operador/ConviteCirculo.astro';
+---
+
+<Layout title="Você é o Construtor | Operação Soberana" description="Você trabalha com a IA. Mas ainda não delega. Veja o mapa do que separa você do Soberano.">
+
+  <Nav cta={{ label: 'Refazer o teste', href: '/quiz/' }} />
+
+  <!-- HERO DO RESULTADO -->
+  <section class="relative pt-32 md:pt-40 pb-20 px-6 bg-grid-pattern overflow-hidden border-b border-gray-800">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/30 via-transparent to-[#0a0a0a]"></div>
+    <div class="max-w-4xl mx-auto relative z-10">
+      <div class="inline-flex items-center gap-2 border border-yellow-500/30 bg-yellow-500/10 text-yellow-500 text-xs font-bold uppercase tracking-widest px-4 py-1.5 mb-8">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+        Seu mapa
+      </div>
+
+      <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold font-industrial text-white uppercase tracking-tight leading-[0.95] mb-6">
+        Você é <span class="text-yellow-500">O Construtor</span>.
+      </h1>
+
+      <p class="text-lg md:text-xl text-gray-300 font-light leading-tight mb-8 max-w-3xl">
+        Você <strong class="text-white">trabalha com</strong> a IA. Mas ainda não <strong class="text-white">delega</strong>.
+      </p>
+
+      <div class="flex flex-wrap gap-3 items-center text-xs font-mono uppercase tracking-widest">
+        <span class="bg-yellow-500/10 border border-yellow-500/30 text-yellow-500 px-3 py-1.5">Aprox. 30% das pessoas</span>
+        <span class="bg-gray-800 text-gray-400 px-3 py-1.5">Equivalente: "Diretor" no framework McKinsey</span>
+      </div>
+    </div>
+  </section>
+
+  <EscadaNiveis nivelAtual={2} />
+
+  <!-- BLOCO: ECO DAS RESPOSTAS -->
+  <section class="py-20 px-6 border-b border-gray-800 bg-[#0a0a0a]">
+    <div class="max-w-4xl mx-auto">
+      <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-4">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        Por que você é o Construtor
+      </span>
+      <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight leading-none mb-8">
+        O que suas respostas dizem.
+      </h2>
+
+      <div id="eco-respostas" class="space-y-4 text-gray-300 text-sm md:text-base leading-relaxed">
+        <p>Você experimenta. Você sabe que existe vida além do navegador. Mas a operação ainda passa toda por você.</p>
+        <p data-dor class="hidden p-4 border-l-2 border-yellow-500 bg-yellow-500/5">
+          Você marcou <strong id="dor-count" class="text-yellow-500">0</strong> de 4 sintomas de operação travada (sistemas demais, planilhas manuais, informação espalhada, dia exausto). <strong class="text-white">Isso não é desorganização — é falta de stack.</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOCO: O QUE SIGNIFICA PRO PERFIL -->
+  <section class="py-20 px-6 border-b border-gray-800 bg-[#0f0f0f]">
+    <div class="max-w-4xl mx-auto">
+      <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-4">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+        O que isso significa pra você
+      </span>
+
+      <!-- Versão FUNCIONÁRIO -->
+      <div data-perfil="funcionario" class="hidden">
+        <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight leading-none mb-8">
+          Você está ganhando — mas o teto está logo ali em cima.
+        </h2>
+        <div class="space-y-6 text-gray-300 text-sm md:text-base leading-relaxed">
+          <p>
+            Quem opera IA como você ganha em média <strong class="text-yellow-500">56% a mais</strong> que pares no mesmo cargo que não dominam IA. Esse prêmio salarial mais que dobrou em um ano.
+          </p>
+          <p>
+            <em>Fonte: PwC 2025 Global AI Jobs Barometer (1 bilhão de anúncios analisados).</em>
+          </p>
+          <p class="text-white text-lg md:text-xl font-bold">
+            Mas tem outra estatística que pesa: <strong class="text-yellow-500">41% das empresas</strong> vão reduzir time até 2030 — e os primeiros a sair são os que executam tarefas repetitivas.
+          </p>
+          <p>
+            O Construtor garante seu lugar hoje. O Soberano garante que você seja quem pilota a IA que substitui as outras pessoas — não o substituído.
+          </p>
+        </div>
+      </div>
+
+      <!-- Versão EMPREENDEDOR -->
+      <div data-perfil="empreendedor" class="hidden">
+        <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight leading-none mb-8">
+          Você tem o talento. Falta o sistema.
+        </h2>
+        <div class="space-y-6 text-gray-300 text-sm md:text-base leading-relaxed">
+          <p>
+            <strong class="text-yellow-500">44% dos SaaS lucrativos do mundo</strong> hoje são tocados por uma única pessoa. O número dobrou desde 2018. Empresas de IA chegam a US$ 10M ARR em <strong class="text-white">2,5 anos</strong> — vs 6 anos no SaaS tradicional.
+          </p>
+          <p>
+            <em>Fonte: Stripe Indie Founder Report + Bessemer State of AI 2025.</em>
+          </p>
+          <p class="text-white text-lg md:text-xl font-bold">
+            Você está na era em que o time grande virou desvantagem. Mas você ainda é o gargalo da própria operação.
+          </p>
+          <p>
+            O Soberano é onde a empresa de uma pessoa só vira possível. É onde a IA atende cliente, fecha proposta, processa pagamento e te chama no Slack só quando precisa de decisão.
+          </p>
+        </div>
+      </div>
+
+      <!-- Versão EMPRESA -->
+      <div data-perfil="empresa" class="hidden">
+        <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight leading-none mb-8">
+          Sua operação está acima da média. Não é o suficiente.
+        </h2>
+        <div class="space-y-6 text-gray-300 text-sm md:text-base leading-relaxed">
+          <p>
+            Empresas líderes em IA crescem receita <strong class="text-yellow-500">1,7x mais rápido</strong> e mantêm margem EBIT <strong class="text-yellow-500">1,6x maior</strong> que as atrasadas. Cada caso de uso vale 5x mais.
+          </p>
+          <p>
+            <em>Fonte: BCG Build for the Future 2025 (1.000+ empresas analisadas).</em>
+          </p>
+          <p class="text-white text-lg md:text-xl font-bold">
+            <strong class="text-yellow-500">88% das empresas</strong> já usam IA. Só <strong class="text-yellow-500">39%</strong> reportam impacto em EBIT. O abismo entre "tem ChatGPT no time" e "tem IA no resultado" é onde mora a margem.
+          </p>
+          <p>
+            Sua operação parou no Construtor porque executar IA exige redesenho de processo — não compra de licença. É exatamente o que o Soberano resolve.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <SecoesComuns nivelAtual={2} />
+
+  <ConviteCirculo nivel={2} />
+
+  <!-- Rodapé das fontes -->
+  <section class="py-8 px-6 bg-black border-t border-gray-900">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-gray-600 text-xs font-mono leading-relaxed">
+        Dados: BCG Build for the Future 2025 · McKinsey State of AI 2025 · PwC AI Jobs Barometer 2025 · WEF Future of Jobs 2025 · Stripe Indie Founder Report · Brynjolfsson, Li & Raymond (NBER 31161)
+      </p>
+    </div>
+  </section>
+
+  <script is:inline>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var perfil = params.get('perfil');
+      var dor = parseInt(params.get('dor') || '0', 10);
+
+      // Mostra apenas o bloco do perfil
+      var perfisValidos = ['funcionario', 'empreendedor', 'empresa'];
+      var perfilAtivo = perfisValidos.indexOf(perfil) !== -1 ? perfil : 'empreendedor';
+      document.querySelectorAll('[data-perfil]').forEach(function (el) {
+        if (el.getAttribute('data-perfil') === perfilAtivo) {
+          el.classList.remove('hidden');
+        }
+      });
+
+      // Eco da dor
+      if (dor > 0) {
+        var dorBox = document.querySelector('[data-dor]');
+        var dorCount = document.getElementById('dor-count');
+        if (dorBox) dorBox.classList.remove('hidden');
+        if (dorCount) dorCount.textContent = String(dor);
+      }
+    })();
+  </script>
+
+</Layout>

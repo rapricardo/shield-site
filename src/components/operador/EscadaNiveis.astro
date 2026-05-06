@@ -1,0 +1,277 @@
+---
+interface Props {
+  nivelAtual: 0 | 1 | 2 | 3;
+}
+const { nivelAtual } = Astro.props;
+const isNeutro = nivelAtual === 0;
+
+interface Nivel {
+  num: 1 | 2 | 3;
+  identidade: string;
+  acao: string;
+  relacao: string;
+  resumo: string;
+  percent: string;
+  equiv: string;
+}
+
+const niveis: Nivel[] = [
+  {
+    num: 1,
+    identidade: 'O Curioso',
+    acao: 'Consulta a IA',
+    relacao: 'Você pergunta. Ela responde. Você executa.',
+    resumo: 'A IA é seu mentor por demanda. Trabalho ainda é seu.',
+    percent: '~64%',
+    equiv: 'Autor',
+  },
+  {
+    num: 2,
+    identidade: 'O Construtor',
+    acao: 'Trabalha com a IA',
+    relacao: 'Vocês criam juntos. Iteração constante.',
+    resumo: 'IA propõe, você ajusta. Já dobrou seu output.',
+    percent: '~30%',
+    equiv: 'Diretor',
+  },
+  {
+    num: 3,
+    identidade: 'O Soberano',
+    acao: 'IA trabalha pra você',
+    relacao: 'Você comanda. Agentes executam sozinhos.',
+    resumo: 'Você não opera. Coreografa. Os 6%.',
+    percent: '6%',
+    equiv: 'Orquestrador',
+  },
+];
+---
+
+<section class="py-16 md:py-20 px-6 border-b border-gray-800 bg-[#0f0f0f]">
+  <div class="max-w-6xl mx-auto">
+    <div class="mb-12 text-center">
+      <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-4">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+        A jornada
+      </span>
+      <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight leading-none">
+        De curioso a soberano.
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 relative">
+      {niveis.map((n) => {
+        const isAtual = n.num === nivelAtual;
+        const isPassado = n.num < nivelAtual;
+        return (
+          <div
+            class:list={[
+              'relative p-6 md:p-8 transition-all flex flex-col',
+              isAtual
+                ? 'bg-yellow-500/10 border-2 border-yellow-500'
+                : 'bg-[#0a0a0a] border border-gray-800',
+              isNeutro ? '' : (isPassado && !isAtual ? 'opacity-50' : ''),
+              isNeutro ? '' : (!isPassado && !isAtual ? 'opacity-70' : ''),
+            ]}
+          >
+            {isAtual && !isNeutro && (
+              <div class="absolute -top-3 left-6 bg-yellow-500 text-black text-[10px] font-bold uppercase tracking-widest px-3 py-1">
+                Você está aqui
+              </div>
+            )}
+
+            <!-- Número gigante + identidade -->
+            <div class="flex items-baseline gap-4 mb-6">
+              <span
+                class:list={[
+                  'font-bold font-industrial leading-none',
+                  isAtual ? 'text-yellow-500 text-7xl md:text-8xl' : 'text-gray-700 text-6xl md:text-7xl',
+                ]}
+              >
+                {n.num}
+              </span>
+              <div>
+                <h3
+                  class:list={[
+                    'text-lg md:text-xl font-bold font-industrial uppercase tracking-tight leading-tight mb-1',
+                    isAtual ? 'text-white' : 'text-gray-400',
+                  ]}
+                >
+                  {n.identidade}
+                </h3>
+                <p
+                  class:list={[
+                    'text-[11px] font-mono uppercase tracking-widest',
+                    isAtual ? 'text-yellow-500' : 'text-gray-500',
+                  ]}
+                >
+                  {n.acao}
+                </p>
+              </div>
+            </div>
+
+            <!-- Diagrama visual da relação -->
+            <div
+              class:list={[
+                'border-y py-6 mb-4',
+                isAtual ? 'border-yellow-500/30' : 'border-gray-800',
+              ]}
+            >
+              {n.num === 1 && (
+                <div class="flex items-center justify-between gap-2 max-w-xs mx-auto">
+                  <div
+                    class:list={[
+                      'w-12 h-12 rounded-full flex items-center justify-center border-2 text-[10px] font-mono uppercase tracking-widest font-bold shrink-0',
+                      isAtual ? 'border-yellow-500 text-yellow-500' : 'border-gray-700 text-gray-600',
+                    ]}
+                  >
+                    Você
+                  </div>
+                  <div class="flex-1 flex flex-col items-stretch gap-1.5 px-1">
+                    <div
+                      class:list={[
+                        'flex items-center gap-1 text-xs',
+                        isAtual ? 'text-yellow-500' : 'text-gray-600',
+                      ]}
+                    >
+                      <span class="text-[9px] uppercase tracking-widest font-mono">Pergunta</span>
+                      <div
+                        class:list={['flex-1 h-px', isAtual ? 'bg-yellow-500' : 'bg-gray-700']}
+                      ></div>
+                      <span>▶</span>
+                    </div>
+                    <div
+                      class:list={[
+                        'flex items-center gap-1 text-xs',
+                        isAtual ? 'text-yellow-500' : 'text-gray-600',
+                      ]}
+                    >
+                      <span>◀</span>
+                      <div
+                        class:list={['flex-1 h-px', isAtual ? 'bg-yellow-500' : 'bg-gray-700']}
+                      ></div>
+                      <span class="text-[9px] uppercase tracking-widest font-mono">Resposta</span>
+                    </div>
+                  </div>
+                  <div
+                    class:list={[
+                      'w-12 h-12 flex items-center justify-center border-2 text-[10px] font-mono uppercase tracking-widest font-bold shrink-0',
+                      isAtual ? 'border-yellow-500 text-yellow-500' : 'border-gray-700 text-gray-600',
+                    ]}
+                  >
+                    IA
+                  </div>
+                </div>
+              )}
+
+              {n.num === 2 && (
+                <div class="flex items-center justify-center gap-3 max-w-xs mx-auto">
+                  <div
+                    class:list={[
+                      'w-14 h-14 rounded-full flex items-center justify-center border-2 text-[10px] font-mono uppercase tracking-widest font-bold shrink-0',
+                      isAtual ? 'border-yellow-500 text-yellow-500' : 'border-gray-700 text-gray-600',
+                    ]}
+                  >
+                    Você
+                  </div>
+                  <div
+                    class:list={[
+                      'flex flex-col items-center gap-1',
+                      isAtual ? 'text-yellow-500' : 'text-gray-600',
+                    ]}
+                  >
+                    <span class="text-2xl leading-none">⇄</span>
+                    <span class="text-[9px] uppercase tracking-widest font-mono">Junto</span>
+                  </div>
+                  <div
+                    class:list={[
+                      'w-14 h-14 flex items-center justify-center border-2 text-[10px] font-mono uppercase tracking-widest font-bold shrink-0',
+                      isAtual ? 'border-yellow-500 text-yellow-500' : 'border-gray-700 text-gray-600',
+                    ]}
+                  >
+                    IA
+                  </div>
+                </div>
+              )}
+
+              {n.num === 3 && (
+                <div class="flex items-center gap-3 max-w-xs mx-auto">
+                  <div
+                    class:list={[
+                      'w-12 h-12 rounded-full flex items-center justify-center border-2 text-[10px] font-mono uppercase tracking-widest font-bold shrink-0',
+                      isAtual ? 'border-yellow-500 text-yellow-500' : 'border-gray-700 text-gray-600',
+                    ]}
+                  >
+                    Você
+                  </div>
+                  <div class="flex-1 flex flex-col gap-1.5">
+                    {[1, 2, 3].map(() => (
+                      <div
+                        class:list={[
+                          'flex items-center gap-2',
+                          isAtual ? 'text-yellow-500' : 'text-gray-600',
+                        ]}
+                      >
+                        <div class="flex-1 flex items-center gap-1">
+                          <div
+                            class:list={['flex-1 h-px', isAtual ? 'bg-yellow-500' : 'bg-gray-700']}
+                          ></div>
+                          <span class="text-xs">▶</span>
+                        </div>
+                        <div
+                          class:list={[
+                            'w-7 h-7 flex items-center justify-center border text-[7px] font-mono uppercase tracking-widest font-bold',
+                            isAtual ? 'border-yellow-500 text-yellow-500' : 'border-gray-700 text-gray-600',
+                          ]}
+                        >
+                          IA
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <!-- Texto descritivo -->
+            <p
+              class:list={[
+                'text-sm leading-relaxed mb-4 flex-grow',
+                isAtual ? 'text-white font-semibold' : 'text-gray-500',
+              ]}
+            >
+              {n.relacao}
+            </p>
+            <p
+              class:list={[
+                'text-xs leading-relaxed mb-6',
+                isAtual ? 'text-gray-300' : 'text-gray-600',
+              ]}
+            >
+              {n.resumo}
+            </p>
+
+            <!-- Footer do card -->
+            <div
+              class:list={[
+                'flex items-center justify-between pt-4 border-t text-[10px] font-mono uppercase tracking-widest',
+                isAtual ? 'border-yellow-500/30' : 'border-gray-800',
+              ]}
+            >
+              <span class:list={[isAtual ? 'text-yellow-500' : 'text-gray-600']}>
+                {n.percent}
+              </span>
+              <span class:list={[isAtual ? 'text-gray-400' : 'text-gray-700']}>
+                {n.equiv}
+              </span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Subtexto explicativo -->
+    <p class="text-gray-500 text-sm md:text-base text-center mt-8 max-w-2xl mx-auto leading-relaxed">
+      A diferença entre os níveis não é quanta IA você usa — é <strong class="text-white">quem trabalha pra quem</strong>.
+    </p>
+  </div>
+</section>

@@ -1,21 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Send, Lock } from 'lucide-react';
-
-declare global {
-  interface Window {
-    __wlTracking?: Record<string, string>;
-    dataLayer?: Record<string, unknown>[];
-  }
-}
-
-const HIDDEN_FIELDS = [
-  "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term",
-  "gclid", "gbraid", "wbraid", "gad_campaignid", "gad_source",
-  "fbclid", "fbc", "fbp",
-  "ttclid", "msclkid", "li_fat_id", "twclid", "sck",
-  "landing_page", "referrer", "user_agent", "first_visit",
-  "session_id", "session_attributes_encoded", "originPage", "ref"
-] as const;
+import {
+  TRACKING_FIELDS,
+  getTrackingData,
+  pushLeadSubmitEvent,
+  type TrackingData,
+} from '../../lib/tracking';
 
 const WEBHOOK_URL = "https://apolo-lead-proxy.rapricardo.workers.dev";
 
@@ -26,12 +16,11 @@ const CapturaForm = () => {
     whatsapp: '',
   });
 
-  const [tracking, setTracking] = useState<Record<string, string>>({});
+  const [tracking, setTracking] = useState<TrackingData>({});
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
   useEffect(() => {
-    const stored = window.__wlTracking || {};
-    setTracking(stored);
+    setTracking(getTrackingData());
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,40 +34,15 @@ const CapturaForm = () => {
     e.preventDefault();
     setStatus('sending');
 
-    const payload = { ...formData, ...tracking, source: 'funil_video_ia' };
+    window.__wlPopulateHiddenFields?.(e.currentTarget);
+    const currentTracking = getTrackingData();
+    setTracking(currentTracking);
+    const payload = { ...formData, ...currentTracking, source: 'funil_video_ia' };
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: "form_submit_lead",
-      lead_name: formData.name || null,
-      lead_email: formData.email || null,
-      lead_whatsapp: formData.whatsapp || null,
-      utm_source: tracking.utm_source || null,
-      utm_medium: tracking.utm_medium || null,
-      utm_campaign: tracking.utm_campaign || null,
-      utm_content: tracking.utm_content || null,
-      utm_term: tracking.utm_term || null,
-      gclid: tracking.gclid || null,
-      gbraid: tracking.gbraid || null,
-      wbraid: tracking.wbraid || null,
-      gad_campaignid: tracking.gad_campaignid || null,
-      gad_source: tracking.gad_source || null,
-      fbclid: tracking.fbclid || null,
-      fbc: tracking.fbc || null,
-      fbp: tracking.fbp || null,
-      ttclid: tracking.ttclid || null,
-      msclkid: tracking.msclkid || null,
-      li_fat_id: tracking.li_fat_id || null,
-      twclid: tracking.twclid || null,
-      sck: tracking.sck || null,
-      landing_page: tracking.landing_page || null,
-      referrer: tracking.referrer || null,
-      user_agent: tracking.user_agent || null,
-      first_visit: tracking.first_visit || null,
-      session_id: tracking.session_id || null,
-      session_attributes_encoded: tracking.session_attributes_encoded || null,
-      origin_page: tracking.originPage || null,
-      ref: tracking.ref || null,
+    pushLeadSubmitEvent({
+      name: formData.name,
+      email: formData.email,
+      whatsapp: formData.whatsapp,
     });
 
     try {
@@ -120,13 +84,14 @@ const CapturaForm = () => {
             )}
 
             {/* ===== CAMPOS OCULTOS PADRAO GTM ===== */}
-            {HIDDEN_FIELDS.map((field) => (
+            {TRACKING_FIELDS.map((field) => (
               <input
                 key={field}
                 type="hidden"
                 name={field}
                 id={`h_${field}`}
                 value={tracking[field] || ''}
+                readOnly
               />
             ))}
 

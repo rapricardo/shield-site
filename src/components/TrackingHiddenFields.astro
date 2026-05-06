@@ -1,0 +1,9 @@
+---
+import { TRACKING_FIELDS } from '../lib/tracking';
+---
+
+{
+  TRACKING_FIELDS.map((field) => (
+    <input type="hidden" name={field} id={`h_${field}`} />
+  ))
+}

@@ -1,0 +1,406 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+
+interface Option {
+  value: string;
+  label: string;
+  hint?: string;
+}
+
+interface Question {
+  id: string;
+  type: 'single' | 'multiple' | 'binary' | 'ternary';
+  text: string;
+  hint?: string;
+  options: Option[];
+}
+
+const questions: Question[] = [
+  {
+    id: 'q1',
+    type: 'single',
+    text: 'Como você ganha dinheiro hoje?',
+    hint: 'Escolha o que mais se aproxima',
+    options: [
+      { value: 'dono', label: 'Sou dono / sócio do negócio' },
+      { value: 'funcionario', label: 'Sou funcionário (CLT, PJ contratado)' },
+      { value: 'autonomo', label: 'Sou autônomo, freelancer ou consultor' },
+      { value: 'empreendedor', label: 'Empreendedor solo / em transição' },
+    ],
+  },
+  {
+    id: 'q2',
+    type: 'single',
+    text: 'Se a IA fizesse 80% do seu trabalho repetitivo, o que mais ganharia?',
+    options: [
+      { value: 'tempo', label: 'Tempo — recuperar minha vida' },
+      { value: 'dinheiro', label: 'Dinheiro — mais clientes, mais receita' },
+      { value: 'status', label: 'Status — ser referência no que faço' },
+      { value: 'sanidade', label: 'Sanidade — parar de carregar tudo na cabeça' },
+    ],
+  },
+  {
+    id: 'q3',
+    type: 'binary',
+    text: 'Você usa 5 ou mais sistemas/sites diferentes para trabalhar?',
+    options: [
+      { value: 'sim', label: 'Sim' },
+      { value: 'nao', label: 'Não' },
+    ],
+  },
+  {
+    id: 'q4',
+    type: 'binary',
+    text: 'Tem 3 ou mais planilhas que precisam ser atualizadas manualmente toda semana?',
+    options: [
+      { value: 'sim', label: 'Sim' },
+      { value: 'nao', label: 'Não' },
+    ],
+  },
+  {
+    id: 'q5',
+    type: 'binary',
+    text: 'Já perdeu informação importante porque ela estava espalhada em vários lugares?',
+    options: [
+      { value: 'sim', label: 'Sim' },
+      { value: 'nao', label: 'Não' },
+    ],
+  },
+  {
+    id: 'q6',
+    type: 'binary',
+    text: 'Você termina o dia sentindo que trabalhou muito mas avançou pouco?',
+    options: [
+      { value: 'sim', label: 'Sim' },
+      { value: 'nao', label: 'Não' },
+    ],
+  },
+  {
+    id: 'q7',
+    type: 'ternary',
+    text: 'Quando precisa fazer algo repetitivo, seu primeiro reflexo é pensar "como a IA pode fazer isso?"',
+    options: [
+      { value: 'sim', label: 'Sim, sempre' },
+      { value: 'as_vezes', label: 'Às vezes' },
+      { value: 'nao', label: 'Não' },
+    ],
+  },
+  {
+    id: 'q8',
+    type: 'binary',
+    text: 'Você sabe o que é um MCP (Model Context Protocol)?',
+    hint: 'Tudo bem se nunca ouviu falar — vamos te explicar.',
+    options: [
+      { value: 'sim', label: 'Sim, sei' },
+      { value: 'nao', label: 'Não sei' },
+    ],
+  },
+  {
+    id: 'q9',
+    type: 'binary',
+    text: 'Já configurou alguma coisa que executa tarefa sozinha (sem você pedir toda vez)?',
+    options: [
+      { value: 'sim', label: 'Sim' },
+      { value: 'nao', label: 'Não' },
+    ],
+  },
+  {
+    id: 'q10',
+    type: 'ternary',
+    text: 'Você roda IA em servidor próprio (VPS, self-hosting) ou só usa serviços prontos?',
+    options: [
+      { value: 'proprio', label: 'Tenho servidor próprio' },
+      { value: 'servicos', label: 'Só uso serviços prontos' },
+      { value: 'nao_sei', label: 'Não sei o que é VPS' },
+    ],
+  },
+  {
+    id: 'q11',
+    type: 'multiple',
+    text: 'Quais dessas você já usou pelo menos uma vez?',
+    hint: 'Marque tudo que se aplicar.',
+    options: [
+      { value: 'chat_browser', label: 'ChatGPT, Claude ou Gemini no navegador' },
+      { value: 'cursor', label: 'Cursor, Windsurf ou similar (IDE com IA)' },
+      { value: 'cli', label: 'Claude Code, Codex ou Aider (CLI/agente de programação)' },
+      { value: 'n8n', label: 'n8n, Make ou Zapier (automação visual)' },
+      { value: 'mcp', label: 'MCPs (conectores de Claude/IDE)' },
+      { value: 'api', label: 'API da OpenAI/Anthropic em script próprio' },
+      { value: 'self_host', label: 'Self-hosting (LiteLLM, Ollama, RunPod)' },
+      { value: 'agente_vps', label: 'Agentes rodando em VPS / cloud própria' },
+      { value: 'nada', label: 'Nada disso ainda — estou começando' },
+    ],
+  },
+];
+---
+
+<Layout title="Quiz dos 3 Níveis | Operação Soberana" description="Em 90 segundos, descubra se você é uma das 6% das pessoas no mundo que usam IA de verdade.">
+
+  <Nav cta={{ label: 'Voltar', href: '/' }} />
+
+  <!-- Barra de progresso fixa -->
+  <div class="fixed top-16 md:top-16 left-0 right-0 z-40 bg-[#0a0a0a]/80 backdrop-blur-sm border-b border-gray-900">
+    <div class="max-w-3xl mx-auto px-6 py-3 flex items-center gap-4">
+      <span id="progress-label" class="text-yellow-500 text-xs font-mono uppercase tracking-widest shrink-0">1 / {questions.length}</span>
+      <div class="flex-1 h-1 bg-gray-900 overflow-hidden">
+        <div id="progress-bar" class="h-full bg-yellow-500 transition-all duration-500" style="width: 9%"></div>
+      </div>
+      <button id="back-button" type="button" class="text-gray-500 hover:text-yellow-500 text-xs font-mono uppercase tracking-widest transition-colors disabled:opacity-30 disabled:cursor-not-allowed shrink-0" disabled>← Voltar</button>
+    </div>
+  </div>
+
+  <!-- Quiz -->
+  <main class="relative pt-44 pb-32 px-6 bg-grid-pattern overflow-hidden min-h-screen">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/50 via-transparent to-[#0a0a0a]"></div>
+
+    <div class="max-w-3xl mx-auto relative z-10">
+      {questions.map((q, i) => (
+        <div data-step={i} class:list={['quiz-step', { hidden: i !== 0 }]}>
+          <p class="text-gray-500 text-xs font-mono uppercase tracking-widest mb-4">Pergunta {i + 1}</p>
+          <h2 class="text-2xl md:text-4xl font-bold font-industrial text-white uppercase tracking-tight leading-tight mb-3">
+            {q.text}
+          </h2>
+          {q.hint && (
+            <p class="text-gray-500 text-sm mb-8">{q.hint}</p>
+          )}
+          {!q.hint && <div class="mb-8"></div>}
+
+          {q.type === 'binary' && (
+            <div class="grid grid-cols-2 gap-4">
+              {q.options.map((opt) => (
+                <button
+                  type="button"
+                  data-question={q.id}
+                  data-value={opt.value}
+                  class="quiz-option p-6 md:p-8 border-2 border-gray-800 hover:border-yellow-500 bg-[#111] hover:bg-yellow-500/10 text-white text-lg md:text-xl font-bold font-industrial uppercase tracking-widest transition-all"
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {q.type === 'ternary' && (
+            <div class="space-y-3">
+              {q.options.map((opt) => (
+                <button
+                  type="button"
+                  data-question={q.id}
+                  data-value={opt.value}
+                  class="quiz-option w-full p-5 border border-gray-800 hover:border-yellow-500 bg-[#111] hover:bg-yellow-500/10 text-left text-white text-base md:text-lg font-medium transition-all"
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {q.type === 'single' && (
+            <div class="space-y-3">
+              {q.options.map((opt) => (
+                <button
+                  type="button"
+                  data-question={q.id}
+                  data-value={opt.value}
+                  class="quiz-option w-full p-5 border border-gray-800 hover:border-yellow-500 bg-[#111] hover:bg-yellow-500/10 text-left text-white text-base md:text-lg font-medium transition-all"
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {q.type === 'multiple' && (
+            <form data-question={q.id} class="quiz-multiple-form space-y-3">
+              {q.options.map((opt) => (
+                <label class="flex items-center gap-3 p-4 border border-gray-800 hover:border-gray-600 bg-[#111] cursor-pointer transition-colors has-[:checked]:border-yellow-500 has-[:checked]:bg-yellow-500/10">
+                  <input
+                    type="checkbox"
+                    name={q.id}
+                    value={opt.value}
+                    class="accent-yellow-500 w-5 h-5"
+                  />
+                  <span class="text-white text-base md:text-lg">{opt.label}</span>
+                </label>
+              ))}
+              <button
+                type="submit"
+                class="quiz-multiple-submit w-full mt-6 bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-widest py-4 text-base transition-colors flex items-center justify-center gap-2 group"
+              >
+                Ver meu resultado
+                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </button>
+            </form>
+          )}
+        </div>
+      ))}
+    </div>
+  </main>
+
+  <!-- Overlay de cálculo -->
+  <div id="calc-overlay" class="hidden fixed inset-0 z-[100] bg-[#0a0a0a] flex items-center justify-center px-6">
+    <div class="text-center max-w-md">
+      <div class="relative w-24 h-24 mx-auto mb-12">
+        <div class="absolute inset-0 border-4 border-gray-800"></div>
+        <div class="absolute inset-0 border-4 border-yellow-500 border-t-transparent border-r-transparent animate-spin"></div>
+      </div>
+
+      <p id="calc-message" class="text-white text-xl md:text-2xl font-bold font-industrial uppercase tracking-tight leading-tight mb-8 min-h-[3.5rem]">
+        Analisando suas respostas...
+      </p>
+
+      <div class="h-1 bg-gray-900 overflow-hidden max-w-xs mx-auto">
+        <div id="calc-bar" class="h-full bg-yellow-500" style="width: 0%; transition: width 4s linear;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline define:vars={{ totalSteps: questions.length }}>
+    (function () {
+      var answers = {};
+      var currentStep = 0;
+      var steps = document.querySelectorAll('.quiz-step');
+      var progressBar = document.getElementById('progress-bar');
+      var progressLabel = document.getElementById('progress-label');
+      var backButton = document.getElementById('back-button');
+
+      function updateProgress() {
+        var pct = ((currentStep + 1) / totalSteps) * 100;
+        if (progressBar) progressBar.style.width = pct + '%';
+        if (progressLabel) progressLabel.textContent = (currentStep + 1) + ' / ' + totalSteps;
+        if (backButton) backButton.disabled = currentStep === 0;
+      }
+
+      function showStep(index) {
+        steps.forEach(function (el, i) {
+          el.classList.toggle('hidden', i !== index);
+        });
+        currentStep = index;
+        updateProgress();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function recordAndAdvance(qId, value) {
+        answers[qId] = value;
+        try { sessionStorage.setItem('quiz_answers', JSON.stringify(answers)); } catch (e) {}
+        if (currentStep < totalSteps - 1) {
+          setTimeout(function () { showStep(currentStep + 1); }, 200);
+        } else {
+          finish();
+        }
+      }
+
+      // Single-choice / binary / ternary
+      document.querySelectorAll('.quiz-option').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var qId = btn.getAttribute('data-question');
+          var value = btn.getAttribute('data-value');
+          btn.classList.add('!border-yellow-500', '!bg-yellow-500/20');
+          recordAndAdvance(qId, value);
+        });
+      });
+
+      // Multiple-choice form
+      document.querySelectorAll('.quiz-multiple-form').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var qId = form.getAttribute('data-question');
+          var checked = form.querySelectorAll('input[type="checkbox"]:checked');
+          var values = [];
+          checked.forEach(function (input) { values.push(input.value); });
+          recordAndAdvance(qId, values);
+        });
+      });
+
+      // Back button
+      if (backButton) {
+        backButton.addEventListener('click', function () {
+          if (currentStep > 0) showStep(currentStep - 1);
+        });
+      }
+
+      // Lógica de classificação
+      function calcularNivel(a) {
+        var score = 0;
+        if (a.q8 === 'sim') score += 2;
+        if (a.q9 === 'sim') score += 2;
+        if (a.q10 === 'proprio') score += 3;
+        if (a.q10 === 'servicos') score += 1;
+        if (a.q7 === 'sim') score += 1;
+        if (a.q7 === 'as_vezes') score += 0;
+        var tools = Array.isArray(a.q11) ? a.q11 : [];
+        if (tools.indexOf('nada') !== -1) {
+          // força nivel 1
+          return 'nivel-1';
+        }
+        var advancedTools = ['n8n', 'mcp', 'api', 'self_host', 'agente_vps', 'cli'];
+        var advancedCount = 0;
+        advancedTools.forEach(function (t) { if (tools.indexOf(t) !== -1) advancedCount++; });
+        if (advancedCount >= 4) score += 4;
+        else if (advancedCount >= 2) score += 2;
+        else if (advancedCount >= 1) score += 1;
+        if (tools.length >= 5) score += 1;
+        if (tools.indexOf('self_host') !== -1) score += 1;
+        if (tools.indexOf('agente_vps') !== -1) score += 1;
+
+        if (score >= 9) return 'nivel-3';
+        if (score >= 4) return 'nivel-2';
+        return 'nivel-1';
+      }
+
+      function calcularPerfil(a) {
+        if (a.q1 === 'dono') return 'empresa';
+        if (a.q1 === 'funcionario') return 'funcionario';
+        return 'empreendedor';
+      }
+
+      function calcularDor(a) {
+        var dor = 0;
+        if (a.q3 === 'sim') dor++;
+        if (a.q4 === 'sim') dor++;
+        if (a.q5 === 'sim') dor++;
+        if (a.q6 === 'sim') dor++;
+        return dor;
+      }
+
+      function finish() {
+        var overlay = document.getElementById('calc-overlay');
+        var calcMsg = document.getElementById('calc-message');
+        var calcBar = document.getElementById('calc-bar');
+        if (overlay) overlay.classList.remove('hidden');
+        // dispara animação da barra
+        setTimeout(function () { if (calcBar) calcBar.style.width = '100%'; }, 50);
+
+        var messages = [
+          'Analisando suas respostas...',
+          'Comparando com mais de 6.000 operadores...',
+          'Identificando quem você é...',
+          'Preparando seu mapa...'
+        ];
+        var idx = 0;
+        var interval = setInterval(function () {
+          idx++;
+          if (idx < messages.length && calcMsg) {
+            calcMsg.textContent = messages[idx];
+          }
+        }, 1100);
+
+        setTimeout(function () {
+          clearInterval(interval);
+          var nivel = calcularNivel(answers);
+          var perfil = calcularPerfil(answers);
+          var dor = calcularDor(answers);
+          var aspiracao = answers.q2 || 'tempo';
+          var url = '/operador/' + nivel + '/?perfil=' + encodeURIComponent(perfil) +
+                    '&dor=' + dor + '&aspiracao=' + encodeURIComponent(aspiracao);
+          window.location.href = url;
+        }, 4500);
+      }
+
+      // Ao montar, garante que está no step 0
+      showStep(0);
+    })();
+  </script>
+
+</Layout>

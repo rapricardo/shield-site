@@ -1,0 +1,83 @@
+---
+interface Props {
+  nivel: 1 | 2 | 3;
+}
+const { nivel } = Astro.props;
+
+const headlines: Record<1 | 2 | 3, string> = {
+  1: 'Você é o Curioso. O próximo degrau é virar Construtor.',
+  2: 'Você é o Construtor. O Soberano está a 1 movimento.',
+  3: 'Você é o Soberano. Bem-vindo ao Círculo.',
+};
+
+const descricoes: Record<1 | 2 | 3, string> = {
+  1: 'O Círculo é onde o Curioso encontra quem já virou Construtor. Conteúdo prático, sessões ao vivo, comunidade e ferramentas para você parar de "consultar a IA" e começar a construir com ela. A entrada é gratuita.',
+  2: 'O Círculo é onde os Construtores fecham o último degrau. Conteúdo prático, sessões ao vivo, comunidade e ferramentas para você sair do "trabalho com IA" e virar quem delega 80% do trabalho repetitivo. A entrada é gratuita.',
+  3: 'O Círculo é o ponto de encontro dos Soberanos. Não vai te ensinar o básico — você já passou. Aqui é troca real entre quem opera agentes em produção, MCPs avançados e arquitetura híbrida. A entrada é gratuita.',
+};
+---
+
+<section class="py-20 px-6 bg-grid-pattern relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
+
+  <div class="max-w-3xl mx-auto relative z-10 text-center">
+    <span class="inline-flex items-center gap-2 text-yellow-500 font-mono text-sm mb-4">
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9" /></svg>
+      O Círculo
+    </span>
+
+    <h2 class="text-3xl md:text-5xl font-bold font-industrial text-white uppercase tracking-tight leading-tight mb-6">
+      {headlines[nivel]}
+    </h2>
+
+    <p class="text-gray-400 text-sm md:text-base leading-relaxed mb-12 max-w-2xl mx-auto">
+      {descricoes[nivel]}
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12 text-left">
+      <div class="bg-[#111] border border-gray-800 p-6">
+        <p class="text-yellow-500 text-xs font-mono uppercase tracking-widest mb-3">Trilha do seu nível</p>
+        <p class="text-white text-sm leading-relaxed">Vídeos curtos, scripts e instruções progressivas para você subir um degrau real.</p>
+      </div>
+      <div class="bg-[#111] border border-gray-800 p-6">
+        <p class="text-yellow-500 text-xs font-mono uppercase tracking-widest mb-3">Sessões ao vivo</p>
+        <p class="text-white text-sm leading-relaxed">Uma por mês, gratuita. Para destravar dúvidas reais — não palestra solta.</p>
+      </div>
+      <div class="bg-[#111] border border-gray-800 p-6">
+        <p class="text-yellow-500 text-xs font-mono uppercase tracking-widest mb-3">Comunidade</p>
+        <p class="text-white text-sm leading-relaxed">Outros operadores no mesmo nível e acima. Async, ativa, sem teatro.</p>
+      </div>
+    </div>
+
+    <a
+      id="cta-circulo"
+      href="/membros/cadastro/"
+      class="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black font-bold uppercase tracking-widest px-8 py-4 text-sm md:text-base transition-colors"
+      style="clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);"
+    >
+      Entrar no Círculo (grátis)
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+    </a>
+
+    <p class="text-gray-600 text-xs uppercase tracking-widest font-mono mt-6">
+      Sem cobrança. Sem cartão. Você sai quando quiser.
+    </p>
+  </div>
+</section>
+
+<script is:inline>
+  // Anexa nivel + perfil ao link de cadastro pra trackear de onde veio
+  (function () {
+    var cta = document.getElementById('cta-circulo');
+    if (!cta) return;
+    var path = window.location.pathname;
+    var nivelMatch = path.match(/\/operador\/(nivel-\d)/);
+    var nivel = nivelMatch ? nivelMatch[1] : '';
+    var params = new URLSearchParams(window.location.search);
+    var perfil = params.get('perfil') || '';
+    var newUrl = '/membros/cadastro/?source=quiz';
+    if (nivel) newUrl += '&nivel=' + encodeURIComponent(nivel);
+    if (perfil) newUrl += '&perfil=' + encodeURIComponent(perfil);
+    cta.setAttribute('href', newUrl);
+  })();
+</script>

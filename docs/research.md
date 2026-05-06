@@ -1,4 +1,4 @@
-# Pesquisa de Concorrência — Agency Shield AI
+# Pesquisa de Concorrência — Ricardo Tocha
 
 <!-- A preencher na fase Discovery -->
 
