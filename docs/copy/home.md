@@ -64,7 +64,7 @@ Posiciona o funil PF logo após o Hero (que serve PJ). Fundo amarelo, texto pret
 
 Ajudo empresas de serviços a aplicar IA em vendas, atendimento e operação para crescer com mais margem, menos retrabalho e menos dependência de contratação.
 
-Minha experiência combina vendas B2B, marketing, produto, processos, design, código e execução.
+Uno visão comercial, produto, processos e código para transformar gargalos reais em sistemas que vendem, atendem e operam melhor.
 
 ## Onde está travando (3 blocos — uma área por card)
 
