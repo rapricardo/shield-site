@@ -1,10 +1,12 @@
 import type { APIRoute } from 'astro';
-import { supabase } from '../../../lib/supabase';
 import { setSessionCookies } from '../../../lib/auth';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, cookies, redirect }) => {
+export const POST: APIRoute = async ({ request, cookies, locals, redirect }) => {
+  const supabase = locals.supabase;
+  if (!supabase) return redirect('/membros/login/?erro=falha-login');
+
   const formData = await request.formData();
   const email = formData.get('email')?.toString();
   const password = formData.get('password')?.toString();

@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Lesson } from './lessons';
 
 export interface CategoryGroup {
@@ -14,7 +14,7 @@ const CATEGORY_META: Record<string, { label: string; description: string; order:
   empregado: { label: 'Empregado', description: 'Automatize seu trabalho', order: 2 },
 };
 
-export async function getLessonsByCategory(): Promise<CategoryGroup[]> {
+export async function getLessonsByCategory(supabase: SupabaseClient): Promise<CategoryGroup[]> {
   const { data, error } = await supabase
     .from('lessons')
     .select('*')

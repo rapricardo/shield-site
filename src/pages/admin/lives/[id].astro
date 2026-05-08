@@ -1,5 +1,7 @@
 ---
 export const prerender = false;
+const supabase = Astro.locals.supabase!;
+
 
 import AdminLayout from '../../../layouts/AdminLayout.astro';
 import { createAdminClient } from '../../../lib/supabase-admin';
@@ -7,7 +9,7 @@ import { createAdminClient } from '../../../lib/supabase-admin';
 const { id } = Astro.params;
 if (!id) return Astro.redirect('/admin/lives/');
 
-const admin = createAdminClient();
+const admin = createAdminClient({ SUPABASE_URL: Astro.locals.env?.SUPABASE_URL || '', SUPABASE_SERVICE_ROLE_KEY: Astro.locals.env?.SUPABASE_SERVICE_ROLE_KEY });
 const { data: live, error } = await admin
   .from('events')
   .select('*')

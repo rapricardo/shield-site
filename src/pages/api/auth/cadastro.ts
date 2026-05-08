@@ -1,12 +1,14 @@
 import type { APIRoute } from 'astro';
-import { supabase } from '../../../lib/supabase';
 import { setSessionCookies } from '../../../lib/auth';
 import { sendEmail } from '../../../lib/resend';
 import { welcomeEmailHtml } from '../../../lib/email-templates';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, cookies, redirect }) => {
+export const POST: APIRoute = async ({ request, cookies, locals, redirect }) => {
+  const supabase = locals.supabase;
+  if (!supabase) return redirect('/membros/cadastro/?erro=falha-cadastro');
+
   const formData = await request.formData();
   const name = formData.get('name')?.toString();
   const email = formData.get('email')?.toString();
@@ -39,7 +41,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     try {
       const origin = new URL(request.url).origin;
       const html = welcomeEmailHtml({ name, loginUrl: `${origin}/membros/` });
-      await sendEmail({
+      await sendEmail(locals.env?.RESEND_API_KEY, {
         to: email,
         subject: 'Bem-vindo à área de membros',
         html,

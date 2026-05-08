@@ -1,5 +1,7 @@
 ---
 export const prerender = false;
+const supabase = Astro.locals.supabase!;
+
 
 import Layout from '../../../layouts/Layout.astro';
 import VideoPlayer from '../../../components/membros/VideoPlayer';
@@ -12,7 +14,7 @@ if (!slug) {
   return new Response('Aula não encontrada', { status: 404 });
 }
 
-const lesson = await getLessonBySlug(slug);
+const lesson = await getLessonBySlug(supabase, slug);
 
 if (!lesson) {
   return new Response('Aula não encontrada', { status: 404 });
@@ -24,7 +26,7 @@ const session = Astro.locals.session!;
 let accessList: string[] = Astro.locals.accessSlugs ?? [];
 if (!lesson.is_free) {
   if (!Astro.locals.accessSlugs) {
-    accessList = await getUserAccess(session.user.id);
+    accessList = await getUserAccess(supabase, session.user.id);
   }
   if (!hasAccess(accessList, lesson.product_slug)) {
     return Astro.redirect('/membros/?acesso=bloqueado');
@@ -32,7 +34,7 @@ if (!lesson.is_free) {
 }
 
 // Próxima aula (opcional)
-const nextLesson = await getNextLesson(lesson.product_slug, lesson.order_index);
+const nextLesson = await getNextLesson(supabase, lesson.product_slug, lesson.order_index);
 
 // Se o usuário ainda não tem acesso ao produto da próxima aula (e ela não é gratuita),
 // o botão "Próximo" aponta para a oferta em vez da aula

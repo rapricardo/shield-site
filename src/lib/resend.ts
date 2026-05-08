@@ -8,8 +8,10 @@ interface SendEmailParams {
   replyTo?: string;
 }
 
-export async function sendEmail(params: SendEmailParams): Promise<{ ok: boolean; error?: string }> {
-  const apiKey = import.meta.env.RESEND_API_KEY;
+export async function sendEmail(
+  apiKey: string | undefined,
+  params: SendEmailParams
+): Promise<{ ok: boolean; error?: string }> {
   if (!apiKey) {
     console.error('RESEND_API_KEY não configurada');
     return { ok: false, error: 'API key missing' };

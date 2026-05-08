@@ -1,5 +1,7 @@
 ---
 export const prerender = false;
+const supabase = Astro.locals.supabase!;
+
 
 import Layout from '../../layouts/Layout.astro';
 import Dashboard from '../../components/membros/Dashboard';
@@ -10,19 +12,18 @@ import {
   getMostRecentProduct,
   getNextLesson,
 } from '../../lib/progress';
-import { supabase } from '../../lib/supabase';
 
 const session = Astro.locals.session!;
-const profile = await getUserProfile(session.user.id);
-const products = await getProductProgressList(session.user.id);
-const cohorts = await getEnrolledCohorts(session.user.id);
+const profile = await getUserProfile(supabase, session.user.id);
+const products = await getProductProgressList(supabase, session.user.id);
+const cohorts = await getEnrolledCohorts(supabase, session.user.id);
 
 // Continuar de onde parou
 let continueFrom = null;
 if (products.length > 0) {
-  const recentSlug = await getMostRecentProduct(session.user.id);
+  const recentSlug = await getMostRecentProduct(supabase, session.user.id);
   if (recentSlug) {
-    const next = await getNextLesson(session.user.id, recentSlug);
+    const next = await getNextLesson(supabase, session.user.id, recentSlug);
     const prod = products.find((p) => p.productSlug === recentSlug);
     if (next && prod) {
       continueFrom = {

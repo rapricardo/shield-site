@@ -1,15 +1,16 @@
 ---
 export const prerender = false;
+const supabase = Astro.locals.supabase!;
+
 
 import Layout from '../../layouts/Layout.astro';
 import MinhaContaForm from '../../components/membros/MinhaContaForm';
 import AcessosCard from '../../components/membros/AcessosCard';
 import HistoricoCompras from '../../components/membros/HistoricoCompras';
 import { getUserProfile } from '../../lib/auth';
-import { supabase } from '../../lib/supabase';
 
 const session = Astro.locals.session!;
-const profile = await getUserProfile(session.user.id);
+const profile = await getUserProfile(supabase, session.user.id);
 
 if (!profile) {
   return Astro.redirect('/membros/login/');

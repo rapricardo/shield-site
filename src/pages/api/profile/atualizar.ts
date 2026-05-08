@@ -1,11 +1,13 @@
 import type { APIRoute } from 'astro';
-import { supabase } from '../../../lib/supabase';
 import { getSession } from '../../../lib/auth';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, cookies, redirect }) => {
-  const session = await getSession(cookies);
+export const POST: APIRoute = async ({ request, cookies, locals, redirect }) => {
+  const supabase = locals.supabase;
+  if (!supabase) return redirect('/membros/login/?erro=indisponivel');
+
+  const session = await getSession(supabase, cookies);
   if (!session) {
     return redirect('/membros/login/');
   }

@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 export interface EventItem {
   id: string;
@@ -13,7 +13,7 @@ export interface EventItem {
   visibility: string;
 }
 
-export async function getUpcomingEvents(): Promise<EventItem[]> {
+export async function getUpcomingEvents(supabase: SupabaseClient): Promise<EventItem[]> {
   const now = new Date().toISOString();
   const { data, error } = await supabase
     .from('events')
@@ -24,7 +24,7 @@ export async function getUpcomingEvents(): Promise<EventItem[]> {
   return data as unknown as EventItem[];
 }
 
-export async function getPastEvents(limit = 20): Promise<EventItem[]> {
+export async function getPastEvents(supabase: SupabaseClient, limit = 20): Promise<EventItem[]> {
   const now = new Date().toISOString();
   const { data, error } = await supabase
     .from('events')
@@ -36,7 +36,10 @@ export async function getPastEvents(limit = 20): Promise<EventItem[]> {
   return data as unknown as EventItem[];
 }
 
-export async function getEventBySlug(slug: string): Promise<EventItem | null> {
+export async function getEventBySlug(
+  supabase: SupabaseClient,
+  slug: string
+): Promise<EventItem | null> {
   const { data, error } = await supabase
     .from('events')
     .select('*')

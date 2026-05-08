@@ -14,6 +14,17 @@ interface ImportMeta {
 
 declare namespace App {
   interface Locals {
+    runtime?: {
+      env: {
+        SUPABASE_URL: string;
+        SUPABASE_ANON_KEY: string;
+        SUPABASE_SERVICE_ROLE_KEY?: string;
+        RESEND_API_KEY?: string;
+        ASAAS_API_KEY?: string;
+      };
+    };
+    env?: import('./lib/runtime-env').RuntimeEnv;
+    supabase?: import('@supabase/supabase-js').SupabaseClient;
     session?: import('@supabase/supabase-js').Session;
     profile?: {
       id: string;

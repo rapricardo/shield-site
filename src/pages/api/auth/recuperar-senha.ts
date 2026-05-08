@@ -1,9 +1,11 @@
 import type { APIRoute } from 'astro';
-import { supabase } from '../../../lib/supabase';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, redirect }) => {
+export const POST: APIRoute = async ({ request, locals, redirect }) => {
+  const supabase = locals.supabase;
+  if (!supabase) return redirect('/membros/recuperar-senha/?erro=indisponivel');
+
   const formData = await request.formData();
   const email = formData.get('email')?.toString();
 

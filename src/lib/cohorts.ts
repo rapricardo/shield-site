@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 export interface EnrolledCohort {
   cohort_id: string;
@@ -12,7 +12,10 @@ export interface EnrolledCohort {
 }
 
 // Retorna todas as turmas em que o usuário está matriculado (pode ser mais de uma no futuro)
-export async function getEnrolledCohorts(userId: string): Promise<EnrolledCohort[]> {
+export async function getEnrolledCohorts(
+  supabase: SupabaseClient,
+  userId: string
+): Promise<EnrolledCohort[]> {
   const { data, error } = await supabase
     .from('user_access')
     .select(`

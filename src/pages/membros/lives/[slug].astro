@@ -1,5 +1,7 @@
 ---
 export const prerender = false;
+const supabase = Astro.locals.supabase!;
+
 
 import Layout from '../../../layouts/Layout.astro';
 import { getEventBySlug } from '../../../lib/events';
@@ -10,7 +12,7 @@ if (!slug) {
   return new Response('Live não encontrada', { status: 404 });
 }
 
-const event = await getEventBySlug(slug);
+const event = await getEventBySlug(supabase, slug);
 
 if (!event) {
   return new Response('Live não encontrada', { status: 404 });

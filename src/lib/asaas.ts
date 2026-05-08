@@ -1,19 +1,24 @@
-const ASAAS_BASE_URL = import.meta.env.ASAAS_API_KEY?.startsWith('$aact_')
-  ? 'https://sandbox.asaas.com/api/v3'
-  : 'https://api.asaas.com/v3';
-
-const ASAAS_API_KEY = import.meta.env.ASAAS_API_KEY;
-
-if (!ASAAS_API_KEY) {
-  throw new Error('ASAAS_API_KEY é obrigatória');
+interface AsaasClient {
+  baseUrl: string;
+  apiKey: string;
 }
 
-async function asaasFetch(path: string, options: RequestInit = {}) {
-  const res = await fetch(`${ASAAS_BASE_URL}${path}`, {
+export function createAsaasClient(apiKey: string | undefined): AsaasClient {
+  if (!apiKey) {
+    throw new Error('ASAAS_API_KEY é obrigatória');
+  }
+  const baseUrl = apiKey.startsWith('$aact_')
+    ? 'https://sandbox.asaas.com/api/v3'
+    : 'https://api.asaas.com/v3';
+  return { baseUrl, apiKey };
+}
+
+async function asaasFetch(client: AsaasClient, path: string, options: RequestInit = {}) {
+  const res = await fetch(`${client.baseUrl}${path}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      access_token: ASAAS_API_KEY,
+      access_token: client.apiKey,
       ...options.headers,
     },
   });
@@ -26,14 +31,18 @@ async function asaasFetch(path: string, options: RequestInit = {}) {
   return res.json();
 }
 
-export async function findOrCreateCustomer(email: string, name: string): Promise<string> {
-  const search = await asaasFetch(`/customers?email=${encodeURIComponent(email)}`);
+export async function findOrCreateCustomer(
+  client: AsaasClient,
+  email: string,
+  name: string
+): Promise<string> {
+  const search = await asaasFetch(client, `/customers?email=${encodeURIComponent(email)}`);
 
   if (search.data && search.data.length > 0) {
     return search.data[0].id;
   }
 
-  const customer = await asaasFetch('/customers', {
+  const customer = await asaasFetch(client, '/customers', {
     method: 'POST',
     body: JSON.stringify({ name, email }),
   });
@@ -51,7 +60,10 @@ interface CreatePaymentParams {
   successUrl: string;
 }
 
-export async function createPayment(params: CreatePaymentParams): Promise<string> {
+export async function createPayment(
+  client: AsaasClient,
+  params: CreatePaymentParams
+): Promise<string> {
   const dueDate = new Date();
   dueDate.setDate(dueDate.getDate() + 7);
   const dueDateStr = dueDate.toISOString().split('T')[0];
@@ -74,7 +86,7 @@ export async function createPayment(params: CreatePaymentParams): Promise<string
     body.installmentValue = params.installmentValue;
   }
 
-  const payment = await asaasFetch('/payments', {
+  const payment = await asaasFetch(client, '/payments', {
     method: 'POST',
     body: JSON.stringify(body),
   });

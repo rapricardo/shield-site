@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import { supabase } from '../../lib/supabase';
 import { setSessionCookies } from '../../lib/auth';
 
 export const prerender = false;
@@ -12,7 +11,10 @@ const REDIRECT_BY_TYPE: Record<string, string> = {
   recovery: '/membros/redefinir-senha/',
 };
 
-export const GET: APIRoute = async ({ url, cookies, redirect }) => {
+export const GET: APIRoute = async ({ url, cookies, locals, redirect }) => {
+  const supabase = locals.supabase;
+  if (!supabase) return redirect('/membros/login/?erro=indisponivel');
+
   const tokenHash = url.searchParams.get('token_hash');
   const type = url.searchParams.get('type');
 

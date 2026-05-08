@@ -1,4 +1,6 @@
 import { defineMiddleware } from 'astro:middleware';
+import { getRuntimeEnv } from './lib/runtime-env';
+import { createSupabase } from './lib/supabase';
 import { getSession, getUserAccess, hasAccess, getUserProfile } from './lib/auth';
 import { isLessonUnlocked } from './lib/progress';
 
@@ -16,14 +18,32 @@ const ROUTE_PRODUCT_MAP: Record<string, string> = {
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
 
+  // Popula env + supabase em locals pra TODA request — endpoints e páginas usam daqui
+  const env = getRuntimeEnv(context.locals);
+  context.locals.env = env;
+
+  // Cria supabase só se as credenciais existem (rotas estáticas não precisam)
+  if (env.SUPABASE_URL && env.SUPABASE_ANON_KEY) {
+    context.locals.supabase = createSupabase(env);
+  }
+
+  // Helper local pra acessar supabase com erro descritivo
+  const requireSupabase = () => {
+    if (!context.locals.supabase) {
+      throw new Error('Supabase indisponível: SUPABASE_URL ou SUPABASE_ANON_KEY ausentes');
+    }
+    return context.locals.supabase;
+  };
+
   // Gate de admin: /admin/* exige role=admin
   if (pathname.startsWith('/admin')) {
-    const session = await getSession(context.cookies);
+    const supabase = requireSupabase();
+    const session = await getSession(supabase, context.cookies);
     if (!session) {
       return context.redirect('/membros/login/');
     }
 
-    const profile = await getUserProfile(session.user.id);
+    const profile = await getUserProfile(supabase, session.user.id);
     if (!profile || profile.role !== 'admin') {
       return context.redirect('/membros/?acesso=negado');
     }
@@ -44,7 +64,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
-  const session = await getSession(context.cookies);
+  const supabase = requireSupabase();
+  const session = await getSession(supabase, context.cookies);
   if (!session) {
     return context.redirect('/membros/login/');
   }
@@ -55,7 +76,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const produtoMatch = pathname.match(/^\/membros\/p\/([^\/]+)\/?$/);
   if (produtoMatch) {
     const productSlug = produtoMatch[1];
-    const accessList = await getUserAccess(session.user.id);
+    const accessList = await getUserAccess(supabase, session.user.id);
     if (!hasAccess(accessList, productSlug)) {
       return context.redirect('/membros/?acesso=bloqueado');
     }
@@ -67,7 +88,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const aulaMatch = pathname.match(/^\/membros\/aulas\/([^\/]+)\/?$/);
   if (aulaMatch) {
     const lessonSlug = aulaMatch[1];
-    const check = await isLessonUnlocked(session.user.id, lessonSlug);
+    const check = await isLessonUnlocked(supabase, session.user.id, lessonSlug);
     if (!check.unlocked) {
       if (check.reason === 'missing_access') {
         return context.redirect('/membros/?acesso=bloqueado');
@@ -92,7 +113,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (requiredProduct) {
     const [, productSlug] = requiredProduct;
-    const accessList = await getUserAccess(session.user.id);
+    const accessList = await getUserAccess(supabase, session.user.id);
 
     if (!hasAccess(accessList, productSlug)) {
       return context.redirect('/membros/?acesso=bloqueado');

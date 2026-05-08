@@ -6,17 +6,23 @@ import { createAdminClient } from '../../../lib/supabase-admin';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, cookies, redirect }) => {
-  const session = await getSession(cookies);
+export const POST: APIRoute = async ({ request, cookies, locals, redirect }) => {
+  const supabase = locals.supabase;
+  if (!supabase) return redirect('/membros/login/?erro=indisponivel');
+
+  const session = await getSession(supabase, cookies);
   if (!session) return redirect('/membros/login/');
-  const profile = await getUserProfile(session.user.id);
+  const profile = await getUserProfile(supabase, session.user.id);
   if (profile?.role !== 'admin') return redirect('/membros/?acesso=negado');
 
   const formData = await request.formData();
   const eventId = formData.get('eventId')?.toString();
   if (!eventId) return redirect('/admin/lives/?erro=evento-invalido');
 
-  const admin = createAdminClient();
+  const admin = createAdminClient({
+    SUPABASE_URL: locals.env?.SUPABASE_URL || '',
+    SUPABASE_SERVICE_ROLE_KEY: locals.env?.SUPABASE_SERVICE_ROLE_KEY,
+  });
 
   const { data: event } = await admin
     .from('events')
@@ -44,7 +50,7 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   // Dispara envios em paralelo — não trava em falhas individuais
   await Promise.allSettled(
     members.map((m) =>
-      sendEmail({
+      sendEmail(locals.env?.RESEND_API_KEY, {
         to: m.email,
         subject: `Nova gravação: ${event.title}`,
         html: newRecordingHtml({

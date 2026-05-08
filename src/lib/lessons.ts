@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 export interface Lesson {
   id: string;
@@ -14,7 +14,10 @@ export interface Lesson {
   is_free: boolean;
 }
 
-export async function getLessonBySlug(slug: string): Promise<Lesson | null> {
+export async function getLessonBySlug(
+  supabase: SupabaseClient,
+  slug: string
+): Promise<Lesson | null> {
   const { data, error } = await supabase
     .from('lessons')
     .select('*')
@@ -27,6 +30,7 @@ export async function getLessonBySlug(slug: string): Promise<Lesson | null> {
 }
 
 export async function getNextLesson(
+  supabase: SupabaseClient,
   productSlug: string,
   currentOrder: number
 ): Promise<Lesson | null> {

@@ -1,10 +1,10 @@
 import type { AstroCookies } from 'astro';
-import { supabase } from './supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 const SESSION_COOKIE = 'sb-access-token';
 const REFRESH_COOKIE = 'sb-refresh-token';
 
-export async function getSession(cookies: AstroCookies) {
+export async function getSession(supabase: SupabaseClient, cookies: AstroCookies) {
   const accessToken = cookies.get(SESSION_COOKIE)?.value;
   const refreshToken = cookies.get(REFRESH_COOKIE)?.value;
 
@@ -57,7 +57,10 @@ interface UserProfile {
   created_at: string;
 }
 
-export async function getUserProfile(userId: string): Promise<UserProfile | null> {
+export async function getUserProfile(
+  supabase: SupabaseClient,
+  userId: string
+): Promise<UserProfile | null> {
   const { data, error } = await supabase
     .from('profiles')
     .select('id, email, name, whatsapp, paid, asaas_customer_id, role, created_at')
@@ -68,7 +71,7 @@ export async function getUserProfile(userId: string): Promise<UserProfile | null
   return data as unknown as UserProfile;
 }
 
-export async function getLessonProgress(userId: string) {
+export async function getLessonProgress(supabase: SupabaseClient, userId: string) {
   const { data, error } = await supabase
     .from('lesson_progress')
     .select('lesson_slug, completed_at')
@@ -78,7 +81,11 @@ export async function getLessonProgress(userId: string) {
   return data;
 }
 
-export async function markLessonComplete(userId: string, lessonSlug: string) {
+export async function markLessonComplete(
+  supabase: SupabaseClient,
+  userId: string,
+  lessonSlug: string
+) {
   const { error } = await supabase
     .from('lesson_progress')
     .upsert(
@@ -89,7 +96,7 @@ export async function markLessonComplete(userId: string, lessonSlug: string) {
   return !error;
 }
 
-export async function getUserAccess(userId: string): Promise<string[]> {
+export async function getUserAccess(supabase: SupabaseClient, userId: string): Promise<string[]> {
   const { data, error } = await supabase
     .from('user_access')
     .select('product_slug')

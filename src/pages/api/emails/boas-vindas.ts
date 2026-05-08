@@ -2,13 +2,17 @@ import type { APIRoute } from 'astro';
 import { sendEmail } from '../../../lib/resend';
 import { welcomeEmailHtml } from '../../../lib/email-templates';
 import { getSession } from '../../../lib/auth';
-import { supabase } from '../../../lib/supabase';
 
 export const prerender = false;
 
 // Chamado pelo próprio cadastro após signup — pode ser chamado com session fresh
-export const POST: APIRoute = async ({ request, cookies }) => {
-  const session = await getSession(cookies);
+export const POST: APIRoute = async ({ request, cookies, locals }) => {
+  const supabase = locals.supabase;
+  if (!supabase) {
+    return new Response(JSON.stringify({ ok: false, error: 'indisponivel' }), { status: 503 });
+  }
+
+  const session = await getSession(supabase, cookies);
   if (!session) {
     return new Response(JSON.stringify({ ok: false, error: 'not_authenticated' }), { status: 401 });
   }
@@ -29,7 +33,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     loginUrl: `${origin}/membros/`,
   });
 
-  const result = await sendEmail({
+  const result = await sendEmail(locals.env?.RESEND_API_KEY, {
     to: profile.email,
     subject: 'Bem-vindo à área de membros',
     html,

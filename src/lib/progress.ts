@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 export interface ProductProgress {
   productSlug: string;
@@ -31,7 +31,10 @@ export interface UnlockCheck {
 /**
  * Retorna progresso do aluno em cada produto que ele tem acesso.
  */
-export async function getProductProgressList(userId: string): Promise<ProductProgress[]> {
+export async function getProductProgressList(
+  supabase: SupabaseClient,
+  userId: string
+): Promise<ProductProgress[]> {
   const { data: access } = await supabase
     .from('user_access')
     .select('product_slug, products(name)')
@@ -82,6 +85,7 @@ export async function getProductProgressList(userId: string): Promise<ProductPro
  * Retorna null se todas já foram concluídas ou não há aulas.
  */
 export async function getNextLesson(
+  supabase: SupabaseClient,
   userId: string,
   productSlug: string
 ): Promise<NextLesson | null> {
@@ -114,7 +118,10 @@ export async function getNextLesson(
  *   2) Senão, produto com user_access.granted_at mais recente
  *   3) Senão, null
  */
-export async function getMostRecentProduct(userId: string): Promise<string | null> {
+export async function getMostRecentProduct(
+  supabase: SupabaseClient,
+  userId: string
+): Promise<string | null> {
   const { data: lastProgress } = await supabase
     .from('lesson_progress')
     .select('lesson_slug, completed_at')
@@ -153,6 +160,7 @@ export async function getMostRecentProduct(userId: string): Promise<string | nul
  *  - Demais aulas exigem lesson_progress da aula imediatamente anterior (maior order_index < atual)
  */
 export async function isLessonUnlocked(
+  supabase: SupabaseClient,
   userId: string,
   lessonSlug: string
 ): Promise<UnlockCheck> {

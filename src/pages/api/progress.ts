@@ -1,11 +1,15 @@
 import type { APIRoute } from 'astro';
-import { getSession } from '../../lib/auth';
-import { markLessonComplete } from '../../lib/auth';
+import { getSession, markLessonComplete } from '../../lib/auth';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, cookies }) => {
-  const session = await getSession(cookies);
+export const POST: APIRoute = async ({ request, cookies, locals }) => {
+  const supabase = locals.supabase;
+  if (!supabase) {
+    return new Response(JSON.stringify({ error: 'Indisponível' }), { status: 503 });
+  }
+
+  const session = await getSession(supabase, cookies);
   if (!session) {
     return new Response(JSON.stringify({ error: 'Não autenticado' }), { status: 401 });
   }
@@ -17,7 +21,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     return new Response(JSON.stringify({ error: 'lessonSlug obrigatório' }), { status: 400 });
   }
 
-  const success = await markLessonComplete(session.user.id, lessonSlug);
+  const success = await markLessonComplete(supabase, session.user.id, lessonSlug);
 
   if (!success) {
     return new Response(JSON.stringify({ error: 'Falha ao salvar progresso' }), { status: 500 });

@@ -1,13 +1,16 @@
 import type { APIRoute } from 'astro';
-import { createClient } from '@supabase/supabase-js';
+import { createAdminClient } from '../../lib/supabase-admin';
 import { getSession, getUserAccess, hasAccess } from '../../lib/auth';
 
 export const prerender = false;
 
 const SIGNED_URL_EXPIRES_IN = 60 * 60; // 1 hora
 
-export const POST: APIRoute = async ({ request, cookies, redirect }) => {
-  const session = await getSession(cookies);
+export const POST: APIRoute = async ({ request, cookies, locals, redirect }) => {
+  const supabase = locals.supabase;
+  if (!supabase) return redirect('/membros/login/?erro=indisponivel');
+
+  const session = await getSession(supabase, cookies);
   if (!session) {
     return redirect('/membros/login/');
   }
@@ -20,16 +23,16 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
   }
 
   // Verificar se o usuário tem acesso ao produto
-  const accessList = await getUserAccess(session.user.id);
+  const accessList = await getUserAccess(supabase, session.user.id);
   if (!hasAccess(accessList, productSlug)) {
     return redirect('/membros/?acesso=bloqueado');
   }
 
   // Cliente com service_role pra gerar signed URL protegida
-  const supabaseAdmin = createClient(
-    import.meta.env.SUPABASE_URL,
-    import.meta.env.SUPABASE_SERVICE_ROLE_KEY
-  );
+  const supabaseAdmin = createAdminClient({
+    SUPABASE_URL: locals.env?.SUPABASE_URL || '',
+    SUPABASE_SERVICE_ROLE_KEY: locals.env?.SUPABASE_SERVICE_ROLE_KEY,
+  });
 
   // Buscar download_path do produto
   const { data: product, error: productError } = await supabaseAdmin
